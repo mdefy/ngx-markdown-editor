@@ -1,0 +1,13 @@
+# Add files here to ignore them from prettier formatting
+
+# Project
+
+/node_modules
+/dist
+/docs
+/package-lock.json
+
+# Editors
+
+/.history
+/.vscode

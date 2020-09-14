@@ -11,10 +11,10 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "ngx-markdown-editor": ["dist/ngx-markdown-editor/ngx-markdown-editor", "dist/ngx-markdown-editor"]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

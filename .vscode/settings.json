@@ -1,4 +1,9 @@
 {
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
   "cSpell.words": [
     "strikethrough",
     "toggle",

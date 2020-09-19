@@ -1,0 +1,68 @@
+<div>
+  <form>
+    <mat-form-field [appearance]="'fill'">
+      <mat-select [placeholder]="'Heading'" (selectionChange)="mde.setHeadingLevel($event.value)">
+        <mat-option value="0">No heading</mat-option>
+        <mat-option *ngFor="let i of [1, 2, 3, 4, 5, 6]" [value]="i">Heading level {{ i }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-button *ngIf="showItems.toggleBold" (click)="mde.toggleBold()">
+      <mat-icon>format_bold</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.toggleItalic" (click)="mde.toggleItalic()">
+      <mat-icon>format_italic</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.toggleStrikethrough" (click)="mde.toggleStrikethrough()">
+      <mat-icon>format_strikethrough</mat-icon>
+    </button>
+    |
+    <button mat-button *ngIf="showItems.toggleUnorderedList" (click)="mde.toggleUnorderedList()">
+      <mat-icon>format_list_bulleted</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.toggleOrderedList" (click)="mde.toggleOrderedList()">
+      <mat-icon>format_list_numbered</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.toggleCheckList" (click)="mde.toggleCheckList()">
+      <mat-icon>checkbox</mat-icon>
+    </button>
+    |
+    <button mat-button *ngIf="showItems.toggleQuote" (click)="mde.toggleQuote()">
+      <mat-icon>format_quote</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.toggleInlineCode" (click)="mde.toggleInlineCode()">
+      <mat-icon>code</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.insertCodeBlock" (click)="mde.insertCodeBlock()">
+      <mat-icon>unfold_more</mat-icon>
+    </button>
+    |
+    <button mat-button *ngIf="showItems.insertLink" (click)="mde.insertLink()">
+      <mat-icon>insert_link</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.insertImageLink" (click)="mde.insertImageLink()">
+      <mat-icon>image</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.insertTable" (click)="mde.insertTable()">
+      <mat-icon>table_chart</mat-icon>
+    </button>
+    |
+    <button mat-button *ngIf="showItems.toggleRichTextMode" (click)="mde.toggleRichTextMode()">
+      <mat-icon>highlight</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.formatContent" (click)="mde.formatContent()">
+      <mat-icon>format_paint</mat-icon>
+    </button>
+    |
+    <button mat-button *ngIf="showItems.downloadAsFile" (click)="mde.downloadAsFile()">
+      <mat-icon>get_app</mat-icon>
+    </button>
+    <button mat-button *ngIf="showItems.importFromFile" (click)="mde.importFromFile()">
+      <mat-icon>publish</mat-icon>
+    </button>
+    |
+    <button mat-button *ngIf="showItems.openMarkdownGuide" (click)="mde.openMarkdownGuide()">
+      <mat-icon>help</mat-icon>
+    </button>
+  </form>
+</div>
+<div id="ngx-markdown-editor-wrapper"></div>

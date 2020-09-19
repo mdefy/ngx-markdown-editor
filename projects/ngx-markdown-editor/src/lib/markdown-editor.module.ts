@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [MarkdownEditorComponent],
@@ -18,6 +19,7 @@ import { BrowserModule } from '@angular/platform-browser';
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatTooltipModule,
   ],
   exports: [MarkdownEditorComponent],
 })

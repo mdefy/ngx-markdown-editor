@@ -1,11 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { MarkdownEditor, MarkdownEditorShortcuts, Options } from 'markdown-editor-core';
+
+const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
+  showDelay: 1000,
+  hideDelay: 0,
+  touchendHideDelay: 1000,
+};
 
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'markdown-editor',
   templateUrl: './markdown-editor.component.html',
   styleUrls: ['./markdown-editor.component.scss'],
+  providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults }],
 })
 export class MarkdownEditorComponent implements OnInit {
   @Input() options: Options;

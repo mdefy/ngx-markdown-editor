@@ -7,13 +7,14 @@
       "projectType": "library",
       "root": "projects/ngx-markdown-editor",
       "sourceRoot": "projects/ngx-markdown-editor/src",
-      "prefix": "lib",
+      "prefix": "",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/ngx-markdown-editor/tsconfig.lib.json",
-            "project": "projects/ngx-markdown-editor/ng-package.json"
+            "project": "projects/ngx-markdown-editor/ng-package.json",
+            "allowedCommonJsDependencies": ["lodash", "codemirror"]
           },
           "configurations": {
             "production": {
@@ -63,7 +64,8 @@
             "aot": true,
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
             "styles": ["projects/demo/src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": ["lodash", "codemirror"]
           },
           "configurations": {
             "production": {

@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^10.1.1",
-    "@angular/core": "^10.1.1"
+    "@angular/core": "^10.1.1",
+    "@angular/cdk": "^10.1.1"
   },
   "dependencies": {
+    "markdown-editor-core": "file:../../../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz",
     "tslib": "^2.0.0"
   }
 }

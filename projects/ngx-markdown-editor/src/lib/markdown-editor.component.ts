@@ -9,7 +9,6 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
 };
 
 @Component({
-  // tslint:disable-next-line: component-selector
   selector: 'markdown-editor',
   templateUrl: './markdown-editor.component.html',
   styleUrls: ['./markdown-editor.component.scss'],

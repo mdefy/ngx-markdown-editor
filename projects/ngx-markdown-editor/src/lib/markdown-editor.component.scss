@@ -8,3 +8,10 @@
   width: 3.5em;
   text-align: center;
 }
+
+.mde-toolbar-separator {
+  display: inline-block;
+  height: 24px;
+  vertical-align: middle;
+  border-left: 1px solid darkgray;
+}

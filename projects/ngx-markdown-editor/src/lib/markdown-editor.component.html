@@ -1,116 +1,32 @@
-<div>
-  <mat-form-field floatLabel="never">
-    <mat-label>
-      <mat-icon>
-        <!-- Icon from Font Awesome: https://fontawesome.com/icons/heading?style=solid; License: https://fontawesome.com/license -->
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          data-prefix="fas"
-          data-icon="heading"
-          class="svg-inline--fa fa-heading fa-w-16"
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          width="100%"
-          height="100%"
-          viewBox="0 0 512 512"
-          licenseUrl="https://fontawesome.com/license"
-        >
-          <path
-            fill="currentColor"
-            d="M448 96v320h32a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H320a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h32V288H160v128h32a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H32a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h32V96H32a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16h-32v128h192V96h-32a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16z"
-          ></path>
-        </svg>
-      </mat-icon>
-    </mat-label>
-    <mat-select [placeholder]="'Heading'" (selectionChange)="mde.setHeadingLevel($event.value)">
-      <mat-option value="0">--</mat-option>
-      <mat-option *ngFor="let i of [1, 2, 3, 4, 5, 6]" [value]="i">H{{ i }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button mat-button *ngIf="showItems.toggleBold" (click)="mde.toggleBold()" [matTooltip]="'Bold'">
-    <mat-icon>format_bold</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.toggleItalic" (click)="mde.toggleItalic()">
-    <mat-icon>format_italic</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.toggleStrikethrough" (click)="mde.toggleStrikethrough()">
-    <mat-icon>format_strikethrough</mat-icon>
-  </button>
-  |
-  <button mat-button *ngIf="showItems.toggleUnorderedList" (click)="mde.toggleUnorderedList()">
-    <mat-icon>format_list_bulleted</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.toggleOrderedList" (click)="mde.toggleOrderedList()">
-    <mat-icon>format_list_numbered</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.toggleCheckList" (click)="mde.toggleCheckList()">
-    <mat-icon>check_box</mat-icon>
-  </button>
-  |
-  <button mat-button *ngIf="showItems.toggleQuote" (click)="mde.toggleQuote()">
-    <mat-icon>format_quote</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.toggleInlineCode" (click)="mde.toggleInlineCode()">
-    <mat-icon>code</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.insertCodeBlock" (click)="mde.insertCodeBlock()">
-    <mat-icon style="margin-bottom: 5px">
-      <!-- Icon from Font Awesome: https://fontawesome.com/icons/file-code?style=solid; License: https://fontawesome.com/license -->
-      <svg
-        aria-hidden="true"
-        focusable="false"
-        data-prefix="fas"
-        data-icon="file-code"
-        class="svg-inline--fa fa-file-code fa-w-12"
-        role="img"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 384 512"
-        width="80%"
-        height="80%"
-        licenseUrl="https://fontawesome.com/license"
-      >
-        <path
-          fill="currentColor"
-          d="M384 121.941V128H256V0h6.059c6.365 0 12.47 2.529 16.971 7.029l97.941 97.941A24.005 24.005 0 0 1 384 121.941zM248 160c-13.2 0-24-10.8-24-24V0H24C10.745 0 0 10.745 0 24v464c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V160H248zM123.206 400.505a5.4 5.4 0 0 1-7.633.246l-64.866-60.812a5.4 5.4 0 0 1 0-7.879l64.866-60.812a5.4 5.4 0 0 1 7.633.246l19.579 20.885a5.4 5.4 0 0 1-.372 7.747L101.65 336l40.763 35.874a5.4 5.4 0 0 1 .372 7.747l-19.579 20.884zm51.295 50.479l-27.453-7.97a5.402 5.402 0 0 1-3.681-6.692l61.44-211.626a5.402 5.402 0 0 1 6.692-3.681l27.452 7.97a5.4 5.4 0 0 1 3.68 6.692l-61.44 211.626a5.397 5.397 0 0 1-6.69 3.681zm160.792-111.045l-64.866 60.812a5.4 5.4 0 0 1-7.633-.246l-19.58-20.885a5.4 5.4 0 0 1 .372-7.747L284.35 336l-40.763-35.874a5.4 5.4 0 0 1-.372-7.747l19.58-20.885a5.4 5.4 0 0 1 7.633-.246l64.866 60.812a5.4 5.4 0 0 1-.001 7.879z"
-        ></path>
-      </svg>
-    </mat-icon>
-  </button>
-  |
-  <button mat-button *ngIf="showItems.insertLink" (click)="mde.insertLink()">
-    <mat-icon>insert_link</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.insertImageLink" (click)="mde.insertImageLink()">
-    <mat-icon>image</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.insertTable" (click)="mde.insertTable()">
-    <mat-icon>table_chart</mat-icon>
-  </button>
-  |
-  <button
-    mat-button
-    *ngIf="showItems.toggleRichTextMode"
-    (click)="mde.toggleRichTextMode()"
-    [matTooltip]="'Rich-text mode'"
-  >
-    <mat-icon>highlight</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.formatContent" (click)="mde.formatContent()">
-    <mat-icon>format_paint</mat-icon>
-  </button>
-  |
-  <button mat-button *ngIf="showItems.downloadAsFile" (click)="mde.downloadAsFile()">
-    <mat-icon>get_app</mat-icon>
-  </button>
-  <button mat-button *ngIf="showItems.importFromFile" (click)="mde.importFromFile()">
-    <mat-icon>
-      <svg xmlns="http://www.w3.org/2000/svg"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" /></svg>
-    </mat-icon>
-  </button>
-  |
-  <button mat-button *ngIf="showItems.openMarkdownGuide" (click)="mde.openMarkdownGuide()">
-    <mat-icon>help</mat-icon>
-  </button>
+<div id="ngx-markdown-editor-toolbar">
+  <ng-container *ngFor="let item of normalizedItems" ng-container [ngSwitch]="item.name">
+    <ng-template [ngSwitchCase]="'|'">
+      <div class="mde-toolbar-separator"></div>
+    </ng-template>
+
+    <ng-template [ngSwitchCase]="'setHeadingLevel'">
+      <mat-form-field floatLabel="never">
+        <mat-label>
+          <mat-icon *ngIf="item.icon.format === 'material'">
+            {{ item.icon.iconName }}
+          </mat-icon>
+          <mat-icon *ngIf="item.icon.format !== 'material'" [svgIcon]="item.icon.iconName"> </mat-icon>
+        </mat-label>
+        <mat-select (selectionChange)="item.action()">
+          <mat-option value="0">--</mat-option>
+          <mat-option *ngFor="let i of [1, 2, 3, 4, 5, 6]" [value]="i">H{{ i }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-template>
+
+    <ng-template ngSwitchDefault>
+      <button *ngSwitchDefault mat-button (click)="item.action()" [matTooltip]="item.tooltip">
+        <mat-icon *ngIf="item.icon.format === 'material'">
+          {{ item.icon.iconName }}
+        </mat-icon>
+        <mat-icon *ngIf="item.icon.format !== 'material'" [svgIcon]="item.icon.iconName"> </mat-icon>
+      </button>
+    </ng-template>
+  </ng-container>
 </div>
 <div id="ngx-markdown-editor-wrapper"></div>

@@ -1,6 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
 import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
-import { MarkdownEditor, MarkdownEditorShortcuts, Options } from 'markdown-editor-core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MarkdownEditor, MarkdownEditorAction, MarkdownEditorOptions } from 'markdown-editor-core';
+import { DEFAULT_TOOLBAR, getDefaultItem } from './default-toolbar-config';
+import { MarkdownEditorItem, PartialMarkdownEditorItem } from './types';
 
 const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 1000,
@@ -14,40 +18,60 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   styleUrls: ['./markdown-editor.component.scss'],
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults }],
 })
-export class MarkdownEditorComponent implements OnInit {
-  @Input() options: Options;
-  @Input() toolbarItems: (keyof MarkdownEditorShortcuts)[];
+export class MarkdownEditorComponent implements OnInit, OnChanges {
+  @Input() options: MarkdownEditorOptions;
+  @Input() toolbarItems: (MarkdownEditorAction | PartialMarkdownEditorItem | '|')[];
 
   public mde: MarkdownEditor;
-  public readonly showItems: { [key in keyof MarkdownEditorShortcuts]: boolean } = {
-    toggleBold: true,
-    toggleItalic: true,
-    toggleStrikethrough: true,
-    toggleUnorderedList: true,
-    toggleOrderedList: true,
-    toggleCheckList: true,
-    toggleQuote: true,
-    insertLink: true,
-    insertImageLink: true,
-    insertTable: true,
-    insertHorizontalLine: true,
-    toggleInlineCode: true,
-    insertCodeBlock: true,
-    openMarkdownGuide: true,
-    toggleRichTextMode: true,
-    downloadAsFile: true,
-    importFromFile: true,
-    formatContent: true,
-  };
+  public normalizedItems: MarkdownEditorItem[];
 
-  constructor() {}
+  constructor(private readonly iconRegistry: MatIconRegistry, private readonly domSanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-    for (const item of this.toolbarItems) {
-      this.showItems[item] = true;
-    }
-
     const wrapper = document.getElementById('ngx-markdown-editor-wrapper');
     this.mde = new MarkdownEditor(wrapper, this.options);
+  }
+
+  ngOnChanges() {
+    let items: (MarkdownEditorAction | PartialMarkdownEditorItem | '|')[];
+    if (this.toolbarItems?.length) {
+      items = this.toolbarItems;
+    } else {
+      items = DEFAULT_TOOLBAR;
+    }
+    this.normalizedItems = [];
+    for (const toolbarItem of items) {
+      let item: MarkdownEditorItem;
+      if (typeof toolbarItem === 'string') {
+        item = getDefaultItem(this.mde, toolbarItem);
+        if (!item) {
+          console.warn(`No default item defined for name "${toolbarItem}"`);
+          continue;
+        }
+      } else {
+        const defaultItem = getDefaultItem(this.mde, toolbarItem.name);
+        item = {
+          name: toolbarItem.name,
+          action: toolbarItem.action || defaultItem.action,
+          tooltip: toolbarItem.tooltip || defaultItem.tooltip,
+          icon: toolbarItem.icon || defaultItem.icon,
+        };
+      }
+      switch (item.icon.format) {
+        case 'svgString':
+          this.iconRegistry.addSvgIconLiteral(
+            item.icon.iconName,
+            this.domSanitizer.bypassSecurityTrustHtml(item.icon.svgHtmlString)
+          );
+          break;
+        case 'svgFile':
+          this.iconRegistry.addSvgIcon(
+            item.icon.iconName,
+            this.domSanitizer.bypassSecurityTrustResourceUrl(item.icon.runtimePath)
+          );
+          break;
+      }
+      this.normalizedItems.push(item);
+    }
   }
 }

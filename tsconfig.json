@@ -12,6 +12,7 @@
     "importHelpers": true,
     "target": "es2015",
     "lib": ["es2018", "dom"],
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "ngx-markdown-editor": ["dist/ngx-markdown-editor/ngx-markdown-editor", "dist/ngx-markdown-editor"]
     }

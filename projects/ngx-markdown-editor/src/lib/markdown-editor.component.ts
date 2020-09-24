@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -18,9 +18,13 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   styleUrls: ['./markdown-editor.component.scss'],
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults }],
 })
-export class MarkdownEditorComponent implements OnInit, OnChanges {
+export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() options: MarkdownEditorOptions;
   @Input() toolbarItems: (MarkdownEditorAction | PartialMarkdownEditorItem | '|')[];
+
+  @Output() contentChange = new EventEmitter<void>();
+  @Output() editorFocus = new EventEmitter<void>();
+  @Output() editorBlur = new EventEmitter<void>();
 
   public mde: MarkdownEditor;
   public normalizedItems: MarkdownEditorItem[];
@@ -30,6 +34,16 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     const wrapper = document.getElementById('ngx-markdown-editor-wrapper');
     this.mde = new MarkdownEditor(wrapper, this.options);
+
+    this.mde.cm.on('changes', this.onContentChange);
+    this.mde.cm.on('focus', this.onEditorFocus);
+    this.mde.cm.on('blur', this.onEditorBlur);
+  }
+
+  ngOnDestroy(): void {
+    this.mde.cm.off('changes', this.onContentChange);
+    this.mde.cm.off('focus', this.onEditorFocus);
+    this.mde.cm.off('blur', this.onEditorBlur);
   }
 
   ngOnChanges() {
@@ -74,4 +88,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
       this.normalizedItems.push(item);
     }
   }
+
+  private onContentChange = () => this.contentChange.emit();
+  private onEditorFocus = () => this.editorFocus.emit();
+  private onEditorBlur = () => this.editorBlur.emit();
 }

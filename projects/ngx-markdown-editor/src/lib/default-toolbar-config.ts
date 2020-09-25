@@ -1,5 +1,5 @@
 import { MarkdownEditor, MarkdownEditorAction } from 'markdown-editor-core';
-import { MarkdownEditorItem } from './types';
+import { NgxMdeItemNormalized } from './types';
 
 export const DEFAULT_TOOLBAR: (MarkdownEditorAction | '|')[] = [
   'setHeadingLevel',
@@ -29,16 +29,16 @@ export const DEFAULT_TOOLBAR: (MarkdownEditorAction | '|')[] = [
   'openMarkdownGuide',
 ];
 
-export function getDefaultItem(mde: MarkdownEditor, itemName: string): MarkdownEditorItem | undefined {
+export function getDefaultItem(mde: MarkdownEditor, itemName: string): NgxMdeItemNormalized | undefined {
   return getDefaultItems(mde).find((i) => i.name === itemName);
 }
 
-export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
-  const defaultItems: MarkdownEditorItem[] = [
+export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
+  const defaultItems: NgxMdeItemNormalized[] = [
     {
       name: 'setHeadingLevel',
-      action: (level: 0 | 1 | 2 | 3 | 4 | 5 | 6) => this.mde.setHeadingLevel(level),
-      tooltip: 'setHeadingLevel',
+      action: (level: 0 | 1 | 2 | 3 | 4 | 5 | 6) => mde.setHeadingLevel(level),
+      tooltip: 'Set Heading Level',
       icon: {
         format: 'svgString',
         iconName: 'format_heading',
@@ -47,8 +47,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleBold',
-      action: () => this.mde.toggleBold(),
-      tooltip: 'toggleBold',
+      action: () => mde.toggleBold(),
+      tooltip: 'Toggle Bold',
       icon: {
         format: 'material',
         iconName: 'format_bold',
@@ -56,8 +56,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleItalic',
-      action: () => this.mde.toggleItalic(),
-      tooltip: 'toggleItalic',
+      action: () => mde.toggleItalic(),
+      tooltip: 'Toggle Italic',
       icon: {
         format: 'material',
         iconName: 'format_italic',
@@ -65,8 +65,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleStrikethrough',
-      action: () => this.mde.toggleStrikethrough(),
-      tooltip: 'toggleStrikethrough',
+      action: () => mde.toggleStrikethrough(),
+      tooltip: 'Toggle Strikethrough',
       icon: {
         format: 'material',
         iconName: 'format_strikethrough',
@@ -74,8 +74,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleUnorderedList',
-      action: () => this.mde.toggleUnorderedList(),
-      tooltip: 'toggleUnorderedList',
+      action: () => mde.toggleUnorderedList(),
+      tooltip: 'Toggle Unordered List',
       icon: {
         format: 'material',
         iconName: 'format_list_bulleted',
@@ -83,8 +83,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleOrderedList',
-      action: () => this.mde.toggleOrderedList(),
-      tooltip: 'toggleOrderedList',
+      action: () => mde.toggleOrderedList(),
+      tooltip: 'Toggle Ordered List',
       icon: {
         format: 'material',
         iconName: 'format_list_numbered',
@@ -92,8 +92,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleCheckList',
-      action: () => this.mde.toggleCheckList(),
-      tooltip: 'toggleCheckList',
+      action: () => mde.toggleCheckList(),
+      tooltip: 'Toggle Checklist',
       icon: {
         format: 'material',
         iconName: 'check_box',
@@ -101,8 +101,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleQuote',
-      action: () => this.mde.toggleQuote(),
-      tooltip: 'toggleQuote',
+      action: () => mde.toggleQuote(),
+      tooltip: 'Toggle Quotation',
       icon: {
         format: 'material',
         iconName: 'format_quote',
@@ -110,8 +110,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleInlineCode',
-      action: () => this.mde.toggleInlineCode(),
-      tooltip: 'toggleInlineCode',
+      action: () => mde.toggleInlineCode(),
+      tooltip: 'Toggle Inline Code',
       icon: {
         format: 'material',
         iconName: 'code',
@@ -119,8 +119,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'insertCodeBlock',
-      action: () => this.mde.insertCodeBlock(),
-      tooltip: 'insertCodeBlock',
+      action: () => mde.insertCodeBlock(),
+      tooltip: 'Insert Code Block',
       icon: {
         format: 'svgString',
         iconName: 'file_code',
@@ -129,8 +129,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'insertLink',
-      action: () => this.mde.insertLink(),
-      tooltip: 'insertLink',
+      action: () => mde.insertLink(),
+      tooltip: 'Insert Link',
       icon: {
         format: 'material',
         iconName: 'insert_link',
@@ -138,8 +138,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'insertImageLink',
-      action: () => this.mde.insertImageLink(),
-      tooltip: 'insertImageLink',
+      action: () => mde.insertImageLink(),
+      tooltip: 'Insert Image Link',
       icon: {
         format: 'material',
         iconName: 'image',
@@ -147,8 +147,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'insertTable',
-      action: () => this.mde.insertTable(),
-      tooltip: 'insertTable',
+      action: () => mde.insertTable(),
+      tooltip: 'Insert Table',
       icon: {
         format: 'material',
         iconName: 'table_chart',
@@ -156,8 +156,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'insertHorizontalLine',
-      action: () => this.mde.insertHorizontalLine(),
-      tooltip: 'insertHorizontalLine',
+      action: () => mde.insertHorizontalLine(),
+      tooltip: 'Insert Horizontal Line',
       icon: {
         format: 'material',
         iconName: 'horizontal_rule',
@@ -165,8 +165,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'toggleRichTextMode',
-      action: () => this.mde.toggleRichTextMode(),
-      tooltip: 'toggleRichTextMode',
+      action: () => mde.toggleRichTextMode(),
+      tooltip: 'Toggle Rich-Text Mode',
       icon: {
         format: 'material',
         iconName: 'highlight',
@@ -174,8 +174,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'formatContent',
-      action: () => this.mde.formatContent(),
-      tooltip: 'formatContent',
+      action: () => mde.formatContent(),
+      tooltip: 'Format Content',
       icon: {
         format: 'material',
         iconName: 'format_paint',
@@ -183,8 +183,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'downloadAsFile',
-      action: () => this.mde.downloadAsFile(),
-      tooltip: 'downloadAsFile',
+      action: () => mde.downloadAsFile(),
+      tooltip: 'Download As File',
       icon: {
         format: 'material',
         iconName: 'get_app',
@@ -192,8 +192,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'importFromFile',
-      action: () => this.mde.importFromFile(),
-      tooltip: 'importFromFile',
+      action: () => mde.importFromFile(),
+      tooltip: 'Import From File',
       icon: {
         format: 'svgString',
         iconName: 'upload',
@@ -202,8 +202,8 @@ export function getDefaultItems(mde: MarkdownEditor): MarkdownEditorItem[] {
     },
     {
       name: 'openMarkdownGuide',
-      action: () => this.mde.openMarkdownGuide(),
-      tooltip: 'openMarkdownGuide',
+      action: () => mde.openMarkdownGuide(),
+      tooltip: 'Open Markdown Guide',
       icon: {
         format: 'material',
         iconName: 'help',
@@ -231,8 +231,6 @@ const FILE_CODE = `
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 384 512"
-    width="80%"
-    height="80%"
     licenseUrl="https://fontawesome.com/license"
   >
     <path

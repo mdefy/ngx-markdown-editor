@@ -54,62 +54,15 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, Af
     this.mde.cm.off('blur', this.onEditorBlur);
   }
 
+  // Necessary to apply `this.mde` instance to default toolbar items
+  // as `ngOnChanges()` is executed before `ngOnInit()`;
   ngAfterViewInit() {
     this.ngOnChanges();
   }
 
   ngOnChanges() {
-    let items: (MarkdownEditorAction | NgxMdeItem | '|')[];
-    if (this.toolbarItems?.length) {
-      items = this.toolbarItems;
-    } else {
-      items = DEFAULT_TOOLBAR;
-    }
-    this.normalizedItems = [];
-    for (const toolbarItem of items) {
-      let item: NgxMdeItemNormalized;
-      if (typeof toolbarItem === 'string') {
-        item = getDefaultItem(this.mde, toolbarItem);
-        if (!item) {
-          console.warn(`No default item defined for name "${toolbarItem}"`);
-          continue;
-        }
-      } else {
-        const defaultItem = getDefaultItem(this.mde, toolbarItem.name);
-        item = {
-          name: toolbarItem.name,
-          action: toolbarItem.action || defaultItem.action,
-          tooltip: (toolbarItem.tooltip && this.getTooltip(toolbarItem)) || defaultItem.tooltip,
-          icon: (toolbarItem.icon && this.getIcon(toolbarItem)) || defaultItem.icon,
-        };
-      }
-      switch (item.icon.format) {
-        case 'svgString':
-          this.iconRegistry.addSvgIconLiteral(
-            item.icon.iconName,
-            this.domSanitizer.bypassSecurityTrustHtml(item.icon.svgHtmlString)
-          );
-          break;
-        case 'svgFile':
-          this.iconRegistry.addSvgIcon(
-            item.icon.iconName,
-            this.domSanitizer.bypassSecurityTrustResourceUrl(item.icon.runtimePath)
-          );
-          break;
-      }
-      this.normalizedItems.push(item);
-    }
-
+    this.applyToolbarItems();
     this.mde?.setOptions(this.mapOptions(this.options));
-  }
-
-  private getTooltip(item: NgxMdeItem): string {
-    const tooltip = item.tooltip;
-    if (typeof tooltip === 'string') {
-      return tooltip;
-    } else {
-      return tooltip[this.language] || tooltip.default;
-    }
   }
 
   private getIcon(item: NgxMdeItem): MarkdownEditorIcon {
@@ -138,6 +91,71 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, Af
       ...options,
       markdownGuideUrl: this.getMarkdownGuideUrl(options.markdownGuideUrl),
     };
+  }
+
+  private applyToolbarItems() {
+    let items: (MarkdownEditorAction | NgxMdeItem | '|')[];
+    if (this.toolbarItems?.length) {
+      items = this.toolbarItems;
+    } else {
+      items = DEFAULT_TOOLBAR;
+    }
+    this.normalizedItems = [];
+    for (const toolbarItem of items) {
+      const item = this.getNormalizedItem(toolbarItem);
+      if (!item) {
+        console.warn(`No default item defined for name "${toolbarItem}"`);
+        continue;
+      }
+      this.addSvgIcon(item);
+      this.normalizedItems.push(item);
+    }
+  }
+
+  private getNormalizedItem(toolbarItem: NgxMdeItemDefinition): NgxMdeItemNormalized | undefined {
+    let item: NgxMdeItemNormalized;
+    if (typeof toolbarItem === 'string') {
+      item = getDefaultItem(this.mde, toolbarItem);
+      if (!item) {
+        return undefined;
+      }
+    } else {
+      const defaultItem = getDefaultItem(this.mde, toolbarItem.name);
+      item = {
+        name: toolbarItem.name,
+        action: toolbarItem.action || defaultItem.action,
+        tooltip: (toolbarItem.tooltip && this.getTooltip(toolbarItem)) || defaultItem.tooltip,
+        icon: (toolbarItem.icon && this.getIcon(toolbarItem)) || defaultItem.icon,
+      };
+    }
+
+    return item;
+  }
+
+  private getTooltip(item: NgxMdeItem): string {
+    const tooltip = item.tooltip;
+    if (typeof tooltip === 'string') {
+      return tooltip;
+    } else {
+      return tooltip[this.language] || tooltip.default;
+    }
+  }
+
+  private addSvgIcon(item: NgxMdeItemNormalized) {
+    switch (item.icon.format) {
+      case 'svgString':
+        this.iconRegistry.addSvgIconLiteral(
+          item.icon.iconName,
+          this.domSanitizer.bypassSecurityTrustHtml(item.icon.svgHtmlString)
+        );
+        break;
+      case 'svgFile':
+        this.iconRegistry.addSvgIcon(
+          item.icon.iconName,
+          this.domSanitizer.bypassSecurityTrustResourceUrl(item.icon.runtimePath)
+        );
+        break;
+    }
   }
 
   private onContentChange = () => this.contentChange.emit();

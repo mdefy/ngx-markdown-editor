@@ -5,7 +5,7 @@
     </ng-template>
 
     <ng-template [ngSwitchCase]="'setHeadingLevel'">
-      <mat-form-field floatLabel="never">
+      <mat-form-field floatLabel="never" [matTooltip]="item.tooltip">
         <mat-label>
           <mat-icon *ngIf="item.icon.format === 'material'">
             {{ item.icon.iconName }}

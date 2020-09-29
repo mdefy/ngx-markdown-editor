@@ -30,3 +30,9 @@
   </ng-container>
 </div>
 <div id="ngx-markdown-editor-wrapper"></div>
+<div id="ngx-markdown-editor-statusbar">
+  <ng-container *ngFor="let item of normalizedStatusbarItems" [ngSwitch]="item.name">
+    <div *ngSwitchCase="'|'" class="mde-statusbar-separator"></div>
+    <div *ngSwitchDefault class="mde-statusbar-item">{{ item.value | async }}</div>
+  </ng-container>
+</div>

@@ -1,4 +1,5 @@
 import { MarkdownEditorAction, MarkdownEditorOptions } from 'markdown-editor-core';
+import { Observable } from 'rxjs';
 
 export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl'> {
   markdownGuideUrl: OptionalI18n<string>;
@@ -18,6 +19,20 @@ export interface NgxMdeItemNormalized {
   action: (...args: any[]) => void;
   tooltip: string;
   icon: NgxMdeIcon;
+}
+
+export type NgxMdeStatusbarItemDef = NgxMdeDefaultStatusbarItem | NgxMdeStatusbarItem | '|';
+
+export type NgxMdeDefaultStatusbarItem = 'wordCount' | 'characterCount' | 'cursorPosition';
+
+export interface NgxMdeStatusbarItem {
+  name: string;
+  value: OptionalI18n<Observable<string>>;
+}
+
+export interface NgxMdeStatusbarItemNormalized {
+  name: string;
+  value: Observable<string>;
 }
 
 export type NgxMdeIcon =

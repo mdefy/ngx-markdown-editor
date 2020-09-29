@@ -4,6 +4,8 @@ import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/
 import { DomSanitizer } from '@angular/platform-browser';
 import { Editor, EditorChangeLinkedList } from 'codemirror';
 import { MarkdownEditor, MarkdownEditorOptions } from 'markdown-editor-core';
+import { Observable } from 'rxjs';
+import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
 import { DEFAULT_TOOLBAR, getDefaultItem } from './default-toolbar-config';
 import {
   LanguageTag,
@@ -11,6 +13,8 @@ import {
   NgxMdeItemDef,
   NgxMdeItemNormalized,
   NgxMdeOptions,
+  NgxMdeStatusbarItemDef,
+  NgxMdeStatusbarItemNormalized,
   OptionalI18n,
 } from './types';
 import { fromCmEvent } from './util/from-cm-event';
@@ -31,6 +35,7 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
 export class MarkdownEditorComponent implements OnInit, OnChanges {
   @Input() readonly options?: NgxMdeOptions;
   @Input() readonly toolbarItems?: NgxMdeItemDef[];
+  @Input() readonly statusItems?: NgxMdeStatusbarItemDef[];
   @Input() readonly language: LanguageTag = 'en';
 
   @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();
@@ -39,6 +44,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
 
   public mde: MarkdownEditor;
   public normalizedItems: NgxMdeItemNormalized[];
+  public normalizedStatusbarItems: NgxMdeStatusbarItemNormalized[];
 
   constructor(private readonly iconRegistry: MatIconRegistry, private readonly domSanitizer: DomSanitizer) {}
 
@@ -50,6 +56,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
     this.editorFocus.emitObservable(fromCmEvent(this.mde.cm, 'focus'));
     this.editorBlur.emitObservable(fromCmEvent(this.mde.cm, 'blur'));
 
+    defineDefaultStatusbarItems(this.mde);
+
     // Necessary to apply `this.mde` instance to default toolbar items
     // as `ngOnChanges()` is executed before `ngOnInit()`.
     this.ngOnChanges();
@@ -58,6 +66,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.mde) {
       this.applyToolbarItems();
+      this.applyStatusbarItems();
       this.mde.setOptions(this.mapOptions(this.options));
     }
   }
@@ -147,6 +156,47 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
           this.domSanitizer.bypassSecurityTrustResourceUrl(item.icon.runtimePath)
         );
         break;
+    }
+  }
+
+  private applyStatusbarItems() {
+    let items: NgxMdeStatusbarItemDef[];
+    if (this.statusItems?.length) {
+      items = this.statusItems;
+    } else {
+      items = DEFAULT_STATUSBAR;
+    }
+    this.normalizedStatusbarItems = [];
+    for (const toolbarItem of items) {
+      const item = this.getNormalizedStatusbarItem(toolbarItem);
+      if (!item) {
+        console.warn(`No default item defined for name "${toolbarItem}"`);
+        continue;
+      }
+      this.normalizedStatusbarItems.push(item);
+    }
+  }
+
+  private getNormalizedStatusbarItem(statusbarItem: NgxMdeStatusbarItemDef): NgxMdeStatusbarItemNormalized | undefined {
+    const getValue = (value: OptionalI18n<Observable<string>>): Observable<string> => {
+      if (value instanceof Observable) {
+        return value;
+      } else {
+        return value[this.language] || value.default;
+      }
+    };
+
+    if (typeof statusbarItem === 'string') {
+      return getDefaultStatusbarItem(this, statusbarItem);
+    } else {
+      let defaultItem = getDefaultStatusbarItem(this, statusbarItem.name); // necessary???
+      if (!defaultItem) {
+        defaultItem = { name: '', value: new Observable() };
+      }
+      return {
+        name: statusbarItem.name,
+        value: (statusbarItem.value && getValue(statusbarItem.value)) || defaultItem.value,
+      };
     }
   }
 }

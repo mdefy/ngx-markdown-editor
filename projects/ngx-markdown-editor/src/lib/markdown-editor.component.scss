@@ -20,3 +20,21 @@
   height: 20px;
   margin-bottom: 6px;
 }
+
+#ngx-markdown-editor-statusbar {
+  color: gray;
+  font-size: 14px;
+  text-align: right;
+
+  * {
+    margin: 0 7px;
+    display: inline-block;
+  }
+
+  .mde-statusbar-separator {
+    margin: 0 4px;
+    height: 14px;
+    vertical-align: middle;
+    border-left: 1px solid darkgray;
+  }
+}

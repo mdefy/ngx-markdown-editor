@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MarkdownEditor, MarkdownEditorAction, MarkdownEditorOptions } from 'markdown-editor-core';
+import { Editor, EditorChangeLinkedList } from 'codemirror';
+import { MarkdownEditor, MarkdownEditorOptions } from 'markdown-editor-core';
 import { DEFAULT_TOOLBAR, getDefaultItem } from './default-toolbar-config';
 import {
   LanguageTag,
@@ -12,6 +13,8 @@ import {
   NgxMdeOptions,
   OptionalI18n,
 } from './types';
+import { fromCmEvent } from './util/from-cm-event';
+import { ObservableEmitter } from './util/observable-emitter';
 
 const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 1000,
@@ -25,14 +28,14 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   styleUrls: ['./markdown-editor.component.scss'],
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults }],
 })
-export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+export class MarkdownEditorComponent implements OnInit, OnChanges {
   @Input() readonly options?: NgxMdeOptions;
   @Input() readonly toolbarItems?: NgxMdeItemDef[];
   @Input() readonly language: LanguageTag = 'en';
 
-  @Output() contentChange = new EventEmitter<void>();
-  @Output() editorFocus = new EventEmitter<void>();
-  @Output() editorBlur = new EventEmitter<void>();
+  @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();
+  @Output() editorFocus = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
+  @Output() editorBlur = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
 
   public mde: MarkdownEditor;
   public normalizedItems: NgxMdeItemNormalized[];
@@ -43,16 +46,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, Af
     const wrapper = document.getElementById('ngx-markdown-editor-wrapper') as HTMLElement;
     this.mde = new MarkdownEditor(wrapper, this.mapOptions(this.options));
 
-    this.mde.cm.on('changes', this.onContentChange);
-    this.mde.cm.on('focus', this.onEditorFocus);
-    this.mde.cm.on('blur', this.onEditorBlur);
-  }
-
-  ngOnDestroy(): void {
-    this.mde.cm.off('changes', this.onContentChange);
-    this.mde.cm.off('focus', this.onEditorFocus);
-    this.mde.cm.off('blur', this.onEditorBlur);
-  }
+    this.contentChange.emitObservable(fromCmEvent(this.mde.cm, 'changes'));
+    this.editorFocus.emitObservable(fromCmEvent(this.mde.cm, 'focus'));
+    this.editorBlur.emitObservable(fromCmEvent(this.mde.cm, 'blur'));
 
     // Necessary to apply `this.mde` instance to default toolbar items
     // as `ngOnChanges()` is executed before `ngOnInit()`.
@@ -153,8 +149,4 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, Af
         break;
     }
   }
-
-  private onContentChange = () => this.contentChange.emit();
-  private onEditorFocus = () => this.editorFocus.emit();
-  private onEditorBlur = () => this.editorBlur.emit();
 }

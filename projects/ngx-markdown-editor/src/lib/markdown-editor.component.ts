@@ -6,11 +6,11 @@ import { MarkdownEditor, MarkdownEditorAction, MarkdownEditorOptions } from 'mar
 import { DEFAULT_TOOLBAR, getDefaultItem } from './default-toolbar-config';
 import {
   LanguageTag,
-  NgxMdeIconConfig as MarkdownEditorIcon,
-  NgxMdeItem,
-  NgxMdeItemDefinition,
+  NgxMdeIcon,
+  NgxMdeItemDef,
   NgxMdeItemNormalized,
   NgxMdeOptions,
+  OptionalI18n,
 } from './types';
 
 const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
@@ -27,8 +27,8 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
 })
 export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() readonly options?: NgxMdeOptions;
-  @Input() readonly toolbarItems?: NgxMdeItemDefinition[];
-  @Input() readonly language?: LanguageTag = 'en';
+  @Input() readonly toolbarItems?: NgxMdeItemDef[];
+  @Input() readonly language: LanguageTag = 'en';
 
   @Output() contentChange = new EventEmitter<void>();
   @Output() editorFocus = new EventEmitter<void>();
@@ -40,7 +40,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, Af
   constructor(private readonly iconRegistry: MatIconRegistry, private readonly domSanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-    const wrapper = document.getElementById('ngx-markdown-editor-wrapper');
+    const wrapper = document.getElementById('ngx-markdown-editor-wrapper') as HTMLElement;
     this.mde = new MarkdownEditor(wrapper, this.mapOptions(this.options));
 
     this.mde.cm.on('changes', this.onContentChange);
@@ -54,47 +54,39 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, Af
     this.mde.cm.off('blur', this.onEditorBlur);
   }
 
-  // Necessary to apply `this.mde` instance to default toolbar items
-  // as `ngOnChanges()` is executed before `ngOnInit()`;
-  ngAfterViewInit() {
+    // Necessary to apply `this.mde` instance to default toolbar items
+    // as `ngOnChanges()` is executed before `ngOnInit()`.
     this.ngOnChanges();
   }
 
   ngOnChanges() {
-    this.applyToolbarItems();
-    this.mde?.setOptions(this.mapOptions(this.options));
-  }
-
-  private getIcon(item: NgxMdeItem): MarkdownEditorIcon {
-    const icon = item.icon;
-    if ('format' in icon) {
-      return icon;
-    } else {
-      return icon[this.language] || icon.default;
+    if (this.mde) {
+      this.applyToolbarItems();
+      this.mde.setOptions(this.mapOptions(this.options));
     }
   }
 
-  private getMarkdownGuideUrl(url: string | ({ default: string } & { [lang in LanguageTag]?: string })) {
-    if (typeof url === 'string') {
-      return url;
-    } else {
-      return url[this.language] || url.default;
-    }
-  }
+  private mapOptions(options: NgxMdeOptions | undefined): MarkdownEditorOptions | undefined {
+    const getMarkdownGuideUrl = (url: OptionalI18n<string>): string => {
+      if (typeof url === 'string') {
+        return url;
+      } else {
+        return url[this.language] || url.default;
+      }
+    };
 
-  private mapOptions(options: NgxMdeOptions): MarkdownEditorOptions | undefined {
     if (!options) {
       return undefined;
     }
 
     return {
       ...options,
-      markdownGuideUrl: this.getMarkdownGuideUrl(options.markdownGuideUrl),
+      markdownGuideUrl: getMarkdownGuideUrl(options.markdownGuideUrl),
     };
   }
 
   private applyToolbarItems() {
-    let items: (MarkdownEditorAction | NgxMdeItem | '|')[];
+    let items: NgxMdeItemDef[];
     if (this.toolbarItems?.length) {
       items = this.toolbarItems;
     } else {
@@ -112,32 +104,36 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy, Af
     }
   }
 
-  private getNormalizedItem(toolbarItem: NgxMdeItemDefinition): NgxMdeItemNormalized | undefined {
-    let item: NgxMdeItemNormalized;
-    if (typeof toolbarItem === 'string') {
-      item = getDefaultItem(this.mde, toolbarItem);
-      if (!item) {
-        return undefined;
+  private getNormalizedItem(toolbarItem: NgxMdeItemDef): NgxMdeItemNormalized | undefined {
+    const getTooltip = (tooltip: OptionalI18n<string>): string => {
+      if (typeof tooltip === 'string') {
+        return tooltip;
+      } else {
+        return tooltip[this.language] || tooltip.default;
       }
+    };
+
+    const getIcon = (icon: OptionalI18n<NgxMdeIcon>): NgxMdeIcon => {
+      if ('format' in icon) {
+        return icon;
+      } else {
+        return icon[this.language] || icon.default;
+      }
+    };
+
+    if (typeof toolbarItem === 'string') {
+      return getDefaultItem(this.mde, toolbarItem);
     } else {
-      const defaultItem = getDefaultItem(this.mde, toolbarItem.name);
-      item = {
+      let defaultItem = getDefaultItem(this.mde, toolbarItem.name);
+      if (!defaultItem) {
+        defaultItem = { name: '', action: () => {}, tooltip: '', icon: { format: 'material', iconName: '' } };
+      }
+      return {
         name: toolbarItem.name,
         action: toolbarItem.action || defaultItem.action,
-        tooltip: (toolbarItem.tooltip && this.getTooltip(toolbarItem)) || defaultItem.tooltip,
-        icon: (toolbarItem.icon && this.getIcon(toolbarItem)) || defaultItem.icon,
+        tooltip: (toolbarItem.tooltip && getTooltip(toolbarItem.tooltip)) || defaultItem.tooltip,
+        icon: (toolbarItem.icon && getIcon(toolbarItem.icon)) || defaultItem.icon,
       };
-    }
-
-    return item;
-  }
-
-  private getTooltip(item: NgxMdeItem): string {
-    const tooltip = item.tooltip;
-    if (typeof tooltip === 'string') {
-      return tooltip;
-    } else {
-      return tooltip[this.language] || tooltip.default;
     }
   }
 

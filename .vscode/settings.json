@@ -5,6 +5,7 @@
     "source.organizeImports": true
   },
   "cSpell.words": [
+    "codemirror",
     "strikethrough",
     "toggle",
     "toggle strikethrough"

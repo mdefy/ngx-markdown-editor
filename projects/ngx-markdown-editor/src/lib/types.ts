@@ -1,29 +1,31 @@
 import { MarkdownEditorAction, MarkdownEditorOptions } from 'markdown-editor-core';
 
 export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl'> {
-  markdownGuideUrl: string | ({ default: string } & { [lang in LanguageTag]?: string });
+  markdownGuideUrl: OptionalI18n<string>;
 }
 
-export type NgxMdeItemDefinition = MarkdownEditorAction | NgxMdeItem | '|';
+export type NgxMdeItemDef = MarkdownEditorAction | NgxMdeItem | '|';
 
 export interface NgxMdeItem {
   name: string;
   action?: (...args: any[]) => void;
-  tooltip?: string | ({ default: string } & { [lang in LanguageTag]?: string });
-  icon?: NgxMdeIconConfig | ({ default: NgxMdeIconConfig } & { [lang in LanguageTag]?: NgxMdeIconConfig });
+  tooltip?: OptionalI18n<string>;
+  icon?: OptionalI18n<NgxMdeIcon>;
 }
 
 export interface NgxMdeItemNormalized {
   name: string;
   action: (...args: any[]) => void;
   tooltip: string;
-  icon: NgxMdeIconConfig;
+  icon: NgxMdeIcon;
 }
 
-export type NgxMdeIconConfig =
+export type NgxMdeIcon =
   | { format: 'material'; iconName: string }
   | { format: 'svgFile'; iconName: string; runtimePath: string }
   | { format: 'svgString'; iconName: string; svgHtmlString: string };
+
+export type OptionalI18n<T> = T | ({ default: T } & { [lang in LanguageTag]?: T });
 
 // As of ISO 639-1, see https://en.wikipedia.org/w/index.php?title=List_of_ISO_639-1_codes&oldid=978447089
 export type LanguageTag =

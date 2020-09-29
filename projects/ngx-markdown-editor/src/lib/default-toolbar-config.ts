@@ -209,10 +209,12 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
         iconName: 'help',
       },
     },
+    // Normalize separator item to reduce type complexity in template.
+    // Effectively, only the `name` property is needed.
     {
       name: '|',
-      action: undefined,
-      tooltip: undefined,
+      action: () => {},
+      tooltip: '',
       icon: { format: 'material', iconName: '' },
     },
   ];

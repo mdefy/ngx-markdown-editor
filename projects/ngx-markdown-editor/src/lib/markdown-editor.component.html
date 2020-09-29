@@ -1,5 +1,5 @@
 <div id="ngx-markdown-editor-toolbar">
-  <ng-container *ngFor="let item of normalizedItems" ng-container [ngSwitch]="item.name">
+  <ng-container *ngFor="let item of normalizedItems" [ngSwitch]="item.name">
     <ng-template [ngSwitchCase]="'|'">
       <div class="mde-toolbar-separator"></div>
     </ng-template>
@@ -20,7 +20,7 @@
     </ng-template>
 
     <ng-template ngSwitchDefault>
-      <button *ngSwitchDefault mat-button (click)="item.action()" [matTooltip]="item.tooltip">
+      <button mat-button (click)="item.action()" [matTooltip]="item.tooltip">
         <mat-icon *ngIf="item.icon.format === 'material'">
           {{ item.icon.iconName }}
         </mat-icon>

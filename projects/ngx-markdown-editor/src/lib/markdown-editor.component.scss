@@ -1,27 +1,89 @@
-.mat-button {
-  min-width: 30px;
-  padding: 0 8px;
+@import '~codemirror/lib/codemirror.css';
+
+markdown-editor {
+  min-height: 200px;
+  height: 250px;
+  max-height: 300px;
+
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
 }
 
-.mat-form-field {
-  min-width: 3.5em;
-  width: 3.5em;
-  text-align: center;
+#ngx-markdown-editor-toolbar {
+  .mat-button {
+    min-width: 30px;
+    line-height: 28px;
+    margin: 0 4px;
+    padding: 0;
+  }
+
+  .mat-form-field {
+    min-width: 3.5em;
+    width: 3.5em;
+    text-align: center;
+  }
+
+  .mde-toolbar-separator {
+    display: inline-block;
+    height: 24px;
+    vertical-align: middle;
+    border-left: 1px solid darkgray;
+  }
+
+  .mat-icon[data-mat-icon-name='column'],
+  .mat-icon[data-mat-icon-name='file_code'] {
+    height: 20px;
+  }
 }
 
-.mde-toolbar-separator {
-  display: inline-block;
-  height: 24px;
-  vertical-align: middle;
-  border-left: 1px solid darkgray;
+#ngx-markdown-editor-wrapper {
+  overflow: hidden;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+
+  > * {
+    border: 1px solid #ddd;
+  }
+
+  > :first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  > :last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
 }
 
-.mat-icon[data-mat-icon-name='file_code'] {
-  height: 20px;
-  margin-bottom: 6px;
+#ngx-markdown-editor-text-editor {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  .CodeMirror {
+    flex: 1 1 1px;
+    box-sizing: border-box;
+    padding: 10px;
+    word-wrap: break-word;
+    border-radius: 5px;
+  }
+}
+#ngx-markdown-editor-preview {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  padding: 10px;
+  overflow-y: auto;
+  word-wrap: break-word;
 }
 
 #ngx-markdown-editor-statusbar {
+  margin-top: 5px;
   color: gray;
   font-size: 14px;
   text-align: right;

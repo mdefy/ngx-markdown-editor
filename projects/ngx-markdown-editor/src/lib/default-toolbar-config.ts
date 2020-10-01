@@ -1,7 +1,8 @@
-import { MarkdownEditor, MarkdownEditorAction } from 'markdown-editor-core';
+import { MarkdownEditorAction } from 'markdown-editor-core';
+import { MarkdownEditorComponent } from './markdown-editor.component';
 import { NgxMdeItemNormalized } from './types';
 
-export const DEFAULT_TOOLBAR: (MarkdownEditorAction | '|')[] = [
+export const DEFAULT_TOOLBAR: (MarkdownEditorAction | 'togglePreview' | 'toggleSideBySidePreview' | '|')[] = [
   'setHeadingLevel',
   'toggleBold',
   'toggleItalic',
@@ -26,18 +27,21 @@ export const DEFAULT_TOOLBAR: (MarkdownEditorAction | '|')[] = [
   'downloadAsFile',
   'importFromFile',
   '|',
+  'togglePreview',
+  'toggleSideBySidePreview',
+  '|',
   'openMarkdownGuide',
 ];
 
-export function getDefaultItem(mde: MarkdownEditor, itemName: string): NgxMdeItemNormalized | undefined {
-  return getDefaultItems(mde).find((i) => i.name === itemName);
+export function getDefaultItem(ngxMde: MarkdownEditorComponent, itemName: string): NgxMdeItemNormalized | undefined {
+  return getDefaultItems(ngxMde).find((i) => i.name === itemName);
 }
 
-export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
+export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNormalized[] {
   const defaultItems: NgxMdeItemNormalized[] = [
     {
       name: 'setHeadingLevel',
-      action: (level: 0 | 1 | 2 | 3 | 4 | 5 | 6) => mde.setHeadingLevel(level),
+      action: (level: 0 | 1 | 2 | 3 | 4 | 5 | 6) => ngxMde.mde.setHeadingLevel(level),
       tooltip: 'Set Heading Level',
       icon: {
         format: 'svgString',
@@ -47,7 +51,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleBold',
-      action: () => mde.toggleBold(),
+      action: () => ngxMde.mde.toggleBold(),
       tooltip: 'Toggle Bold',
       icon: {
         format: 'material',
@@ -56,7 +60,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleItalic',
-      action: () => mde.toggleItalic(),
+      action: () => ngxMde.mde.toggleItalic(),
       tooltip: 'Toggle Italic',
       icon: {
         format: 'material',
@@ -65,7 +69,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleStrikethrough',
-      action: () => mde.toggleStrikethrough(),
+      action: () => ngxMde.mde.toggleStrikethrough(),
       tooltip: 'Toggle Strikethrough',
       icon: {
         format: 'material',
@@ -74,7 +78,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleUnorderedList',
-      action: () => mde.toggleUnorderedList(),
+      action: () => ngxMde.mde.toggleUnorderedList(),
       tooltip: 'Toggle Unordered List',
       icon: {
         format: 'material',
@@ -83,7 +87,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleOrderedList',
-      action: () => mde.toggleOrderedList(),
+      action: () => ngxMde.mde.toggleOrderedList(),
       tooltip: 'Toggle Ordered List',
       icon: {
         format: 'material',
@@ -92,7 +96,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleCheckList',
-      action: () => mde.toggleCheckList(),
+      action: () => ngxMde.mde.toggleCheckList(),
       tooltip: 'Toggle Checklist',
       icon: {
         format: 'material',
@@ -101,7 +105,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleQuote',
-      action: () => mde.toggleQuote(),
+      action: () => ngxMde.mde.toggleQuote(),
       tooltip: 'Toggle Quotation',
       icon: {
         format: 'material',
@@ -110,7 +114,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleInlineCode',
-      action: () => mde.toggleInlineCode(),
+      action: () => ngxMde.mde.toggleInlineCode(),
       tooltip: 'Toggle Inline Code',
       icon: {
         format: 'material',
@@ -119,7 +123,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'insertCodeBlock',
-      action: () => mde.insertCodeBlock(),
+      action: () => ngxMde.mde.insertCodeBlock(),
       tooltip: 'Insert Code Block',
       icon: {
         format: 'svgString',
@@ -129,7 +133,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'insertLink',
-      action: () => mde.insertLink(),
+      action: () => ngxMde.mde.insertLink(),
       tooltip: 'Insert Link',
       icon: {
         format: 'material',
@@ -138,7 +142,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'insertImageLink',
-      action: () => mde.insertImageLink(),
+      action: () => ngxMde.mde.insertImageLink(),
       tooltip: 'Insert Image Link',
       icon: {
         format: 'material',
@@ -147,7 +151,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'insertTable',
-      action: () => mde.insertTable(),
+      action: () => ngxMde.mde.insertTable(),
       tooltip: 'Insert Table',
       icon: {
         format: 'material',
@@ -156,7 +160,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'insertHorizontalLine',
-      action: () => mde.insertHorizontalLine(),
+      action: () => ngxMde.mde.insertHorizontalLine(),
       tooltip: 'Insert Horizontal Line',
       icon: {
         format: 'material',
@@ -165,7 +169,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'toggleRichTextMode',
-      action: () => mde.toggleRichTextMode(),
+      action: () => ngxMde.mde.toggleRichTextMode(),
       tooltip: 'Toggle Rich-Text Mode',
       icon: {
         format: 'material',
@@ -174,7 +178,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'formatContent',
-      action: () => mde.formatContent(),
+      action: () => ngxMde.mde.formatContent(),
       tooltip: 'Format Content',
       icon: {
         format: 'material',
@@ -183,7 +187,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'downloadAsFile',
-      action: () => mde.downloadAsFile(),
+      action: () => ngxMde.mde.downloadAsFile(),
       tooltip: 'Download As File',
       icon: {
         format: 'material',
@@ -192,7 +196,7 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
     },
     {
       name: 'importFromFile',
-      action: () => mde.importFromFile(),
+      action: () => ngxMde.mde.importFromFile(),
       tooltip: 'Import From File',
       icon: {
         format: 'svgString',
@@ -201,8 +205,27 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
       },
     },
     {
+      name: 'togglePreview',
+      action: () => ngxMde.togglePreview(),
+      tooltip: 'Toggle Preview',
+      icon: {
+        format: 'material',
+        iconName: 'preview',
+      },
+    },
+    {
+      name: 'toggleSideBySidePreview',
+      action: () => ngxMde.toggleSideBySidePreview(),
+      tooltip: 'Toggle Side-by-Side Preview',
+      icon: {
+        format: 'svgString',
+        iconName: 'column',
+        svgHtmlString: COLUMN,
+      },
+    },
+    {
       name: 'openMarkdownGuide',
-      action: () => mde.openMarkdownGuide(),
+      action: () => ngxMde.mde.openMarkdownGuide(),
       tooltip: 'Open Markdown Guide',
       icon: {
         format: 'material',
@@ -221,6 +244,26 @@ export function getDefaultItems(mde: MarkdownEditor): NgxMdeItemNormalized[] {
 
   return defaultItems;
 }
+
+const COLUMN = `
+  <!-- Icon from Font Awesome: https://fontawesome.com/icons/columns?style=solid; License: https://fontawesome.com/license -->
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    data-prefix="fas"
+    data-icon="columns"
+    class="svg-inline--fa fa-columns fa-w-16"
+    role="img"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+    licenseUrl="https://fontawesome.com/license"
+  >
+    <path
+      fill="currentColor"
+      d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zM224 416H64V160h160v256zm224 0H288V160h160v256z"
+    ></path>
+  </svg>
+`;
 
 const FILE_CODE = `
   <!-- Icon from Font Awesome: https://fontawesome.com/icons/file-code?style=solid; License: https://fontawesome.com/license -->

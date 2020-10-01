@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Editor, EditorChangeLinkedList } from 'codemirror';
 import { MarkdownEditor, MarkdownEditorOptions } from 'markdown-editor-core';
+import { MarkdownModuleConfig } from 'ngx-markdown';
 import { Observable } from 'rxjs';
 import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
 import { DEFAULT_TOOLBAR, getDefaultItem } from './default-toolbar-config';
@@ -31,9 +32,11 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   templateUrl: './markdown-editor.component.html',
   styleUrls: ['./markdown-editor.component.scss'],
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults }],
+  encapsulation: ViewEncapsulation.None,
 })
 export class MarkdownEditorComponent implements OnInit, OnChanges {
   @Input() readonly options?: NgxMdeOptions;
+  @Input() readonly previewConfig: MarkdownModuleConfig;
   @Input() readonly toolbarItems?: NgxMdeItemDef[];
   @Input() readonly statusItems?: NgxMdeStatusbarItemDef[];
   @Input() readonly language: LanguageTag = 'en';
@@ -45,11 +48,13 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
   public mde: MarkdownEditor;
   public normalizedItems: NgxMdeItemNormalized[];
   public normalizedStatusbarItems: NgxMdeStatusbarItemNormalized[];
+  public showPreview = false;
+  public showSideBySidePreview = false;
 
   constructor(private readonly iconRegistry: MatIconRegistry, private readonly domSanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-    const wrapper = document.getElementById('ngx-markdown-editor-wrapper') as HTMLElement;
+    const wrapper = document.getElementById('ngx-markdown-editor-text-editor') as HTMLElement;
     this.mde = new MarkdownEditor(wrapper, this.mapOptions(this.options));
 
     this.contentChange.emitObservable(fromCmEvent(this.mde.cm, 'changes'));
@@ -69,6 +74,16 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
       this.applyStatusbarItems();
       this.mde.setOptions(this.mapOptions(this.options));
     }
+  }
+
+  togglePreview() {
+    this.showPreview = !this.showPreview;
+    this.showSideBySidePreview = false;
+  }
+
+  toggleSideBySidePreview() {
+    this.showSideBySidePreview = !this.showSideBySidePreview;
+    this.showPreview = false;
   }
 
   private mapOptions(options: NgxMdeOptions | undefined): MarkdownEditorOptions | undefined {
@@ -127,9 +142,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
     };
 
     if (typeof toolbarItem === 'string') {
-      return getDefaultItem(this.mde, toolbarItem);
+      return getDefaultItem(this, toolbarItem);
     } else {
-      let defaultItem = getDefaultItem(this.mde, toolbarItem.name);
+      let defaultItem = getDefaultItem(this, toolbarItem.name);
       if (!defaultItem) {
         defaultItem = { name: '', action: () => {}, tooltip: '', icon: { format: 'material', iconName: '' } };
       }

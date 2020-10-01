@@ -29,6 +29,7 @@
     "@angular/platform-browser-dynamic": "~10.1.1",
     "@angular/router": "~10.1.1",
     "markdown-editor-core": "file:../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz",
+    "ngx-markdown": "^10.1.1",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

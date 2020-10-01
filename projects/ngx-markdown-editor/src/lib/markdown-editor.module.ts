@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MarkdownModule } from 'ngx-markdown';
 import { MarkdownEditorComponent } from './markdown-editor.component';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { MarkdownEditorComponent } from './markdown-editor.component';
     MatFormFieldModule,
     MatSelectModule,
     MatTooltipModule,
+    MarkdownModule.forRoot(),
   ],
   exports: [MarkdownEditorComponent],
 })

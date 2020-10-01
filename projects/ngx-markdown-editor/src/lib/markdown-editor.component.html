@@ -29,7 +29,12 @@
     </ng-template>
   </ng-container>
 </div>
-<div id="ngx-markdown-editor-wrapper"></div>
+<div id="ngx-markdown-editor-wrapper">
+  <div [ngStyle]="{ display: showPreview ? 'none' : '' }" id="ngx-markdown-editor-text-editor"></div>
+  <div *ngIf="showPreview || showSideBySidePreview" id="ngx-markdown-editor-preview">
+    <markdown [data]="mde.getContent()"></markdown>
+  </div>
+</div>
 <div id="ngx-markdown-editor-statusbar">
   <ng-container *ngFor="let item of normalizedStatusbarItems" [ngSwitch]="item.name">
     <div *ngSwitchCase="'|'" class="mde-statusbar-separator"></div>

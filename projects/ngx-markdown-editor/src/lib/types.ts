@@ -5,7 +5,7 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
   markdownGuideUrl: OptionalI18n<string>;
 }
 
-export type NgxMdeItemDef = MarkdownEditorAction | NgxMdeItem | '|';
+export type NgxMdeItemDef = MarkdownEditorAction | NgxMdeItem | 'togglePreview' | 'toggleSideBySidePreview' | '|';
 
 export interface NgxMdeItem {
   name: string;

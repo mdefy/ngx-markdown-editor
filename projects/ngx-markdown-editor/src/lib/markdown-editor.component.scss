@@ -16,6 +16,14 @@ markdown-editor {
     line-height: 28px;
     margin: 0 4px;
     padding: 0;
+
+    &.active {
+      border: 1px solid darkgray;
+      .mat-button-focus-overlay {
+        background-color: black;
+        opacity: 0.1;
+      }
+    }
   }
 
   .mat-form-field {

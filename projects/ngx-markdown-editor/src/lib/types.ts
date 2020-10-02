@@ -17,6 +17,7 @@ export interface NgxMdeItem {
 export interface NgxMdeItemNormalized {
   name: string;
   action: (...args: any[]) => void;
+  isActive?: (...args: any[]) => boolean | number;
   tooltip: string;
   icon: NgxMdeIcon;
 }

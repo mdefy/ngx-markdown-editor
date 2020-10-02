@@ -1,4 +1,4 @@
-import { MarkdownEditorAction } from 'markdown-editor-core';
+import { MarkdownEditor, MarkdownEditorAction } from 'markdown-editor-core';
 import { MarkdownEditorComponent } from './markdown-editor.component';
 import { NgxMdeItemNormalized } from './types';
 
@@ -42,6 +42,10 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'setHeadingLevel',
       action: (level: 0 | 1 | 2 | 3 | 4 | 5 | 6) => ngxMde.mde.setHeadingLevel(level),
+      isActive: () => {
+        const token = ngxMde.mde.cm.getTokenAt(ngxMde.mde.getCursorPos());
+        return token.state.base.header as number;
+      },
       tooltip: 'Set Heading Level',
       icon: {
         format: 'svgString',
@@ -52,6 +56,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleBold',
       action: () => ngxMde.mde.toggleBold(),
+      isActive: () => ngxMde.mde.hasTokenAtCursorPos('strong'),
       tooltip: 'Toggle Bold',
       icon: {
         format: 'material',
@@ -61,6 +66,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleItalic',
       action: () => ngxMde.mde.toggleItalic(),
+      isActive: () => ngxMde.mde.hasTokenAtCursorPos('em'),
       tooltip: 'Toggle Italic',
       icon: {
         format: 'material',
@@ -70,6 +76,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleStrikethrough',
       action: () => ngxMde.mde.toggleStrikethrough(),
+      isActive: () => ngxMde.mde.hasTokenAtCursorPos('strikethrough'),
       tooltip: 'Toggle Strikethrough',
       icon: {
         format: 'material',
@@ -79,6 +86,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleUnorderedList',
       action: () => ngxMde.mde.toggleUnorderedList(),
+      isActive: () => isListTypeActive(ngxMde, 'unordered'),
       tooltip: 'Toggle Unordered List',
       icon: {
         format: 'material',
@@ -88,6 +96,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleOrderedList',
       action: () => ngxMde.mde.toggleOrderedList(),
+      isActive: () => isListTypeActive(ngxMde, 'ordered'),
       tooltip: 'Toggle Ordered List',
       icon: {
         format: 'material',
@@ -97,6 +106,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleCheckList',
       action: () => ngxMde.mde.toggleCheckList(),
+      isActive: () => isListTypeActive(ngxMde, 'check'),
       tooltip: 'Toggle Checklist',
       icon: {
         format: 'material',
@@ -106,6 +116,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleQuote',
       action: () => ngxMde.mde.toggleQuote(),
+      isActive: () => ngxMde.mde.hasTokenAtCursorPos('quote'),
       tooltip: 'Toggle Quotation',
       icon: {
         format: 'material',
@@ -115,6 +126,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleInlineCode',
       action: () => ngxMde.mde.toggleInlineCode(),
+      isActive: () => isCodeTypeActive(ngxMde, 'inline'),
       tooltip: 'Toggle Inline Code',
       icon: {
         format: 'material',
@@ -124,6 +136,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'insertCodeBlock',
       action: () => ngxMde.mde.insertCodeBlock(),
+      isActive: () => isCodeTypeActive(ngxMde, 'block'),
       tooltip: 'Insert Code Block',
       icon: {
         format: 'svgString',
@@ -134,6 +147,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'insertLink',
       action: () => ngxMde.mde.insertLink(),
+      isActive: () => ngxMde.mde.hasTokenAtCursorPos('link') && !ngxMde.mde.hasTokenAtCursorPos('image'),
       tooltip: 'Insert Link',
       icon: {
         format: 'material',
@@ -143,6 +157,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'insertImageLink',
       action: () => ngxMde.mde.insertImageLink(),
+      isActive: () => ngxMde.mde.hasTokenAtCursorPos('link') && ngxMde.mde.hasTokenAtCursorPos('image'),
       tooltip: 'Insert Image Link',
       icon: {
         format: 'material',
@@ -161,6 +176,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'insertHorizontalLine',
       action: () => ngxMde.mde.insertHorizontalLine(),
+      isActive: () => ngxMde.mde.hasTokenAtCursorPos('hr'),
       tooltip: 'Insert Horizontal Line',
       icon: {
         format: 'material',
@@ -170,6 +186,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleRichTextMode',
       action: () => ngxMde.mde.toggleRichTextMode(),
+      isActive: () => ngxMde.mde.cm.getOption('mode') === 'gfm',
       tooltip: 'Toggle Rich-Text Mode',
       icon: {
         format: 'material',
@@ -207,6 +224,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'togglePreview',
       action: () => ngxMde.togglePreview(),
+      isActive: () => ngxMde.showPreview,
       tooltip: 'Toggle Preview',
       icon: {
         format: 'material',
@@ -216,6 +234,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     {
       name: 'toggleSideBySidePreview',
       action: () => ngxMde.toggleSideBySidePreview(),
+      isActive: () => ngxMde.showSideBySidePreview,
       tooltip: 'Toggle Side-by-Side Preview',
       icon: {
         format: 'svgString',
@@ -243,6 +262,34 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
   ];
 
   return defaultItems;
+}
+
+function isListTypeActive(
+  ngxMde: MarkdownEditorComponent,
+  listType: NonNullable<ReturnType<MarkdownEditor['getListTypeOfLine']>>
+) {
+  const isList = ngxMde.mde.hasTokenAtCursorPos('variable-2');
+  if (!isList) return false;
+
+  const selections = ngxMde.mde.cm.listSelections();
+  let isListType = false;
+  if (selections?.length) {
+    const lineNumber = selections[selections.length - 1].from().line;
+    isListType = ngxMde.mde.getListTypeOfLine(lineNumber) === listType;
+  }
+  return isListType;
+}
+
+function isCodeTypeActive(ngxMde: MarkdownEditorComponent, codeType: 'inline' | 'block') {
+  const isCode = ngxMde.mde.hasTokenAtCursorPos('comment');
+  if (!isCode) return false;
+
+  const token = ngxMde.mde.cm.getTokenAt(ngxMde.mde.getCursorPos());
+  if (codeType === 'block') {
+    return token.state.base.codeBlock;
+  } else {
+    return token.state.overlay.code;
+  }
 }
 
 const COLUMN = `

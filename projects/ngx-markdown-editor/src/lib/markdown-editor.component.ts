@@ -47,6 +47,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
 
   public mde: MarkdownEditor;
   public normalizedItems: NgxMdeItemNormalized[];
+  public activeItems: (boolean | number)[];
   public normalizedStatusbarItems: NgxMdeStatusbarItemNormalized[];
   public showPreview = false;
   public showSideBySidePreview = false;
@@ -66,6 +67,11 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
     // Necessary to apply `this.mde` instance to default toolbar items
     // as `ngOnChanges()` is executed before `ngOnInit()`.
     this.ngOnChanges();
+
+    this.activeItems = Array.from(this.normalizedItems, () => false);
+    fromCmEvent(this.mde.cm, 'cursorActivity').subscribe(() => {
+      this.determineActiveButtons();
+    });
   }
 
   ngOnChanges() {
@@ -73,6 +79,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
       this.applyToolbarItems();
       this.applyStatusbarItems();
       this.mde.setOptions(this.mapOptions(this.options));
+      this.determineActiveButtons();
     }
   }
 
@@ -84,6 +91,11 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
   toggleSideBySidePreview() {
     this.showSideBySidePreview = !this.showSideBySidePreview;
     this.showPreview = false;
+  }
+
+  onButtonClick(item: NgxMdeItemNormalized) {
+    item.action();
+    this.determineActiveButtons();
   }
 
   private mapOptions(options: NgxMdeOptions | undefined): MarkdownEditorOptions | undefined {
@@ -212,6 +224,18 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
         name: statusbarItem.name,
         value: (statusbarItem.value && getValue(statusbarItem.value)) || defaultItem.value,
       };
+    }
+  }
+
+  private determineActiveButtons() {
+    this.activeItems = new Array(this.normalizedItems.length);
+    for (let i = 0; i < this.normalizedItems.length; i++) {
+      const item = this.normalizedItems[i];
+      if (item.isActive) {
+        this.activeItems[i] = item.isActive();
+      } else {
+        this.activeItems[i] = false;
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <div id="ngx-markdown-editor-toolbar">
-  <ng-container *ngFor="let item of normalizedItems" [ngSwitch]="item.name">
+  <ng-container *ngFor="let item of normalizedItems; index as i" [ngSwitch]="item.name">
     <ng-template [ngSwitchCase]="'|'">
       <div class="mde-toolbar-separator"></div>
     </ng-template>
@@ -12,15 +12,15 @@
           </mat-icon>
           <mat-icon *ngIf="item.icon.format !== 'material'" [svgIcon]="item.icon.iconName"> </mat-icon>
         </mat-label>
-        <mat-select (selectionChange)="item.action()">
-          <mat-option value="0">--</mat-option>
-          <mat-option *ngFor="let i of [1, 2, 3, 4, 5, 6]" [value]="i">H{{ i }}</mat-option>
+        <mat-select [value]="activeItems[i]" (selectionChange)="item.action($event.value)" (closed)="mde.cm.focus()">
+          <mat-option value="0">---</mat-option>
+          <mat-option *ngFor="let j of [1, 2, 3, 4, 5, 6]" [value]="j">H{{ j }}</mat-option>
         </mat-select>
       </mat-form-field>
     </ng-template>
 
     <ng-template ngSwitchDefault>
-      <button mat-button (click)="item.action()" [matTooltip]="item.tooltip">
+      <button mat-button (click)="onButtonClick(item)" [matTooltip]="item.tooltip" [class.active]="activeItems[i]">
         <mat-icon *ngIf="item.icon.format === 'material'">
           {{ item.icon.iconName }}
         </mat-icon>

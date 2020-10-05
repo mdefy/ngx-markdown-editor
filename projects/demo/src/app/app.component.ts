@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MarkedOptions } from 'ngx-markdown';
 import { NgxMdeItemDef, NgxMdeOptions, NgxMdeStatusbarItemDef } from 'projects/ngx-markdown-editor/src/lib/types';
 import { fromEvent, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -49,6 +50,10 @@ export class AppComponent {
       de: 'http://example.com',
       default: 'https://www.markdownguide.org/basic-syntax/',
     },
+  };
+
+  public markedOptions: MarkedOptions = {
+    gfm: true,
   };
 
   test(event: any) {

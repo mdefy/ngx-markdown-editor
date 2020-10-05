@@ -7,7 +7,7 @@ import { MarkdownEditor, MarkdownEditorOptions } from 'markdown-editor-core';
 import { MarkdownModuleConfig } from 'ngx-markdown';
 import { Observable } from 'rxjs';
 import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
-import { DEFAULT_TOOLBAR, getDefaultItem } from './default-toolbar-config';
+import { DEFAULT_TOOLBAR, defineDefaultToolbarItems, getDefaultItem } from './default-toolbar-config';
 import {
   LanguageTag,
   NgxMdeIcon,
@@ -62,6 +62,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
     this.editorFocus.emitObservable(fromCmEvent(this.mde.cm, 'focus'));
     this.editorBlur.emitObservable(fromCmEvent(this.mde.cm, 'blur'));
 
+    defineDefaultToolbarItems(this);
     defineDefaultStatusbarItems(this.mde);
 
     // Necessary to apply `this.mde` instance to default toolbar items
@@ -154,9 +155,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
     };
 
     if (typeof toolbarItem === 'string') {
-      return getDefaultItem(this, toolbarItem);
+      return getDefaultItem(toolbarItem);
     } else {
-      let defaultItem = getDefaultItem(this, toolbarItem.name);
+      let defaultItem = getDefaultItem(toolbarItem.name);
       if (!defaultItem) {
         defaultItem = { name: '', action: () => {}, tooltip: '', icon: { format: 'material', iconName: '' } };
       }
@@ -214,9 +215,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
     };
 
     if (typeof statusbarItem === 'string') {
-      return getDefaultStatusbarItem(this, statusbarItem);
+      return getDefaultStatusbarItem(statusbarItem);
     } else {
-      let defaultItem = getDefaultStatusbarItem(this, statusbarItem.name); // necessary???
+      let defaultItem = getDefaultStatusbarItem(statusbarItem.name); // necessary???
       if (!defaultItem) {
         defaultItem = { name: '', value: new Observable() };
       }

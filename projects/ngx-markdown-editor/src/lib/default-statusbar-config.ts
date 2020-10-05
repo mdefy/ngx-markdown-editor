@@ -1,11 +1,10 @@
 import { MarkdownEditor } from 'markdown-editor-core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { MarkdownEditorComponent } from './markdown-editor.component';
 import { NgxMdeDefaultStatusbarItem, NgxMdeStatusbarItemNormalized } from './types';
 import { fromCmEvent } from './util/from-cm-event';
 
-const DEFAULT_STATUSBAR_ITEMS: NgxMdeStatusbarItemNormalized[] = [];
+let DEFAULT_STATUSBAR_ITEMS: NgxMdeStatusbarItemNormalized[];
 
 export const DEFAULT_STATUSBAR: (NgxMdeDefaultStatusbarItem | '|')[] = [
   'wordCount',
@@ -14,14 +13,11 @@ export const DEFAULT_STATUSBAR: (NgxMdeDefaultStatusbarItem | '|')[] = [
   'cursorPosition',
 ];
 
-export function getDefaultStatusbarItem(
-  ngxMde: MarkdownEditorComponent,
-  itemName: string
-): NgxMdeStatusbarItemNormalized | undefined {
-  return getDefaultStatusbarItems(ngxMde).find((i) => i.name === itemName);
+export function getDefaultStatusbarItem(itemName: string): NgxMdeStatusbarItemNormalized | undefined {
+  return getDefaultStatusbarItems().find((i) => i.name === itemName);
 }
 
-export function getDefaultStatusbarItems(ngxMde: MarkdownEditorComponent): NgxMdeStatusbarItemNormalized[] {
+export function getDefaultStatusbarItems(): NgxMdeStatusbarItemNormalized[] {
   return DEFAULT_STATUSBAR_ITEMS;
 }
 
@@ -59,5 +55,5 @@ export function defineDefaultStatusbarItems(mde: MarkdownEditor) {
     },
   ];
 
-  DEFAULT_STATUSBAR_ITEMS.push(...defaultItems);
+  DEFAULT_STATUSBAR_ITEMS = defaultItems;
 }

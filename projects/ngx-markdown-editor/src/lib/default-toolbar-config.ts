@@ -2,6 +2,8 @@ import { MarkdownEditor, MarkdownEditorAction } from 'markdown-editor-core';
 import { MarkdownEditorComponent } from './markdown-editor.component';
 import { NgxMdeItemNormalized } from './types';
 
+let DEFAULT_TOOLBAR_ITEMS: NgxMdeItemNormalized[];
+
 export const DEFAULT_TOOLBAR: (MarkdownEditorAction | 'togglePreview' | 'toggleSideBySidePreview' | '|')[] = [
   'setHeadingLevel',
   'toggleBold',
@@ -33,11 +35,15 @@ export const DEFAULT_TOOLBAR: (MarkdownEditorAction | 'togglePreview' | 'toggleS
   'openMarkdownGuide',
 ];
 
-export function getDefaultItem(ngxMde: MarkdownEditorComponent, itemName: string): NgxMdeItemNormalized | undefined {
-  return getDefaultItems(ngxMde).find((i) => i.name === itemName);
+export function getDefaultItem(itemName: string): NgxMdeItemNormalized | undefined {
+  return getDefaultItems().find((i) => i.name === itemName);
 }
 
-export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNormalized[] {
+export function getDefaultItems(): NgxMdeItemNormalized[] {
+  return DEFAULT_TOOLBAR_ITEMS;
+}
+
+export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
   const defaultItems: NgxMdeItemNormalized[] = [
     {
       name: 'setHeadingLevel',
@@ -261,7 +267,7 @@ export function getDefaultItems(ngxMde: MarkdownEditorComponent): NgxMdeItemNorm
     },
   ];
 
-  return defaultItems;
+  DEFAULT_TOOLBAR_ITEMS = defaultItems;
 }
 
 function isListTypeActive(

@@ -14,7 +14,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "format:check": "prettier -c .",
-    "format:write": "prettier -w ."
+    "format:write": "prettier -w .",
+    "install-mde": "npm i ../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz"
   },
   "private": true,
   "dependencies": {

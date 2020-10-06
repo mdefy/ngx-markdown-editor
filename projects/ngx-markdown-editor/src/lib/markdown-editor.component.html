@@ -12,7 +12,12 @@
           </mat-icon>
           <mat-icon *ngIf="item.icon.format !== 'material'" [svgIcon]="item.icon.iconName"> </mat-icon>
         </mat-label>
-        <mat-select [value]="activeItems[i]" (selectionChange)="item.action($event.value)" (closed)="mde.cm.focus()">
+        <mat-select
+          [value]="activeItems[i]"
+          (selectionChange)="item.action($event.value)"
+          (closed)="mde.cm.focus()"
+          #setHeadingLevel
+        >
           <mat-option value="0">---</mat-option>
           <mat-option *ngFor="let j of [1, 2, 3, 4, 5, 6]" [value]="j">H{{ j }}</mat-option>
         </mat-select>

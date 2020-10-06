@@ -1,5 +1,16 @@
-import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MatSelect } from '@angular/material/select';
 import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Editor, EditorChangeLinkedList } from 'codemirror';
@@ -56,6 +67,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   public showSideBySidePreview = false;
 
   private shortcutResetter = new Subject();
+
+  @ViewChild('setHeadingLevel') setHeadingLevelDropdown: MatSelect;
 
   constructor(
     private readonly iconRegistry: MatIconRegistry,
@@ -215,6 +228,15 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     for (const item of items) {
       if (item.name in DEFAULT_OPTIONS.shortcuts) {
         shortcuts[item.name] = item.shortcut;
+      } else if (item.name === 'setHeadingLevel' && item.shortcut) {
+        const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl|Cmd/gi, 'meta');
+        this.hotkeys
+          .addShortcut(this.hostElement.nativeElement, shortcut)
+          .pipe(takeUntil(this.shortcutResetter))
+          .subscribe(() => {
+            this.setHeadingLevelDropdown.open();
+            this.setHeadingLevelDropdown.focus();
+          });
       } else if (item.shortcut) {
         const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl|Cmd/gi, 'meta');
         this.hotkeys

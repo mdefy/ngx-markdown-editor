@@ -116,9 +116,10 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.showPreview = !this.showPreview;
     this.showSideBySidePreview = false;
     if (this.showPreview) {
-      this.hostElement.nativeElement.getElementById('ngx-markdown-editor-wrapper')?.focus();
+      // Timeout necessary until Angular change detector has finished
+      setTimeout(() => document.getElementById('ngx-markdown-editor-wrapper')?.focus(), 100);
     } else {
-      // Timeout necessary until editor is shown again
+      // Timeout necessary until Angular change detector has finished
       setTimeout(() => this.mde.cm.focus(), 100);
     }
   }
@@ -126,6 +127,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   toggleSideBySidePreview() {
     this.showSideBySidePreview = !this.showSideBySidePreview;
     this.showPreview = false;
+    // Timeout necessary until Angular change detector has finished
+    setTimeout(() => this.mde.cm.focus(), 100);
   }
 
   onButtonClick(item: NgxMdeItemNormalized) {

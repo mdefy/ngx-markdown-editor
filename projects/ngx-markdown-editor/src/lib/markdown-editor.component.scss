@@ -65,6 +65,10 @@ markdown-editor {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 #ngx-markdown-editor-text-editor {

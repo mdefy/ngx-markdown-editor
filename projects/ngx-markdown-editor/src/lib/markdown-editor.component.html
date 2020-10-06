@@ -20,7 +20,12 @@
     </ng-template>
 
     <ng-template ngSwitchDefault>
-      <button mat-button (click)="onButtonClick(item)" [matTooltip]="item.tooltip" [class.active]="activeItems[i]">
+      <button
+        mat-button
+        (click)="onButtonClick(item)"
+        [matTooltip]="createTooltip(item)"
+        [class.active]="activeItems[i]"
+      >
         <mat-icon *ngIf="item.icon.format === 'material'">
           {{ item.icon.iconName }}
         </mat-icon>
@@ -29,7 +34,7 @@
     </ng-template>
   </ng-container>
 </div>
-<div id="ngx-markdown-editor-wrapper">
+<div id="ngx-markdown-editor-wrapper" tabindex="-1">
   <div [ngStyle]="{ display: showPreview ? 'none' : '' }" id="ngx-markdown-editor-text-editor"></div>
   <div *ngIf="showPreview || showSideBySidePreview" id="ngx-markdown-editor-preview">
     <markdown [data]="mde.getContent()"></markdown>

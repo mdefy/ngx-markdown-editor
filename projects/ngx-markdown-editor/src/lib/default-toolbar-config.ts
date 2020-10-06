@@ -230,6 +230,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
     {
       name: 'togglePreview',
       action: () => ngxMde.togglePreview(),
+      shortcut: 'Alt-P',
       isActive: () => ngxMde.showPreview,
       tooltip: 'Toggle Preview',
       icon: {
@@ -240,6 +241,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
     {
       name: 'toggleSideBySidePreview',
       action: () => ngxMde.toggleSideBySidePreview(),
+      shortcut: 'Shift-Alt-P',
       isActive: () => ngxMde.showSideBySidePreview,
       tooltip: 'Toggle Side-by-Side Preview',
       icon: {

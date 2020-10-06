@@ -1,11 +1,12 @@
-import { Component, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Editor, EditorChangeLinkedList } from 'codemirror';
-import { MarkdownEditor, MarkdownEditorOptions } from 'markdown-editor-core';
+import { DEFAULT_OPTIONS, MarkdownEditor, MarkdownEditorOptions } from 'markdown-editor-core';
 import { MarkdownModuleConfig } from 'ngx-markdown';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
 import { DEFAULT_TOOLBAR, defineDefaultToolbarItems, getDefaultItem } from './default-toolbar-config';
 import {
@@ -19,6 +20,7 @@ import {
   OptionalI18n,
 } from './types';
 import { fromCmEvent } from './util/from-cm-event';
+import { Hotkeys } from './util/hotkeys.service';
 import { ObservableEmitter } from './util/observable-emitter';
 
 const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
@@ -34,11 +36,12 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults }],
   encapsulation: ViewEncapsulation.None,
 })
-export class MarkdownEditorComponent implements OnInit, OnChanges {
-  @Input() readonly options?: NgxMdeOptions;
+export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() readonly options: NgxMdeOptions = {};
   @Input() readonly previewConfig: MarkdownModuleConfig;
   @Input() readonly toolbarItems?: NgxMdeItemDef[];
   @Input() readonly statusItems?: NgxMdeStatusbarItemDef[];
+  @Input() readonly shortcutsInTooltips = true;
   @Input() readonly language: LanguageTag = 'en';
 
   @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();
@@ -52,7 +55,14 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
   public showPreview = false;
   public showSideBySidePreview = false;
 
-  constructor(private readonly iconRegistry: MatIconRegistry, private readonly domSanitizer: DomSanitizer) {}
+  private shortcutResetter = new Subject();
+
+  constructor(
+    private readonly iconRegistry: MatIconRegistry,
+    private readonly domSanitizer: DomSanitizer,
+    private readonly hotkeys: Hotkeys,
+    private readonly hostElement: ElementRef
+  ) {}
 
   ngOnInit(): void {
     const wrapper = document.getElementById('ngx-markdown-editor-text-editor') as HTMLElement;
@@ -84,9 +94,20 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
     }
   }
 
+  ngOnDestroy() {
+    this.shortcutResetter.next();
+    this.shortcutResetter.complete();
+  }
+
   togglePreview() {
     this.showPreview = !this.showPreview;
     this.showSideBySidePreview = false;
+    if (this.showPreview) {
+      this.hostElement.nativeElement.getElementById('ngx-markdown-editor-wrapper')?.focus();
+    } else {
+      // Timeout necessary until editor is shown again
+      setTimeout(() => this.mde.cm.focus(), 100);
+    }
   }
 
   toggleSideBySidePreview() {
@@ -96,11 +117,20 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
 
   onButtonClick(item: NgxMdeItemNormalized) {
     item.action();
+    this.mde.cm.focus();
     this.determineActiveButtons();
   }
 
+  createTooltip(item: NgxMdeItemNormalized): string {
+    const shortcut = item.shortcut || this.mde.getShortcuts()[item.name];
+    const shortcutString = this.shortcutsInTooltips ? ' (' + shortcut + ')' : '';
+    return item.tooltip + shortcutString;
+  }
+
   private mapOptions(options: NgxMdeOptions | undefined): MarkdownEditorOptions | undefined {
-    const getMarkdownGuideUrl = (url: OptionalI18n<string>): string => {
+    const getMarkdownGuideUrl = (url: OptionalI18n<string> | undefined): string | undefined => {
+      if (!url) return undefined;
+
       if (typeof url === 'string') {
         return url;
       } else {
@@ -135,6 +165,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
       this.addSvgIcon(item);
       this.normalizedItems.push(item);
     }
+    this.applyShortcuts(this.normalizedItems);
   }
 
   private getNormalizedItem(toolbarItem: NgxMdeItemDef): NgxMdeItemNormalized | undefined {
@@ -164,10 +195,38 @@ export class MarkdownEditorComponent implements OnInit, OnChanges {
       return {
         name: toolbarItem.name,
         action: toolbarItem.action || defaultItem.action,
+        shortcut: toolbarItem.shortcut || defaultItem.shortcut,
+        isActive: toolbarItem.isActive || defaultItem.isActive,
         tooltip: (toolbarItem.tooltip && getTooltip(toolbarItem.tooltip)) || defaultItem.tooltip,
         icon: (toolbarItem.icon && getIcon(toolbarItem.icon)) || defaultItem.icon,
       };
     }
+  }
+
+  private applyShortcuts(items: NgxMdeItemNormalized[]) {
+    this.shortcutResetter.next();
+    let shortcuts: MarkdownEditorOptions['shortcuts'];
+    if (this.options?.shortcuts) {
+      shortcuts = this.options.shortcuts;
+    } else {
+      shortcuts = {};
+    }
+
+    for (const item of items) {
+      if (item.name in DEFAULT_OPTIONS.shortcuts) {
+        shortcuts[item.name] = item.shortcut;
+      } else if (item.shortcut) {
+        const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl|Cmd/gi, 'meta');
+        this.hotkeys
+          .addShortcut(this.hostElement.nativeElement, shortcut)
+          .pipe(takeUntil(this.shortcutResetter))
+          .subscribe(() => {
+            item.action();
+            this.determineActiveButtons();
+          });
+      }
+    }
+    this.options.shortcuts = shortcuts;
   }
 
   private addSvgIcon(item: NgxMdeItemNormalized) {

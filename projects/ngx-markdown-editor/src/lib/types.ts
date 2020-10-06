@@ -2,7 +2,7 @@ import { MarkdownEditorAction, MarkdownEditorOptions } from 'markdown-editor-cor
 import { Observable } from 'rxjs';
 
 export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl'> {
-  markdownGuideUrl: OptionalI18n<string>;
+  markdownGuideUrl?: OptionalI18n<string>;
 }
 
 export type NgxMdeItemDef = MarkdownEditorAction | NgxMdeItem | 'togglePreview' | 'toggleSideBySidePreview' | '|';
@@ -10,13 +10,16 @@ export type NgxMdeItemDef = MarkdownEditorAction | NgxMdeItem | 'togglePreview' 
 export interface NgxMdeItem {
   name: string;
   action?: (...args: any[]) => void;
+  shortcut?: string;
+  isActive?: (...args: any[]) => boolean | number;
   tooltip?: OptionalI18n<string>;
   icon?: OptionalI18n<NgxMdeIcon>;
 }
 
-export interface NgxMdeItemNormalized {
+export interface NgxMdeItemNormalized extends NgxMdeItem {
   name: string;
   action: (...args: any[]) => void;
+  shortcut?: string;
   isActive?: (...args: any[]) => boolean | number;
   tooltip: string;
   icon: NgxMdeIcon;
@@ -31,7 +34,7 @@ export interface NgxMdeStatusbarItem {
   value: OptionalI18n<Observable<string>>;
 }
 
-export interface NgxMdeStatusbarItemNormalized {
+export interface NgxMdeStatusbarItemNormalized extends NgxMdeStatusbarItem {
   name: string;
   value: Observable<string>;
 }

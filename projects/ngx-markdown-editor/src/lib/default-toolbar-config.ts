@@ -49,6 +49,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
       name: 'setHeadingLevel',
       action: (level: 0 | 1 | 2 | 3 | 4 | 5 | 6) => ngxMde.mde.setHeadingLevel(level),
       isActive: () => {
+        if (!ngxMde.mde.hasTokenAtCursorPos('header')) return 0;
         const token = ngxMde.mde.cm.getTokenAt(ngxMde.mde.getCursorPos());
         return token.state.base.header as number;
       },

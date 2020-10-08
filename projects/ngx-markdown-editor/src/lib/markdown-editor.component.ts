@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -53,6 +54,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() readonly toolbarItems?: NgxMdeItemDef[];
   @Input() readonly statusItems?: NgxMdeStatusbarItemDef[];
   @Input() readonly shortcutsInTooltips = true;
+  @Input() readonly materialStyle: boolean | 'standard' | 'fill' | 'legacy' = false;
   @Input() readonly language: LanguageTag = 'en';
 
   @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();
@@ -68,6 +70,21 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
 
   private shortcutResetter = new Subject();
 
+  @HostBinding('class.default') get default() {
+    return !this.options.theme && !this.materialStyle;
+  }
+  @HostBinding('class.material') get material() {
+    return this.materialStyle;
+  }
+  @HostBinding('class.appearance-standard') get appearanceStandard() {
+    return this.materialStyle === true || this.materialStyle === 'standard';
+  }
+  @HostBinding('class.appearance-fill') get appearanceFill() {
+    return this.materialStyle === 'fill';
+  }
+  @HostBinding('class.appearance-legacy') get appearanceLegacy() {
+    return this.materialStyle === 'legacy';
+  }
   @ViewChild('setHeadingLevel') setHeadingLevelDropdown: MatSelect;
 
   constructor(
@@ -104,6 +121,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       this.applyStatusbarItems();
       this.mde.setOptions(this.mapOptions(this.options));
       this.determineActiveButtons();
+      this.applyMaterialStyle();
     }
   }
 
@@ -160,6 +178,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
 
     return {
       ...options,
+      theme: this.materialStyle ? (options.theme ? options.theme.concat(' mde-material') : 'mde-material') : undefined,
       markdownGuideUrl: getMarkdownGuideUrl(options.markdownGuideUrl),
     };
   }
@@ -320,6 +339,25 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
         this.activeItems[i] = item.isActive();
       } else {
         this.activeItems[i] = false;
+      }
+    }
+  }
+
+  private applyMaterialStyle() {
+    const codemirror = document.querySelector('markdown-editor .CodeMirror');
+    if (codemirror) {
+      const underline = codemirror.querySelector('.underline');
+      if (this.materialStyle) {
+        if (!underline) {
+          const newUnderline = document.createElement('div');
+          newUnderline.setAttribute('class', 'underline');
+          const newRipple = document.createElement('div');
+          newRipple.setAttribute('class', 'ripple');
+          newUnderline.append(newRipple);
+          codemirror.append(newUnderline);
+        }
+      } else {
+        underline?.remove();
       }
     }
   }

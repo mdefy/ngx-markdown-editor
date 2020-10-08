@@ -14,12 +14,12 @@ markdown-editor {
   .mat-button {
     min-width: 30px;
     line-height: 28px;
-    margin: 0 4px;
+    margin: 0 4px 5px;
     padding: 0;
-    margin-bottom: 5px;
+    border: 1px solid transparent;
 
     &.active {
-      border: 1px solid darkgray;
+      border-color: darkgray;
       .mat-button-focus-overlay {
         background-color: black;
         opacity: 0.1;
@@ -28,10 +28,11 @@ markdown-editor {
   }
 
   .mat-form-field {
-    min-width: 3.5em;
-    width: 3.5em;
+    min-width: 3em;
+    width: 3em;
     text-align: center;
-    margin-bottom: -15px;
+    margin: -10px 4px -15px;
+    font-size: 16px;
   }
 
   .mde-toolbar-separator {
@@ -54,21 +55,6 @@ markdown-editor {
   display: flex;
   flex-direction: row;
 
-  > * {
-    border: 1px solid #ddd;
-  }
-
-  > :first-child,
-  :first-child[style='display: none;'] + * {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
-
-  > :last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
-
   &:focus {
     outline: none;
   }
@@ -84,7 +70,6 @@ markdown-editor {
     flex: 1 1 1px;
     box-sizing: border-box;
     word-wrap: break-word;
-    border-radius: 5px;
   }
 }
 #ngx-markdown-editor-preview {
@@ -99,7 +84,7 @@ markdown-editor {
 #ngx-markdown-editor-statusbar {
   margin-top: 5px;
   color: gray;
-  font-size: 14px;
+  font-size: 0.75em;
   text-align: right;
 
   * {
@@ -112,5 +97,33 @@ markdown-editor {
     height: 14px;
     vertical-align: middle;
     border-left: 1px solid darkgray;
+  }
+}
+
+markdown-editor.default {
+  #ngx-markdown-editor-wrapper {
+    > * {
+      border: 1px solid #ddd;
+    }
+
+    > :first-child,
+    :first-child[style='display: none;'] + * {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    > :last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+    .CodeMirror {
+      border-radius: 5px;
+
+      .CodeMirror-scroll {
+        padding-left: 8px;
+        padding-top: 8px;
+      }
+    }
   }
 }

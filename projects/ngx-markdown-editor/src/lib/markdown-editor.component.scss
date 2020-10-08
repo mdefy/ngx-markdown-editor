@@ -101,6 +101,12 @@ markdown-editor {
 }
 
 markdown-editor.default {
+  #ngx-markdown-editor-label {
+    padding-left: 8px;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
   #ngx-markdown-editor-wrapper {
     > * {
       border: 1px solid #ddd;

@@ -55,6 +55,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() readonly statusItems?: NgxMdeStatusbarItemDef[];
   @Input() readonly shortcutsInTooltips = true;
   @Input() readonly materialStyle: boolean | 'standard' | 'fill' | 'legacy' = false;
+  @Input() readonly label?: string;
   @Input() readonly language: LanguageTag = 'en';
 
   @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();

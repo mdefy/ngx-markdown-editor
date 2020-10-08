@@ -1,11 +1,9 @@
 @mixin mde-material($primary) {
   markdown-editor.material {
-    .markdown-editor-label {
-      font-size: 75%;
+    #ngx-markdown-editor-label {
+      font-size: 0.75em;
       color: rgba(0, 0, 0, 0.6);
-      padding: 12px;
-      background-color: #f0f0f0;
-
+      padding: 6px 12px;
       &.no-toolbar {
         padding-bottom: 0;
       }
@@ -94,12 +92,14 @@
     }
 
     &.appearance-fill {
-      #ngx-markdown-editor-toolbar {
+      #ngx-markdown-editor-label,
+      #ngx-markdown-editor-toolbar,
+      .cm-s-mde-material {
         background-color: #f0f0f0;
       }
 
-      .cm-s-mde-material {
-        background-color: #f0f0f0;
+      #ngx-markdown-editor-label {
+        padding: 12px;
       }
     }
 

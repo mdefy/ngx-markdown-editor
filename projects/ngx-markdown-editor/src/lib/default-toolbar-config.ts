@@ -5,8 +5,8 @@ import { NgxMdeItemNormalized } from './types';
 let DEFAULT_TOOLBAR_ITEMS: NgxMdeItemNormalized[];
 
 export const DEFAULT_TOOLBAR: (MarkdownEditorAction | 'togglePreview' | 'toggleSideBySidePreview' | '|')[] = [
-  'setHeadingLevel',
   'toggleBold',
+  'setHeadingLevel',
   'toggleItalic',
   'toggleStrikethrough',
   '|',

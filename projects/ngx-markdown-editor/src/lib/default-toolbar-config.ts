@@ -365,7 +365,15 @@ const FORMAT_HEADING = `
 `;
 
 const UPLOAD = `
-  <svg xmlns="http://www.w3.org/2000/svg">
+  <svg
+    focusable="false"
+    data-icon="upload"
+    role="img"
+    xmlns="http://www.w3.org/2000/svg"
+    width="100%"
+    height="100%"
+    viewBox="2 2 20 20"
+  >
     <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
   </svg>
 `;

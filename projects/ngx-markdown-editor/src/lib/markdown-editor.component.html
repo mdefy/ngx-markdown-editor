@@ -17,7 +17,7 @@
         </mat-label>
         <mat-select
           [value]="activeItems[i]"
-          [disabled]="showPreview && item.disableOnPreview"
+          [disabled]="disabled || (showPreview && item.disableOnPreview)"
           (selectionChange)="item.action($event.value)"
           (closed)="mde.cm.focus()"
           #setHeadingLevel
@@ -34,7 +34,7 @@
         (click)="onButtonClick(item)"
         [matTooltip]="createTooltip(item)"
         [class.active]="activeItems[i]"
-        [disabled]="showPreview && item.disableOnPreview"
+        [disabled]="disabled || (showPreview && item.disableOnPreview)"
       >
         <mat-icon *ngIf="item.icon.format === 'material'">
           {{ item.icon.iconName }}

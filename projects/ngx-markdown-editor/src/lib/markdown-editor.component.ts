@@ -56,6 +56,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() readonly shortcutsInTooltips = true;
   @Input() readonly materialStyle: boolean | 'standard' | 'fill' | 'legacy' = false;
   @Input() readonly label?: string;
+  @Input() readonly disabled: boolean = false;
   @Input() readonly language: LanguageTag = 'en';
 
   @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();
@@ -71,21 +72,25 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
 
   private shortcutResetter = new Subject();
 
-  @HostBinding('class.default') get default() {
+  @HostBinding('class.disabled') private get disabledStyle() {
+    return this.disabled;
+  }
+  @HostBinding('class.default') private get default() {
     return !this.options.theme && !this.materialStyle;
   }
-  @HostBinding('class.material') get material() {
+  @HostBinding('class.material') private get material() {
     return this.materialStyle;
   }
-  @HostBinding('class.appearance-standard') get appearanceStandard() {
+  @HostBinding('class.appearance-standard') private get appearanceStandard() {
     return this.materialStyle === true || this.materialStyle === 'standard';
   }
-  @HostBinding('class.appearance-fill') get appearanceFill() {
+  @HostBinding('class.appearance-fill') private get appearanceFill() {
     return this.materialStyle === 'fill';
   }
-  @HostBinding('class.appearance-legacy') get appearanceLegacy() {
+  @HostBinding('class.appearance-legacy') private get appearanceLegacy() {
     return this.materialStyle === 'legacy';
   }
+
   @ViewChild('setHeadingLevel') setHeadingLevelDropdown: MatSelect;
 
   constructor(
@@ -120,6 +125,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     if (this.mde) {
       this.applyToolbarItems();
       this.applyStatusbarItems();
+      this.applyDisabled();
       this.mde.setOptions(this.mapOptions(this.options));
       this.determineActiveButtons();
       this.setCodeMirrorClasses();
@@ -180,6 +186,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
 
     return {
       ...options,
+      disabled: this.disabled,
       theme: this.materialStyle ? (options.theme ? options.theme.concat(' mde-material') : 'mde-material') : undefined,
       markdownGuideUrl: getMarkdownGuideUrl(options.markdownGuideUrl),
     };
@@ -349,6 +356,17 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         this.activeItems[i] = false;
       }
+    }
+  }
+
+  private applyDisabled() {
+    if (this.disabled) {
+      this.showPreview = true;
+      this.showSideBySidePreview = false;
+      this.shortcutResetter.next();
+    } else {
+      this.showPreview = false;
+      this.showSideBySidePreview = false;
     }
   }
 

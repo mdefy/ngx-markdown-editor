@@ -14,6 +14,7 @@ export interface NgxMdeItem {
   isActive?: (...args: any[]) => boolean | number;
   tooltip?: OptionalI18n<string>;
   icon?: OptionalI18n<NgxMdeIcon>;
+  disableOnPreview?: boolean;
 }
 
 export interface NgxMdeItemNormalized extends NgxMdeItem {
@@ -23,6 +24,7 @@ export interface NgxMdeItemNormalized extends NgxMdeItem {
   isActive?: (...args: any[]) => boolean | number;
   tooltip: string;
   icon: NgxMdeIcon;
+  disableOnPreview: boolean;
 }
 
 export type NgxMdeStatusbarItemDef = NgxMdeDefaultStatusbarItem | NgxMdeStatusbarItem | '|';

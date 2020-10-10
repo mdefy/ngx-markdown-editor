@@ -60,6 +60,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         iconName: 'format_heading',
         svgHtmlString: FORMAT_HEADING,
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleBold',
@@ -70,6 +71,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'format_bold',
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleItalic',
@@ -80,6 +82,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'format_italic',
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleStrikethrough',
@@ -90,6 +93,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'format_strikethrough',
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleUnorderedList',
@@ -100,6 +104,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'format_list_bulleted',
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleOrderedList',
@@ -110,6 +115,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'format_list_numbered',
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleCheckList',
@@ -120,6 +126,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'check_box',
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleQuote',
@@ -130,6 +137,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'format_quote',
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleInlineCode',
@@ -140,6 +148,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'code',
       },
+      disableOnPreview: true,
     },
     {
       name: 'insertCodeBlock',
@@ -151,6 +160,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         iconName: 'file_code',
         svgHtmlString: FILE_CODE,
       },
+      disableOnPreview: true,
     },
     {
       name: 'insertLink',
@@ -161,6 +171,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'insert_link',
       },
+      disableOnPreview: true,
     },
     {
       name: 'insertImageLink',
@@ -171,6 +182,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'image',
       },
+      disableOnPreview: true,
     },
     {
       name: 'insertTable',
@@ -180,6 +192,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'table_chart',
       },
+      disableOnPreview: true,
     },
     {
       name: 'insertHorizontalLine',
@@ -190,6 +203,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'horizontal_rule',
       },
+      disableOnPreview: true,
     },
     {
       name: 'toggleRichTextMode',
@@ -200,6 +214,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'highlight',
       },
+      disableOnPreview: true,
     },
     {
       name: 'formatContent',
@@ -209,6 +224,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'format_paint',
       },
+      disableOnPreview: true,
     },
     {
       name: 'downloadAsFile',
@@ -218,6 +234,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'get_app',
       },
+      disableOnPreview: true,
     },
     {
       name: 'importFromFile',
@@ -228,6 +245,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         iconName: 'upload',
         svgHtmlString: UPLOAD,
       },
+      disableOnPreview: true,
     },
     {
       name: 'togglePreview',
@@ -239,6 +257,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'preview',
       },
+      disableOnPreview: false,
     },
     {
       name: 'toggleSideBySidePreview',
@@ -251,6 +270,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         iconName: 'column',
         svgHtmlString: COLUMN,
       },
+      disableOnPreview: false,
     },
     {
       name: 'openMarkdownGuide',
@@ -260,6 +280,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'material',
         iconName: 'help',
       },
+      disableOnPreview: false,
     },
     // Normalize separator item to reduce type complexity in template.
     // Effectively, only the `name` property is needed.
@@ -268,6 +289,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
       action: () => {},
       tooltip: '',
       icon: { format: 'material', iconName: '' },
+      disableOnPreview: false,
     },
   ];
 

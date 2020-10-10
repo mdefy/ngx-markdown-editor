@@ -227,7 +227,13 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       let defaultItem = getDefaultItem(toolbarItem.name);
       if (!defaultItem) {
-        defaultItem = { name: '', action: () => {}, tooltip: '', icon: { format: 'material', iconName: '' } };
+        defaultItem = {
+          name: '',
+          action: () => {},
+          tooltip: '',
+          icon: { format: 'material', iconName: '' },
+          disableOnPreview: false,
+        };
       }
       return {
         name: toolbarItem.name,
@@ -236,6 +242,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
         isActive: toolbarItem.isActive || defaultItem.isActive,
         tooltip: (toolbarItem.tooltip && getTooltip(toolbarItem.tooltip)) || defaultItem.tooltip,
         icon: (toolbarItem.icon && getIcon(toolbarItem.icon)) || defaultItem.icon,
+        disableOnPreview: toolbarItem.disableOnPreview || defaultItem?.disableOnPreview,
       };
     }
   }

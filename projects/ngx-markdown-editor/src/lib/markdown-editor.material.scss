@@ -24,6 +24,7 @@
         > .underline {
           position: absolute;
           bottom: 0;
+          z-index: 10;
           height: 1px;
           width: 100%;
           opacity: 1;
@@ -58,8 +59,13 @@
         }
 
         .CodeMirror-scroll {
-          padding-left: 8px;
           padding-top: 8px;
+        }
+      }
+
+      &:not(.CodeMirror-lineNumbers) {
+        CodeMirror-scroll {
+          padding-left: 8px;
         }
       }
     }

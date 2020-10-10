@@ -122,6 +122,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       this.applyStatusbarItems();
       this.mde.setOptions(this.mapOptions(this.options));
       this.determineActiveButtons();
+      this.setCodeMirrorClasses();
       this.applyMaterialStyle();
     }
   }
@@ -360,6 +361,15 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         underline?.remove();
       }
+    }
+  }
+
+  private setCodeMirrorClasses() {
+    const codemirror = document.querySelector('markdown-editor .CodeMirror');
+    if (this.options.lineNumbers) {
+      codemirror?.classList.add('CodeMirror-lineNumbers');
+    } else {
+      codemirror?.classList.remove('CodeMirror-lineNumbers');
     }
   }
 }

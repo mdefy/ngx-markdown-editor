@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MarkedOptions } from 'ngx-markdown';
 import { NgxMdeItemDef, NgxMdeOptions, NgxMdeStatusbarItemDef } from 'projects/ngx-markdown-editor/src/lib/types';
+import { MarkdownEditorComponent } from 'projects/ngx-markdown-editor/src/public-api';
 import { fromEvent, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -10,23 +11,17 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  @ViewChild(MarkdownEditorComponent) ngxMde: MarkdownEditorComponent;
+
+  private b = false;
   public toolbarButtons: NgxMdeItemDef[] = [
     {
       name: 'toggleBold',
       icon: {
-        de: {
-          format: 'material',
-          iconName: 'code',
-        },
-        default: {
-          format: 'material',
-          iconName: 'format_bold',
-        },
+        format: 'material',
+        iconName: 'star',
       },
-      tooltip: {
-        de: 'Angie',
-        default: 'Krumpf',
-      },
+      shortcut: 'Alt-K',
     },
     'openMarkdownGuide',
   ];
@@ -46,17 +41,19 @@ export class AppComponent {
   ];
 
   public options: Partial<NgxMdeOptions> = {
-    markdownGuideUrl: {
-      de: 'http://example.com',
-      default: 'https://www.markdownguide.org/basic-syntax/',
-    },
+    autofocus: true,
+    lineNumbers: true,
+    placeholder: ' Hey :)',
   };
 
   public markedOptions: MarkedOptions = {
     gfm: true,
   };
 
-  test(event: any) {
-    console.log(event);
+  public materialStyle = 'fill';
+
+  test() {
+    // this.materialStyle = 'legacy';
+    this.options = { lineNumbers: false };
   }
 }

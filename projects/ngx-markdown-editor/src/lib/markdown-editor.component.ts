@@ -387,6 +387,20 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
         underline?.remove();
       }
     }
+    const preview = document.querySelector('markdown-editor #ngx-markdown-editor-preview');
+    if (preview) {
+      const underline = preview.querySelector('.underline');
+      if (this.materialStyle) {
+        if (!underline) {
+          console.log('preview', preview);
+          const newUnderline = document.createElement('div');
+          newUnderline.setAttribute('class', 'underline');
+          preview.append(newUnderline);
+        }
+      } else {
+        underline?.remove();
+      }
+    }
   }
 
   private setCodeMirrorClasses() {

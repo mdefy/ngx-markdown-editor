@@ -61,6 +61,22 @@
         }
       }
     }
+
+    #ngx-markdown-editor-preview {
+      position: relative;
+
+      > .underline {
+        position: absolute;
+        bottom: 0;
+        z-index: 10;
+        height: 1px;
+        width: 100%;
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.42);
+        transition: background-color 150ms cubic-bezier(0.55, 0, 0.55, 0.2);
+      }
+    }
+
     &.appearance-standard,
     &.appearance-fill,
     &.appearance-legacy {
@@ -99,6 +115,10 @@
       #ngx-markdown-editor-label {
         padding: 12px;
       }
+
+      #ngx-markdown-editor-preview {
+        background-color: #e5e5e5;
+      }
     }
 
     &.disabled {
@@ -127,6 +147,21 @@
             opacity: 0;
           }
         }
+
+        #ngx-markdown-editor-preview {
+          background-color: transparent;
+          > .underline {
+            background-color: transparent;
+            background-image: linear-gradient(
+              to right,
+              rgba(0, 0, 0, 0.42) 0%,
+              rgba(0, 0, 0, 0.42) 33%,
+              transparent 0%
+            );
+            background-size: 4px 100%;
+            background-repeat: repeat-x;
+          }
+        }
       }
 
       &.appearance-fill {
@@ -149,6 +184,14 @@
 
         #ngx-markdown-editor-statusbar {
           color: rgba(0, 0, 0, 0.38);
+        }
+
+        #ngx-markdown-editor-preview {
+          background-color: #f5f5f5;
+
+          > .underline {
+            background-color: transparent;
+          }
         }
       }
     }

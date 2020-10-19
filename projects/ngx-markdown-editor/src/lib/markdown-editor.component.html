@@ -46,8 +46,10 @@
 </div>
 <div id="ngx-markdown-editor-wrapper" tabindex="-1">
   <div [ngStyle]="{ display: showPreview ? 'none' : '' }" id="ngx-markdown-editor-text-editor"></div>
-  <div *ngIf="showPreview || showSideBySidePreview" id="ngx-markdown-editor-preview">
-    <markdown [data]="mde.getContent()"></markdown>
+  <div [ngStyle]="{ display: showPreview || showSideBySidePreview ? '' : 'none' }" id="ngx-markdown-editor-preview">
+    <div class="preview-wrapper">
+      <markdown [data]="mde.getContent()"></markdown>
+    </div>
   </div>
 </div>
 <div id="ngx-markdown-editor-statusbar">

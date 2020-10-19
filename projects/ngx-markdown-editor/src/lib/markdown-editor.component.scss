@@ -101,10 +101,15 @@ markdown-editor {
 #ngx-markdown-editor-preview {
   flex: 1 1 100%;
   box-sizing: border-box;
-  border: 1px solid #ddd;
-  padding: 10px;
+  background-color: #f0f0f0;
   overflow-y: auto;
   word-wrap: break-word;
+
+  > .preview-wrapper {
+    padding: 0 10px;
+    height: 100%;
+    overflow: auto;
+  }
 }
 
 #ngx-markdown-editor-statusbar {

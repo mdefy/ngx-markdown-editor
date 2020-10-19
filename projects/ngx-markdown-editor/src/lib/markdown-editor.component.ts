@@ -56,7 +56,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() readonly shortcutsInTooltips = true;
   @Input() readonly materialStyle: boolean | 'standard' | 'fill' | 'legacy' = false;
   @Input() readonly label?: string;
-  @Input() readonly disabled: boolean = false;
+  @Input() readonly disabled = false;
+  @Input() readonly showToolbar = true;
+  @Input() readonly showStatusbar = true;
   @Input() readonly language: LanguageTag = 'en';
 
   @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();

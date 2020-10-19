@@ -1,7 +1,7 @@
 <div *ngIf="label" id="ngx-markdown-editor-label">
   {{ label }}
 </div>
-<div id="ngx-markdown-editor-toolbar">
+<div *ngIf="showToolbar" id="ngx-markdown-editor-toolbar">
   <ng-container *ngFor="let item of normalizedItems; index as i" [ngSwitch]="item.name">
     <ng-template [ngSwitchCase]="'|'">
       <div class="mde-toolbar-separator"></div>
@@ -52,7 +52,7 @@
     </div>
   </div>
 </div>
-<div id="ngx-markdown-editor-statusbar">
+<div *ngIf="showStatusbar" id="ngx-markdown-editor-statusbar">
   <ng-container *ngFor="let item of normalizedStatusbarItems" [ngSwitch]="item.name">
     <div *ngSwitchCase="'|'" class="mde-statusbar-separator"></div>
     <div *ngSwitchDefault class="mde-statusbar-item">{{ item.value | async }}</div>

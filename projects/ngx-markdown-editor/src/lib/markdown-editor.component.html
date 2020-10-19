@@ -1,6 +1,4 @@
-<div *ngIf="label" id="ngx-markdown-editor-label">
-  {{ label }}
-</div>
+<div *ngIf="label" id="ngx-markdown-editor-label">{{ label }} {{ required ? '*' : '' }}</div>
 <div *ngIf="showToolbar" id="ngx-markdown-editor-toolbar">
   <ng-container *ngFor="let item of normalizedItems; index as i" [ngSwitch]="item.name">
     <ng-template [ngSwitchCase]="'|'">

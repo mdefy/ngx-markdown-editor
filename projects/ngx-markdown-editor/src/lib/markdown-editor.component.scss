@@ -92,10 +92,11 @@ markdown-editor {
     flex: 1 1 1px;
     box-sizing: border-box;
     word-wrap: break-word;
+
+    .CodeMirror-placeholder {
+      color: rgba(0, 0, 0, 0.6);
+    }
   }
-}
-.CodeMirror-placeholder {
-  color: rgba(0, 0, 0, 0.6);
 }
 
 #ngx-markdown-editor-preview {

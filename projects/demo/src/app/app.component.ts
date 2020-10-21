@@ -42,7 +42,7 @@ export class AppComponent {
 
   public options: Partial<NgxMdeOptions> = {
     autofocus: true,
-    lineNumbers: true,
+    lineNumbers: false,
     placeholder: ' Hey :)',
   };
 
@@ -50,7 +50,9 @@ export class AppComponent {
     gfm: true,
   };
 
-  public materialStyle = 'fill';
+  public materialStyle = 'legacy';
+
+  public disabled = false;
 
   test() {
     // this.materialStyle = 'legacy';

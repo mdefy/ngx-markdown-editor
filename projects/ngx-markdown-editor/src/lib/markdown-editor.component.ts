@@ -168,7 +168,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
 
   createTooltip(item: NgxMdeItemNormalized): string {
     const shortcut = item.shortcut || this.mde.getShortcuts()[item.name];
-    const shortcutString = this.shortcutsInTooltips ? ' (' + shortcut + ')' : '';
+    const shortcutString = this.shortcutsInTooltips && shortcut ? ' (' + shortcut + ')' : '';
     return item.tooltip + shortcutString;
   }
 
@@ -267,10 +267,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     for (const item of items) {
-      if (item.name in DEFAULT_OPTIONS.shortcuts) {
-        shortcuts[item.name] = item.shortcut;
-      } else if (item.name === 'setHeadingLevel' && item.shortcut) {
-        const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl|Cmd/gi, 'meta');
+      if (item.name === 'setHeadingLevel' && item.shortcut) {
+        const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
         this.hotkeys
           .addShortcut(this.hostElement.nativeElement, shortcut)
           .pipe(takeUntil(this.shortcutResetter))
@@ -278,8 +276,10 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
             this.setHeadingLevelDropdown.open();
             this.setHeadingLevelDropdown.focus();
           });
+      } else if (item.name in DEFAULT_OPTIONS.shortcuts) {
+        shortcuts[item.name] = item.shortcut;
       } else if (item.shortcut) {
-        const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl|Cmd/gi, 'meta');
+        const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
         this.hotkeys
           .addShortcut(this.hostElement.nativeElement, shortcut)
           .pipe(takeUntil(this.shortcutResetter))

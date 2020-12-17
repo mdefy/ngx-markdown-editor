@@ -13,22 +13,26 @@
           </mat-icon>
           <mat-icon *ngIf="item.icon.format !== 'material'" [svgIcon]="item.icon.iconName"> </mat-icon>
         </mat-label>
-        <mat-select
-          [value]="activeItems[i]"
-          [disabled]="disabled || (showPreview && item.disableOnPreview)"
-          (selectionChange)="item.action($event.value)"
-          (closed)="mde.cm.focus()"
-          #setHeadingLevel
-        >
-          <mat-option value="0">---</mat-option>
-          <mat-option *ngFor="let j of [1, 2, 3, 4, 5, 6]" [value]="j">H{{ j }}</mat-option>
-        </mat-select>
+        <div (mousedown)="blockBlur = true">
+          <mat-select
+            [value]="activeItems[i]"
+            [disabled]="disabled || (showPreview && item.disableOnPreview)"
+            (selectionChange)="item.action($event.value)"
+            (closed)="mde.cm.focus(); blockBlur = false"
+            #setHeadingLevel
+          >
+            <mat-option value="0">---</mat-option>
+            <mat-option *ngFor="let j of [1, 2, 3, 4, 5, 6]" [value]="j">H{{ j }}</mat-option>
+          </mat-select>
+        </div>
       </mat-form-field>
     </ng-template>
 
     <ng-template ngSwitchDefault>
       <button
         mat-button
+        (mousedown)="blockBlur = true"
+        (mouseup)="blockBlur = false"
         (click)="onButtonClick(item)"
         [matTooltip]="createTooltip(item)"
         [class.active]="activeItems[i]"

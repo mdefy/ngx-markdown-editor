@@ -284,6 +284,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
           .addShortcut(this.hostElement.nativeElement, shortcut)
           .pipe(takeUntil(this.shortcutResetter))
           .subscribe(() => {
+            this.blockBlur = true;
             this.setHeadingLevelDropdown.open();
             this.setHeadingLevelDropdown.focus();
           });

@@ -80,28 +80,26 @@
     &.appearance-standard,
     &.appearance-fill,
     &.appearance-legacy {
-      .cm-s-mde-material {
-        &.CodeMirror-focused {
-          padding-bottom: 8px;
+      &.focused .cm-s-mde-material {
+        padding-bottom: 8px;
 
-          > .underline > .ripple {
-            background-color: $primary;
-            opacity: 1;
-            transform: scaleX(1);
-            transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1), opacity 100ms cubic-bezier(0.25, 0.8, 0.25, 1),
-              background-color 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
-          }
+        > .underline > .ripple {
+          background-color: $primary;
+          opacity: 1;
+          transform: scaleX(1);
+          transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1), opacity 100ms cubic-bezier(0.25, 0.8, 0.25, 1),
+            background-color 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-          .CodeMirror-placeholder {
-            color: rgba(0, 0, 0, 0.6);
-          }
+        .CodeMirror-placeholder {
+          color: rgba(0, 0, 0, 0.6);
         }
       }
     }
 
     &.appearance-standard,
     &.appearance-fill {
-      .cm-s-mde-material:not(.CodeMirror-focused):hover > .underline > .ripple {
+      &:not(.focused) .cm-s-mde-material:hover > .underline > .ripple {
         background-color: black;
         opacity: 1;
         transform: none;

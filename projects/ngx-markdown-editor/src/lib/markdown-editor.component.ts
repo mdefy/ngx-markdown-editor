@@ -72,6 +72,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   public normalizedStatusbarItems: NgxMdeStatusbarItemNormalized[];
   public showPreview = false;
   public showSideBySidePreview = false;
+  public blockBlur = false;
+  public focused = false;
 
   private shortcutResetter = new Subject();
 
@@ -92,6 +94,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
   @HostBinding('class.appearance-legacy') private get appearanceLegacy() {
     return this.materialStyle === 'legacy';
+  }
+  @HostBinding('class.focused') private get focusedStyle() {
+    return this.focused;
   }
 
   @ViewChild('setHeadingLevel') setHeadingLevelDropdown: MatSelect;
@@ -119,6 +124,12 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.ngOnChanges();
 
     this.activeItems = Array.from(this.normalizedItems, () => false);
+    fromCmEvent(this.mde.cm, 'focus').subscribe(() => {
+      this.focused = true;
+    });
+    fromCmEvent(this.mde.cm, 'blur').subscribe(() => {
+      if (!this.blockBlur) this.focused = false;
+    });
     fromCmEvent(this.mde.cm, 'cursorActivity').subscribe(() => {
       this.determineActiveButtons();
     });
@@ -149,7 +160,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       setTimeout(() => document.getElementById('ngx-markdown-editor-wrapper')?.focus(), 100);
     } else {
       // Timeout necessary until Angular change detector has finished
-      setTimeout(() => this.mde.cm.focus(), 100);
+      setTimeout(() => this.mde.focus(), 100);
     }
   }
 
@@ -157,12 +168,12 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.showSideBySidePreview = !this.showSideBySidePreview;
     this.showPreview = false;
     // Timeout necessary until Angular change detector has finished
-    setTimeout(() => this.mde.cm.focus(), 100);
+    setTimeout(() => this.mde.focus(), 100);
   }
 
   onButtonClick(item: NgxMdeItemNormalized) {
     item.action();
-    this.mde.cm.focus();
+    this.mde.focus();
     this.determineActiveButtons();
   }
 

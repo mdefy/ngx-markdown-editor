@@ -2717,7 +2717,7 @@ codelyzer@^5.2.2:
     source-map "^0.5.7"
     sprintf-js "^1.1.2"
 
-codemirror@^5.57.0:
+codemirror@^5.57.0, codemirror@^5.58.3:
   version "5.58.3"
   resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.58.3.tgz#3f0689854ecfbed5d4479a98b96148b2c3b79796"
   integrity sha512-KBhB+juiyOOgn0AqtRmWyAT3yoElkuvWTI6hsHa9E6GQrl6bk/fdAYcvuqW1/upO9T9rtEtapWdw4XYcNiVDEA==
@@ -5980,6 +5980,14 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+markdown-editor-core@../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz:
+  version "0.0.0"
+  resolved "../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz#cd285f8d718c323aa1267b06d3bb8f45d7394bf0"
+  dependencies:
+    codemirror "^5.58.3"
+    lodash "^4.17.20"
+    prettier "^2.2.1"
+
 "markdown-editor-core@file:../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz":
   version "0.0.0"
   resolved "file:../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz#d0b7093790bbb5d6d1782f0caecb8e90846de46d"
@@ -7531,7 +7539,7 @@ prepend-http@^1.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
-prettier@^2.1.1:
+prettier@^2.1.1, prettier@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
   integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==

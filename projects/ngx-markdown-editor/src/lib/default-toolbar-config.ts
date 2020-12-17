@@ -4,8 +4,17 @@ import { NgxMdeItemNormalized } from './types';
 
 let DEFAULT_TOOLBAR_ITEMS: NgxMdeItemNormalized[];
 
-export const DEFAULT_TOOLBAR: (MarkdownEditorAction | 'togglePreview' | 'toggleSideBySidePreview' | '|')[] = [
+export const DEFAULT_TOOLBAR: (
+  | MarkdownEditorAction
+  | 'toggleHeadingLevel'
+  | 'togglePreview'
+  | 'toggleSideBySidePreview'
+  | '|'
+)[] = [
   'setHeadingLevel',
+  'toggleHeadingLevel',
+  'increaseHeadingLevel',
+  'decreaseHeadingLevel',
   'toggleBold',
   'toggleItalic',
   'toggleStrikethrough',
@@ -48,7 +57,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
     {
       name: 'setHeadingLevel',
       action: (level: 0 | 1 | 2 | 3 | 4 | 5 | 6) => ngxMde.mde.setHeadingLevel(level),
-      shortcut: 'Alt-H',
+      shortcut: 'Shift-Ctrl-Alt-H',
       isActive: () => {
         if (!ngxMde.mde.hasTokenAtCursorPos('header')) return 0;
         const token = ngxMde.mde.cm.getTokenAt(ngxMde.mde.getCursorPos());
@@ -59,6 +68,40 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         format: 'svgString',
         iconName: 'format_heading',
         svgHtmlString: FORMAT_HEADING,
+      },
+      disableOnPreview: true,
+    },
+    {
+      name: 'toggleHeadingLevel',
+      action: () => ngxMde.mde.increaseHeadingLevel(),
+      tooltip: 'Heading',
+      shortcut: 'Alt-H',
+      icon: {
+        format: 'svgString',
+        iconName: 'format_heading',
+        svgHtmlString: FORMAT_HEADING,
+      },
+      disableOnPreview: true,
+    },
+    {
+      name: 'increaseHeadingLevel',
+      action: () => ngxMde.mde.increaseHeadingLevel(),
+      tooltip: 'Smaller Heading',
+      icon: {
+        format: 'svgString',
+        iconName: 'format_heading_decrease',
+        svgHtmlString: FORMAT_HEADING_SMALLER,
+      },
+      disableOnPreview: true,
+    },
+    {
+      name: 'decreaseHeadingLevel',
+      action: () => ngxMde.mde.decreaseHeadingLevel(),
+      tooltip: 'Bigger Heading',
+      icon: {
+        format: 'svgString',
+        iconName: 'format_heading_increase',
+        svgHtmlString: FORMAT_HEADING_BIGGER,
       },
       disableOnPreview: true,
     },
@@ -382,6 +425,58 @@ const FORMAT_HEADING = `
     <path
       fill="currentColor"
       d="M448 96v320h32a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H320a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h32V288H160v128h32a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H32a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h32V96H32a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16h-32v128h192V96h-32a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16z"
+    ></path>
+  </svg>
+`;
+
+const FORMAT_HEADING_BIGGER = `
+  <!-- Icon from Font Awesome: https://fontawesome.com/icons/heading?style=solid; License: https://fontawesome.com/license -->
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    data-prefix="fas"
+    data-icon="heading"
+    class="svg-inline--fa fa-heading fa-w-16"
+    role="img"
+    xmlns="http://www.w3.org/2000/svg"
+    width="100%"
+    height="100%"
+    viewBox="0 0 720 720"
+    licenseUrl="https://fontawesome.com/license"
+  >
+    <path
+      fill="currentColor"
+      d="M448 200v320h32a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H320a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h32V392H160v128h32a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H32a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h32V200H32a16 16 0 0 1-16-16V152a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16h-32v128h192V200h-32a16 16 0 0 1-16-16V152a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16z"
+    ></path>
+    <path
+      fill="currentColor"
+      d="M620 285 l87 150 h-174 z"
+    ></path>
+  </svg>
+`;
+
+const FORMAT_HEADING_SMALLER = `
+  <!-- Icon from Font Awesome: https://fontawesome.com/icons/heading?style=solid; License: https://fontawesome.com/license -->
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    data-prefix="fas"
+    data-icon="heading"
+    class="svg-inline--fa fa-heading fa-w-16"
+    role="img"
+    xmlns="http://www.w3.org/2000/svg"
+    width="100%"
+    height="100%"
+    viewBox="0 0 720 720"
+    licenseUrl="https://fontawesome.com/license"
+  >
+    <path
+      fill="currentColor"
+      d="M448 200v320h32a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H320a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h32V392H160v128h32a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H32a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h32V200H32a16 16 0 0 1-16-16V152a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16h-32v128h192V200h-32a16 16 0 0 1-16-16V152a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16z"
+    ></path>
+    <path
+      fill="currentColor"
+      d="M620 435 l87 -150 h-174 z"
     ></path>
   </svg>
 `;

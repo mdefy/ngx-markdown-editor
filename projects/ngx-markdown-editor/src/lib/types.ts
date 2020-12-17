@@ -5,7 +5,13 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
   markdownGuideUrl?: OptionalI18n<string>;
 }
 
-export type NgxMdeItemDef = MarkdownEditorAction | NgxMdeItem | 'togglePreview' | 'toggleSideBySidePreview' | '|';
+export type NgxMdeItemDef =
+  | MarkdownEditorAction
+  | NgxMdeItem
+  | 'toggleHeadingLevel'
+  | 'togglePreview'
+  | 'toggleSideBySidePreview'
+  | '|';
 
 export interface NgxMdeItem {
   name: string;

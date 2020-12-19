@@ -66,6 +66,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Output() editorFocus = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
   @Output() editorBlur = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
 
+  @ViewChild('setHeadingLevel') setHeadingLevelDropdown: MatSelect;
+
   public mde: MarkdownEditor;
   public normalizedItems: NgxMdeItemNormalized[];
   public activeItems: (boolean | number)[];
@@ -98,8 +100,6 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @HostBinding('class.focused') private get focusedStyle() {
     return this.focused;
   }
-
-  @ViewChild('setHeadingLevel') setHeadingLevelDropdown: MatSelect;
 
   constructor(
     private readonly iconRegistry: MatIconRegistry,

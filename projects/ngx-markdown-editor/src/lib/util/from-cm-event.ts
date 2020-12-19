@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-// tslint:disable: unified-signatures
+/* eslint-disable @typescript-eslint/unified-signatures */
 export function fromCmEvent(
   cm: CodeMirror.Editor,
   eventName: 'change'

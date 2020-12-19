@@ -13,7 +13,6 @@ import { map } from 'rxjs/operators';
 export class AppComponent {
   @ViewChild(MarkdownEditorComponent) ngxMde: MarkdownEditorComponent;
 
-  private b = false;
   public toolbarButtons: NgxMdeItemDef[] = [
     {
       name: 'toggleBold',

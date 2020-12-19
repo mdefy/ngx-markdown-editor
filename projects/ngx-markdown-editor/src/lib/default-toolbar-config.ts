@@ -367,6 +367,7 @@ function isCodeTypeActive(ngxMde: MarkdownEditorComponent, codeType: 'inline' | 
   }
 }
 
+/* eslint-disable max-len */
 const COLUMN = `
   <!-- Icon from Font Awesome: https://fontawesome.com/icons/columns?style=solid; License: https://fontawesome.com/license -->
   <svg

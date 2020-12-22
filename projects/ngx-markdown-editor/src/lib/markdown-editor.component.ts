@@ -42,7 +42,7 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
 };
 
 @Component({
-  selector: 'markdown-editor',
+  selector: 'ngx-markdown-editor',
   templateUrl: './markdown-editor.component.html',
   styleUrls: ['./markdown-editor.component.scss'],
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults }],
@@ -386,7 +386,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private applyMaterialStyle() {
-    const codemirror = document.querySelector('markdown-editor .CodeMirror');
+    const codemirror = document.querySelector('ngx-markdown-editor .CodeMirror');
     if (codemirror) {
       const underline = codemirror.querySelector('.underline');
       if (this.materialStyle) {
@@ -402,7 +402,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
         underline?.remove();
       }
     }
-    const preview = document.querySelector('markdown-editor #ngx-markdown-editor-preview');
+    const preview = document.querySelector('ngx-markdown-editor #ngx-markdown-editor-preview');
     if (preview) {
       const underline = preview.querySelector('.underline');
       if (this.materialStyle) {
@@ -419,7 +419,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setCodeMirrorClasses() {
-    const codemirror = document.querySelector('markdown-editor .CodeMirror');
+    const codemirror = document.querySelector('ngx-markdown-editor .CodeMirror');
     if (this.options.lineNumbers) {
       codemirror?.classList.add('CodeMirror-lineNumbers');
     } else {

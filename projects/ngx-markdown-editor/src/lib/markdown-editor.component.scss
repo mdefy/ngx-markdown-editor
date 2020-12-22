@@ -1,10 +1,6 @@
 @import '~codemirror/lib/codemirror.css';
 
 markdown-editor {
-  min-height: 200px;
-  height: 250px;
-  max-height: 300px;
-
   flex-direction: column;
   box-sizing: border-box;
   display: flex;
@@ -100,8 +96,7 @@ markdown-editor {
   flex-direction: column;
 
   .CodeMirror {
-    flex: 1 1 1px;
-    box-sizing: border-box;
+    height: 100%;
     word-wrap: break-word;
 
     .CodeMirror-placeholder {

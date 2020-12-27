@@ -184,6 +184,10 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private mapOptions(options: NgxMdeOptions | undefined): MarkdownEditorOptions | undefined {
+    if (!options) {
+      return undefined;
+    }
+
     const getMarkdownGuideUrl = (url: OptionalI18n<string> | undefined): string | undefined => {
       if (!url) return undefined;
 
@@ -194,14 +198,22 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       }
     };
 
-    if (!options) {
-      return undefined;
+    let theme: string | undefined;
+    if (this.materialStyle) {
+      theme = options.theme ? options.theme.concat(' mde-material') : 'mde-material';
+    } else {
+      if (options.theme) {
+        const themes = options.theme.split(' ');
+        const index = themes.findIndex((t) => t === 'mde-material');
+        if (index > -1) themes.splice(index, 1);
+        theme = themes.join(' ');
+      }
     }
 
     return {
       ...options,
       disabled: this.disabled,
-      theme: this.materialStyle ? (options.theme ? options.theme.concat(' mde-material') : 'mde-material') : undefined,
+      theme,
       markdownGuideUrl: getMarkdownGuideUrl(options.markdownGuideUrl),
     };
   }

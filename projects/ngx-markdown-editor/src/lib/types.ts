@@ -7,7 +7,9 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
   markdownGuideUrl?: OptionalI18n<string>;
 }
 
-export type NgxMdeItemDef =
+export type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
+
+export type NgxMdeItemName =
   | MarkdownEditorAction
   | NgxMdeItem
   | 'toggleHeadingLevel'

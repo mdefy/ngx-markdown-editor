@@ -1,16 +1,10 @@
-import { MarkdownEditor, MarkdownEditorAction } from 'markdown-editor-core';
+import { MarkdownEditor } from 'markdown-editor-core';
 import { MarkdownEditorComponent } from './markdown-editor.component';
-import { NgxMdeItemNormalized } from './types';
+import { NgxMdeItemName, NgxMdeItemNormalized } from './types';
 
 let DEFAULT_TOOLBAR_ITEMS: NgxMdeItemNormalized[];
 
-export const DEFAULT_TOOLBAR: (
-  | MarkdownEditorAction
-  | 'toggleHeadingLevel'
-  | 'togglePreview'
-  | 'toggleSideBySidePreview'
-  | '|'
-)[] = [
+export const DEFAULT_TOOLBAR: NgxMdeItemName[] = [
   'setHeadingLevel',
   'toggleHeadingLevel',
   'increaseHeadingLevel',

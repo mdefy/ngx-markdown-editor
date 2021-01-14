@@ -178,7 +178,7 @@ ngx-markdown-editor.default {
   }
 }
 
-.CodeMirror.cm-s-ngx-mde-markup {
+.CodeMirror.cm-s-preview-like-markup {
   font-family: Roboto, Helvetica Neue, sans-serif;
 
   .cm-header {
@@ -207,5 +207,11 @@ ngx-markdown-editor.default {
 
   .cm-code {
     font-family: monospace;
+  }
+
+  .cm-link-href {
+    color: gray;
+    text-decoration: none;
+    font-size: 0.8;
   }
 }

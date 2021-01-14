@@ -227,7 +227,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       }
     };
 
-    const markupTheme = options.markupTheme || 'ngx-mde-markup';
+    const markupTheme = options.markupTheme || '';
     let editorTheme = options.editorTheme;
     if (this.materialStyle) {
       editorTheme = editorTheme ? editorTheme.concat(' mde-material') : 'mde-material';

@@ -177,3 +177,35 @@ ngx-markdown-editor.default {
     }
   }
 }
+
+.CodeMirror.cm-s-ngx-mde-markup {
+  font-family: Roboto, Helvetica Neue, sans-serif;
+
+  .cm-header {
+    color: black;
+    font-weight: bold;
+
+    &.cm-header-1 {
+      font-size: 2em;
+    }
+    &.cm-header-2 {
+      font-size: 1.5em;
+    }
+    &.cm-header-3 {
+      font-size: 1.17em;
+    }
+    &.cm-header-4 {
+      font-size: 1em;
+    }
+    &.cm-header-5 {
+      font-size: 0.83em;
+    }
+    &.cm-header-6 {
+      font-size: 0.67em;
+    }
+  }
+
+  .cm-code {
+    font-family: monospace;
+  }
+}

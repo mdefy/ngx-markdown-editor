@@ -35,6 +35,9 @@ export const DEFAULT_TOOLBAR: NgxMdeItemName[] = [
   'togglePreview',
   'toggleSideBySidePreview',
   '|',
+  'undo',
+  'redo',
+  '|',
   'openMarkdownGuide',
 ];
 
@@ -313,6 +316,27 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
         svgHtmlString: COLUMN,
       },
       disableOnPreview: false,
+    },
+    {
+      name: 'undo',
+      action: () => ngxMde.mde.undo(),
+      tooltip: 'Undo',
+      icon: {
+        format: 'material',
+        iconName: 'undo',
+      },
+      disableOnPreview: true,
+    },
+    {
+      name: 'redo',
+      action: () => ngxMde.mde.redo(),
+      shortcut: 'Ctrl-S',
+      tooltip: 'Redo',
+      icon: {
+        format: 'material',
+        iconName: 'redo',
+      },
+      disableOnPreview: true,
     },
     {
       name: 'openMarkdownGuide',

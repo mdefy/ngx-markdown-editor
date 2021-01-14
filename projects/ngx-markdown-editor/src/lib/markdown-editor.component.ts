@@ -184,7 +184,10 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   createTooltip(item: NgxMdeItemNormalized): string {
-    const shortcut = item.shortcut || this.mde.getShortcuts()[item.name];
+    let shortcut: string | undefined = item.shortcut || this.mde.getShortcuts()[item.name];
+    if (item.name === 'undo') shortcut = 'Ctrl-Z';
+    else if (item.name === 'redo') shortcut = 'Shift-Ctrl-Z';
+    if (/Mac/.test(navigator.platform)) shortcut = shortcut?.replace(/Ctrl/gi, 'Cmd');
     const shortcutString = this.shortcutsInTooltips && shortcut ? ' (' + shortcut + ')' : '';
     return item.tooltip + shortcutString;
   }

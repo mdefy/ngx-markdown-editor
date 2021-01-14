@@ -11,7 +11,8 @@ export type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
 
 export type NgxMdeItemName =
   | MarkdownEditorAction
-  | NgxMdeItem
+  | 'undo'
+  | 'redo'
   | 'toggleHeadingLevel'
   | 'togglePreview'
   | 'toggleSideBySidePreview'

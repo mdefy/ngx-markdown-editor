@@ -208,7 +208,9 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
     {
       name: 'insertLink',
       action: () => ngxMde.mde.insertLink(),
-      isActive: () => ngxMde.mde.hasTokenAtCursorPos('link') && !ngxMde.mde.hasTokenAtCursorPos('image'),
+      isActive: () =>
+        (ngxMde.mde.hasTokenAtCursorPos('link-text') || ngxMde.mde.hasTokenAtCursorPos('link')) &&
+        !ngxMde.mde.hasTokenAtCursorPos('image'),
       tooltip: 'Insert Link',
       icon: {
         format: 'material',
@@ -219,7 +221,7 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
     {
       name: 'insertImageLink',
       action: () => ngxMde.mde.insertImageLink(),
-      isActive: () => ngxMde.mde.hasTokenAtCursorPos('link') && ngxMde.mde.hasTokenAtCursorPos('image'),
+      isActive: () => ngxMde.mde.hasTokenAtCursorPos('image'),
       tooltip: 'Insert Image Link',
       icon: {
         format: 'material',
@@ -251,7 +253,10 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
     {
       name: 'toggleRichTextMode',
       action: () => ngxMde.mde.toggleRichTextMode(),
-      isActive: () => ngxMde.mde.cm.getOption('mode') === 'gfm',
+      isActive: () => {
+        const mode = ngxMde.mde.cm.getOption('mode');
+        return mode === 'gfm' || mode.name === 'gfm';
+      },
       tooltip: 'Toggle Rich-Text Mode',
       icon: {
         format: 'material',
@@ -343,7 +348,7 @@ function isListTypeActive(
   ngxMde: MarkdownEditorComponent,
   listType: NonNullable<ReturnType<MarkdownEditor['getListTypeOfLine']>>
 ) {
-  const isList = ngxMde.mde.hasTokenAtCursorPos('variable-2');
+  const isList = ngxMde.mde.hasTokenAtCursorPos('list');
   if (!isList) return false;
 
   const selections = ngxMde.mde.cm.listSelections();
@@ -356,12 +361,12 @@ function isListTypeActive(
 }
 
 function isCodeTypeActive(ngxMde: MarkdownEditorComponent, codeType: 'inline' | 'block') {
-  const isCode = ngxMde.mde.hasTokenAtCursorPos('comment');
+  const isCode = ngxMde.mde.hasTokenAtCursorPos('code');
   if (!isCode) return false;
 
   const token = ngxMde.mde.cm.getTokenAt(ngxMde.mde.getCursorPos());
   if (codeType === 'block') {
-    return token.state.base.codeBlock;
+    return token.state.overlay.codeBlock;
   } else {
     return token.state.overlay.code;
   }

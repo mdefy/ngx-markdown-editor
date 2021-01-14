@@ -63,6 +63,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() readonly language: LanguageTag = 'en';
 
   @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();
+  @Output() cursorActivity = new ObservableEmitter<{ instance: Editor }>();
   @Output() editorFocus = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
   @Output() editorBlur = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
 
@@ -119,6 +120,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.mde = new MarkdownEditor(wrapper, this.mapOptions(this.options));
 
     this.contentChange.emitObservable(fromCmEvent(this.mde.cm, 'changes'));
+    this.cursorActivity.emitObservable(fromCmEvent(this.mde.cm, 'cursorActivity'));
     this.editorFocus.emitObservable(fromCmEvent(this.mde.cm, 'focus'));
     this.editorBlur.emitObservable(fromCmEvent(this.mde.cm, 'blur'));
 

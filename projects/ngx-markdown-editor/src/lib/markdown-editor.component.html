@@ -50,7 +50,7 @@
   <div [ngStyle]="{ display: showPreview ? 'none' : '' }" id="ngx-markdown-editor-text-editor"></div>
   <div [ngStyle]="{ display: showPreview || showSideBySidePreview ? '' : 'none' }" id="ngx-markdown-editor-preview">
     <div class="preview-wrapper">
-      <markdown [data]="mde.getContent()"></markdown>
+      <markdown [data]="mde.getContent()" (ready)="replaceCheckboxDummies()" #markdown></markdown>
     </div>
   </div>
 </div>

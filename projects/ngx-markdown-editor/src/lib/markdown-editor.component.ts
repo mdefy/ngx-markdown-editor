@@ -16,7 +16,7 @@ import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/
 import { DomSanitizer } from '@angular/platform-browser';
 import { Editor, EditorChangeLinkedList } from 'codemirror';
 import { DEFAULT_OPTIONS, MarkdownEditor, MarkdownEditorOptions } from 'markdown-editor-core';
-import { MarkdownModuleConfig } from 'ngx-markdown';
+import { MarkdownComponent, MarkdownModuleConfig, MarkdownService } from 'ngx-markdown';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
@@ -67,6 +67,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Output() editorBlur = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
 
   @ViewChild('setHeadingLevel') setHeadingLevelDropdown: MatSelect;
+  @ViewChild('markdown') markdown: MarkdownComponent;
 
   public mde: MarkdownEditor;
   public normalizedItems: NgxMdeItemNormalized[];
@@ -105,8 +106,13 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     private readonly iconRegistry: MatIconRegistry,
     private readonly domSanitizer: DomSanitizer,
     private readonly hotkeys: Hotkeys,
-    private readonly hostElement: ElementRef
-  ) {}
+    private readonly hostElement: ElementRef,
+    private readonly markdownService: MarkdownService
+  ) {
+    // Render checkbox dummies which can be replaced by an `<input type="checkbox"> later,
+    // because the checkboxes rendered by marked.js inside ngx-markdown are removed by Angular sanitizer.
+    this.markdownService.renderer.checkbox = (checked) => (checked ? '[x] ' : '[ ] ');
+  }
 
   ngOnInit(): void {
     const wrapper = document.getElementById('ngx-markdown-editor-text-editor') as HTMLElement;
@@ -183,6 +189,29 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     return item.tooltip + shortcutString;
   }
 
+  replaceCheckboxDummies() {
+    this.markdown?.element.nativeElement.querySelectorAll('li').forEach((el) =>
+      el.childNodes.forEach((node) => {
+        if (node.nodeType === 3) {
+          if (/^\[ \] /.test(node.nodeValue || '')) {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('disabled', '');
+            el.insertBefore(input, node);
+            node.nodeValue = node.nodeValue?.replace(/^\[ \]/, '') || null;
+          } else if (/^\[x\] /.test(node.nodeValue || '')) {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('disabled', '');
+            input.setAttribute('checked', '');
+            el.insertBefore(input, node);
+            node.nodeValue = node.nodeValue?.replace(/^\[x\]/, '') || null;
+          }
+        }
+      })
+    );
+  }
+
   private mapOptions(options: NgxMdeOptions | undefined): MarkdownEditorOptions | undefined {
     if (!options) {
       return undefined;
@@ -198,7 +227,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       }
     };
 
-    let markupTheme = options.markupTheme || 'ngx-mde-markup';
+    const markupTheme = options.markupTheme || 'ngx-mde-markup';
     let editorTheme = options.editorTheme;
     if (this.materialStyle) {
       editorTheme = editorTheme ? editorTheme.concat(' mde-material') : 'mde-material';

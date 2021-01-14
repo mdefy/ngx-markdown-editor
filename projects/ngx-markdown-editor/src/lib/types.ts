@@ -1,7 +1,9 @@
 import { MarkdownEditorAction, MarkdownEditorOptions } from 'markdown-editor-core';
 import { Observable } from 'rxjs';
 
-export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl'> {
+export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl' | 'theme'> {
+  editorTheme?: string;
+  markupTheme?: string;
   markdownGuideUrl?: OptionalI18n<string>;
 }
 

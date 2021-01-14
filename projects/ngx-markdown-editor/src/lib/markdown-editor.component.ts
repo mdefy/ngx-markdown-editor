@@ -83,7 +83,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     return this.disabled;
   }
   @HostBinding('class.default') private get default() {
-    return !this.options.theme && !this.materialStyle;
+    return !this.options.editorTheme && !this.materialStyle;
   }
   @HostBinding('class.material') private get material() {
     return this.materialStyle;
@@ -198,22 +198,23 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       }
     };
 
-    let theme: string | undefined;
+    let markupTheme = options.markupTheme || 'ngx-mde-markup';
+    let editorTheme = options.editorTheme;
     if (this.materialStyle) {
-      theme = options.theme ? options.theme.concat(' mde-material') : 'mde-material';
+      editorTheme = editorTheme ? editorTheme.concat(' mde-material') : 'mde-material';
     } else {
-      if (options.theme) {
-        const themes = options.theme.split(' ');
+      if (editorTheme) {
+        const themes = editorTheme.split(' ');
         const index = themes.findIndex((t) => t === 'mde-material');
         if (index > -1) themes.splice(index, 1);
-        theme = themes.join(' ');
+        editorTheme = themes.join(' ');
       }
     }
 
     return {
       ...options,
       disabled: this.disabled,
-      theme,
+      theme: editorTheme + ' ' + markupTheme,
       markdownGuideUrl: getMarkdownGuideUrl(options.markdownGuideUrl),
     };
   }

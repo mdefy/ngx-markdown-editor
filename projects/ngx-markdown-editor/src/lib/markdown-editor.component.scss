@@ -168,6 +168,12 @@ ngx-markdown-editor.default {
         padding-left: 8px;
         padding-top: 8px;
       }
+
+      &.CodeMirror-lineNumbers {
+        .CodeMirror-scroll {
+          padding-left: 0;
+        }
+      }
     }
   }
 }

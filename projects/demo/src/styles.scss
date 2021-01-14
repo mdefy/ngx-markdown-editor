@@ -24,7 +24,7 @@ $markdown-editor-theme: mat-light-theme($markdown-editor-primary, $markdown-edit
 // that you are using.
 @include angular-material-theme($markdown-editor-theme);
 
-@import 'projects/ngx-markdown-editor/src/lib/markdown-editor.material.scss';
+@import 'projects/ngx-markdown-editor/src/lib/material-theme';
 
 @include mde-material(mat-color($markdown-editor-primary));
 

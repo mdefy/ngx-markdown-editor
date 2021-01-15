@@ -16,7 +16,7 @@ import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/
 import { DomSanitizer } from '@angular/platform-browser';
 import { Editor, EditorChangeLinkedList } from 'codemirror';
 import { DEFAULT_OPTIONS, MarkdownEditor, MarkdownEditorOptions } from 'markdown-editor-core';
-import { MarkdownComponent, MarkdownModuleConfig, MarkdownService } from 'ngx-markdown';
+import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
@@ -50,7 +50,7 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
 })
 export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() readonly options: NgxMdeOptions = {};
-  @Input() readonly previewConfig: MarkdownModuleConfig;
+  // @Input() readonly previewConfig?: MarkdownModuleConfig;
   @Input() readonly toolbarItems?: NgxMdeItemDef[];
   @Input() readonly statusItems?: NgxMdeStatusbarItemDef[];
   @Input() readonly shortcutsInTooltips = true;
@@ -454,7 +454,6 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       const underline = preview.querySelector('.underline');
       if (this.materialStyle) {
         if (!underline) {
-          console.log('preview', preview);
           const newUnderline = document.createElement('div');
           newUnderline.setAttribute('class', 'underline');
           preview.append(newUnderline);

@@ -38,9 +38,9 @@ export interface NgxMdeItemNormalized extends NgxMdeItem {
   disableOnPreview: boolean;
 }
 
-export type NgxMdeStatusbarItemDef = NgxMdeDefaultStatusbarItem | NgxMdeStatusbarItem | '|';
+export type NgxMdeStatusbarItemDef = NgxMdeStatusbarItemName | NgxMdeStatusbarItem | '|';
 
-export type NgxMdeDefaultStatusbarItem = 'wordCount' | 'characterCount' | 'cursorPosition';
+export type NgxMdeStatusbarItemName = 'wordCount' | 'characterCount' | 'cursorPosition';
 
 export interface NgxMdeStatusbarItem {
   name: string;

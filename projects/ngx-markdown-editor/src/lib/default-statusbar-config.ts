@@ -1,12 +1,12 @@
 import { MarkdownEditor } from 'markdown-editor-core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { NgxMdeDefaultStatusbarItem, NgxMdeStatusbarItemNormalized } from './types';
+import { NgxMdeStatusbarItemName, NgxMdeStatusbarItemNormalized } from './types';
 import { fromCmEvent } from './util/from-cm-event';
 
 let DEFAULT_STATUSBAR_ITEMS: NgxMdeStatusbarItemNormalized[];
 
-export const DEFAULT_STATUSBAR: (NgxMdeDefaultStatusbarItem | '|')[] = [
+export const DEFAULT_STATUSBAR: (NgxMdeStatusbarItemName | '|')[] = [
   'wordCount',
   'characterCount',
   '|',

@@ -209,9 +209,14 @@ ngx-markdown-editor.default {
     font-family: monospace;
   }
 
+  .cm-link-text {
+    color: #0366d6;
+    text-decoration: underline;
+  }
+
   .cm-link-href {
-    color: gray;
+    color: #afafaf;
     text-decoration: none;
-    font-size: 0.8;
+    font-size: 0.8em;
   }
 }

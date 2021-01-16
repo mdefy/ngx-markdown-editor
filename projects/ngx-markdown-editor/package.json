@@ -2,13 +2,14 @@
   "name": "ngx-markdown-editor",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^10.1.1",
-    "@angular/core": "^10.1.1",
-    "@angular/cdk": "^10.1.1",
-    "ngx-markdown": "^10.1.1"
+    "@angular/common": "^11.0.9",
+    "@angular/core": "^11.0.9",
+    "@angular/cdk": "^11.0.4",
+    "@angular/material": "^11.0.4",
+    "ngx-markdown": "^11.0.1"
   },
   "dependencies": {
-    "markdown-editor-core": "file:../../../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz",
-    "tslib": "^2.0.0"
+    "markdown-editor-core": "file:../../../markdown-editor-core/build/markdown-editor-core-0.0.4.tgz",
+    "tslib": "^2.1.0"
   }
 }

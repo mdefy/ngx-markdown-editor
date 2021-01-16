@@ -249,7 +249,7 @@ Then include this object into the toolbar item array (maybe alongside `NgxMdeIte
 public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 ```
 
-> One side note at this point: if you want to change the keyboard shortcuts of a lot of built-in items you may also do this inside the `options: MarkdownEditorOptions` input property with `options.shortcuts = {...}`. This is a decent, but slightly limited way: you can specify many keybindings in a single object, but as these options originate from _Markdown Editor Core_, shortcuts of items that are only part of _Ngx Markdown Editor_ cannot be modified this way (e.g. `togglePreview`). Also, shortcuts defined directly in `toolbarItems` will override shortcuts specified in `options.shortcuts`.
+> One side note at this point: if you want to change the keyboard shortcuts of a lot of built-in items you may also do this inside the `options: MarkdownEditorOptions` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbarItems`.
 
 ### 3. Create your own item
 

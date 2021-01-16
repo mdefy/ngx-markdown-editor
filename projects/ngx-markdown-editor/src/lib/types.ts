@@ -1,10 +1,11 @@
-import { MarkdownEditorAction, MarkdownEditorOptions } from 'markdown-editor-core';
+import { MarkdownEditorAction, MarkdownEditorOptions, MarkdownEditorShortcuts } from 'markdown-editor-core';
 import { Observable } from 'rxjs';
 
-export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl' | 'theme'> {
+export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl' | 'shortcuts' | 'theme'> {
   editorTheme?: string;
   markupTheme?: string;
   markdownGuideUrl?: OptionalI18n<string>;
+  shortcuts?: Partial<MarkdownEditorShortcuts> & Partial<Record<Exclude<NgxMdeAdditionalItemName, '|'>, string>>;
 }
 
 export type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;

@@ -316,38 +316,62 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private applyShortcuts(items: NgxMdeItemNormalized[]) {
+    const applySetHeadingLevelShortcut = (shortcut: string) => {
+      const s = shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
+      return this.hotkeys
+        .addShortcut(this.hostElement.nativeElement, s)
+        .pipe(takeUntil(this.shortcutResetter))
+        .subscribe(() => {
+          this.blockBlur = true;
+          this.setHeadingLevelDropdown.open();
+          this.setHeadingLevelDropdown.focus();
+        });
+    };
+
+    const applyNgxMdeShortcut = (shortcut: string, action: () => void) => {
+      const s = shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
+      return this.hotkeys
+        .addShortcut(this.hostElement.nativeElement, s)
+        .pipe(takeUntil(this.shortcutResetter))
+        .subscribe(() => {
+          action();
+          this.determineActiveButtons();
+        });
+    };
+
     this.shortcutResetter.next();
-    let shortcuts: MarkdownEditorOptions['shortcuts'];
-    if (this.options?.shortcuts) {
-      shortcuts = this.options.shortcuts;
-    } else {
-      shortcuts = {};
-    }
+    const shortcuts = this.options.shortcuts || {};
+    const appliedNgxMdeShortcuts: { [name: string]: Subscription | undefined } = {};
 
     for (const item of items) {
       if (item.name === 'setHeadingLevel' && item.shortcut) {
-        const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
-        this.hotkeys
-          .addShortcut(this.hostElement.nativeElement, shortcut)
-          .pipe(takeUntil(this.shortcutResetter))
-          .subscribe(() => {
-            this.blockBlur = true;
-            this.setHeadingLevelDropdown.open();
-            this.setHeadingLevelDropdown.focus();
-          });
+        const subscription = applySetHeadingLevelShortcut(item.shortcut);
+        appliedNgxMdeShortcuts[item.name] = subscription;
       } else if (item.name in DEFAULT_OPTIONS.shortcuts) {
         shortcuts[item.name] = item.shortcut;
       } else if (item.shortcut) {
-        const shortcut = item.shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
-        this.hotkeys
-          .addShortcut(this.hostElement.nativeElement, shortcut)
-          .pipe(takeUntil(this.shortcutResetter))
-          .subscribe(() => {
-            item.action();
-            this.determineActiveButtons();
-          });
+        const subscription = applyNgxMdeShortcut(item.shortcut, item.action);
+        appliedNgxMdeShortcuts[item.name] = subscription;
       }
     }
+
+    for (const actionName in this.options.shortcuts) {
+      if (!(actionName in DEFAULT_OPTIONS.shortcuts) && shortcuts[actionName]) {
+        const shortcut = shortcuts[actionName];
+        console.log(shortcut);
+        if (actionName === 'setHeadingLevel') {
+          appliedNgxMdeShortcuts[actionName]?.unsubscribe();
+          applySetHeadingLevelShortcut(shortcut);
+        } else {
+          const item = items.find((i) => i.name === actionName);
+          if (item) {
+            appliedNgxMdeShortcuts[actionName]?.unsubscribe();
+            applyNgxMdeShortcut(shortcut, item.action);
+          }
+        }
+      }
+    }
+
     this.options.shortcuts = shortcuts;
   }
 

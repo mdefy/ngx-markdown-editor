@@ -6352,7 +6352,7 @@ markdown-editor-core@../markdown-editor-core/build/markdown-editor-core-0.0.4.tg
     lodash "^4.17.20"
     prettier "^2.2.1"
 
-marked@^1.1.0:
+marked@^1.2.0:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/marked/-/marked-1.2.7.tgz#6e14b595581d2319cdcf033a24caaf41455a01fb"
   integrity sha512-No11hFYcXr/zkBvL6qFmAp1z6BKY3zqLMHny/JN/ey+al7qwCM2+CMBL9BOgqMxZU36fz4cCWfn2poWIf7QRXA==
@@ -6769,16 +6769,16 @@ ng-packagr@^11.0.3:
     stylus "^0.54.7"
     terser "^5.0.0"
 
-ngx-markdown@^10.1.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/ngx-markdown/-/ngx-markdown-10.1.1.tgz#17840c773db7ced4b18ccbf2e8cb06182e422de3"
-  integrity sha512-bUVgN6asb35d5U4xM5CNfo7pSpuwqJSdTgK0PhNZzLiaiyPIK2owtLF6sWGhxTThJu+LngJPjj4MQ+AFe/s8XQ==
+ngx-markdown@^11.0.1:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-markdown/-/ngx-markdown-11.0.1.tgz#e6977d52feb4a7487fbfb253e2dc824fdc10a6d3"
+  integrity sha512-/abng+e19947ZAhEzFl7n1J+KZbrrO2O6gSUtyT3x5I5CHXQPZxZ0SawlZ2Yyu8UNjI75xmemU+7pArKyrOtOg==
   dependencies:
     "@types/marked" "^1.1.0"
     emoji-toolkit "^6.0.1"
     katex "^0.12.0"
-    marked "^1.1.0"
-    prismjs "^1.20.0"
+    marked "^1.2.0"
+    prismjs "^1.22.0"
     tslib "^2.0.0"
 
 nice-try@^1.0.4:
@@ -7939,10 +7939,10 @@ prettier@^2.1.1, prettier@^2.2.1:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
   integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
 
-prismjs@^1.20.0:
-  version "1.22.0"
-  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.22.0.tgz#73c3400afc58a823dd7eed023f8e1ce9fd8977fa"
-  integrity sha512-lLJ/Wt9yy0AiSYBf212kK3mM5L8ycwlyTlSxHBAneXLR0nzFMlZ5y7riFPF3E33zXOF2IH95xdY5jIyZbM9z/w==
+prismjs@^1.22.0:
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.23.0.tgz#d3b3967f7d72440690497652a9d40ff046067f33"
+  integrity sha512-c29LVsqOaLbBHuIbsTxaKENh1N2EQBOHaWv7gkHN4dgRbxSREqDnDbtFJYdpPauS4YCplMSNCABQ6Eeor69bAA==
   optionalDependencies:
     clipboard "^2.0.0"
 

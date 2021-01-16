@@ -189,7 +189,7 @@ The toolbar is highly configurable and comes with many built-in items. You can s
 
 If you do not specify anything at all for the `toolbarItems` input property, the default toolbar setup is applied.
 
-The `toolbarItems` input property has the type
+The `toolbarItems` input property in an array of type
 
 ```typescript
 type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
@@ -197,7 +197,21 @@ type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
 
 `NgxMdeItemName` is a union type of all built-in item names. The interface `NgxMdeItem` represents a full toolbar item.
 
-In the following, we always apply a TypeScript variable to the `toolbarItems` input property:
+```typescript
+interface NgxMdeItem {
+  name: string;
+  action?: (...args: any[]) => void;
+  shortcut?: string;
+  isActive?: (...args: any[]) => boolean | number;
+  tooltip?: OptionalI18n<string>;
+  icon?: OptionalI18n<NgxMdeIcon>;
+  disableOnPreview?: boolean;
+}
+```
+
+> For details about the `OptionalI18n<T>` type, see [Internationalization](#internationalization) section.
+
+In the following, we always apply a JavaScript variable to the `toolbarItems` input property:
 
 ```html
 <ngx-markdown-editor [toolbarItems]="toolbarItems"></ngx-markdown-editor>
@@ -205,7 +219,7 @@ In the following, we always apply a TypeScript variable to the `toolbarItems` in
 
 ### 1. Construct a toolbar from existing items
 
-To build a toolbar from existing items, simply create an array of type `NgxMdeItemName[]` (or `NgxMdeItem[]`) and specify the items by name.
+To build a toolbar from existing items, simply create an array of type `NgxMdeItemName[]` (or `NgxMdeItemDef[]`) and specify the items by name.
 Additionally, there is a separator element, which you can insert at any position with `'|'`.
 
 ```typescript
@@ -216,7 +230,7 @@ The naming convention for items is to use the name of the function that is trigg
 
 ### 2. Configure an existing item
 
-You can adjust built-in for you needs by defining an item with a name included in `NgxMdeItemName`. You do not have to specify
+You can adjust built-in items for you needs by defining an item with a name included in `NgxMdeItemName`. You do not have to specify
 all item properties, but can simply adjust only a subset of them, the rest will keep their default values.
 
 For example, if you want to give the `toggleBold` item a new shortcut (default: `Ctrl-B`) as well as change the tooltip, then proceed as following:
@@ -229,7 +243,7 @@ const newToggleBoldItem: NgxMdeItem = {
 };
 ```
 
-Then include this object into the toolbar item array:
+Then include this object into the toolbar item array (maybe alongside `NgxMdeItemName`s):
 
 ```typescript
 public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
@@ -242,7 +256,7 @@ public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 This is very similar to configuring an existing item. Example:
 
 ```typescript
-const newToggleBoldItem: NgxMdeItem = {
+const myItem: NgxMdeItem = {
   name: 'myCustomAction',
   action: () => myCustomAction()
   shortcut: 'Alt-B',
@@ -312,6 +326,65 @@ Depending on the format of your icon you might need to adjust the icon via CSS, 
 
 ## Statusbar
 
+Configuring the statusbar is very similar to configuring the toolbar, only simpler as there are only two properties for an item.
+
+The `statusbarItems` input property is an array of type
+
+```typescript
+type NgxMdeStatusbarItemDef = NgxMdeStatusbarItemName | NgxMdeStatusbarItem;
+```
+
+`NgxMdeStatusbarItemName` is a union type of all built-in item names. The interface `NgxMdeStatusbarItem` represents a full statusbar item.
+
+```typescript
+interface NgxMdeStatusbarItem {
+  name: string;
+  value: OptionalI18n<Observable<string>>;
+}
+```
+
+The `value` of an item is a observable (or an internationalized version of it), which will be observed by the statusbar.
+
+> For details about the `OptionalI18n<T>` type, see [Internationalization](#internationalization) section.
+
+In the following, we always apply a JavaScript variable to the `toolbarItems` input property:
+
+```html
+<ngx-markdown-editor [toolbarItems]="toolbarItems"></ngx-markdown-editor>
+```
+
+### 1. Construct a statusbar from existing items
+
+To build a statusbar from existing items, simply create an array of type `NgxMdeStatusbarItemName[]` (or `NgxMdeStatusbarItemDef[]`) and specify the items by name.
+Additionally, there is a separator element, which you can insert at any position with `'|'`.
+
+```typescript
+public statusbarItems: NgxMdeItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
+```
+
+The naming convention for items is to use the name of the subject / value that is displayed.
+
+### 2. Configure an existing item
+
+You can adjust built-in items for you needs by defining an item with a name included in `NgxMdeItemName`. However, this might only make sense if you want to keep an existing item name and implement internationalization for it, as this is almost the same as creating a new item. For this reason, we omit an example here and refer to the section below.
+
+### 3. Create your own item
+
+To create a custom statusbar item, simply define a new object of type `NgxMdeStatusbarItem`:
+
+```typescript
+const myItem: NgxMdeItem = {
+  name: 'myValue',
+  value: of('static string'),
+};
+```
+
+Then include this object into the statusbar item array (maybe alongside `NgxMdeStatusbarItemName`s):
+
+```typescript
+public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
+```
+
 ## Internationalization
 
 ## FAQs
@@ -319,7 +392,38 @@ Depending on the format of your icon you might need to adjust the icon via CSS, 
 ### How to set the editor's content programmatically
 
 ```typescript
+@ViewChild(MarkdownEditorComponent) ngxMde: MarkdownEditorComponent;
+```
+
+```typescript
 this.ngxMde.mde.setContent('Any _Markdown_ **string**, where lines are separated with a new line character "\n".');
+```
+
+### How to access the _CodeMirror_ editor instance
+
+The _CodeMirror_ instance is accessible through the _Markdown Editor Core_ instance, which is in turn publicly accessible in `MarkdownEditorComponent`.
+
+```typescript
+@ViewChild(MarkdownEditorComponent) ngxMde: MarkdownEditorComponent;
+```
+
+```typescript
+const cm: CodeMirror.Editor = this.ngxMde.mde.cm;
+```
+
+### How to listen to an _CodeMirror_ event which is not emitted by `MarkdownEditorComponent`
+
+With the utility function `fromCmEvent`, _Ngx Markdown Editor_ provides a convenient way to convert a _CodeMirror_ event to an RxJS `Observable`.
+
+```typescript
+@ViewChild(MarkdownEditorComponent) ngxMde: MarkdownEditorComponent;
+```
+
+```typescript
+const eventObs: Observable<{...}> = fromCmEvent(this.ngxMde.mde.cm, 'mousedown');
+
+eventObs.subscribe((instance, ...) => myEventHandler());
+
 ```
 
 ## How to contribute
@@ -376,8 +480,3 @@ due to wrong line endings, e.g. caused by `yarn add ...` or some other file-writ
 In this case, run `yarn run format:write` to let _Prettier_ correct the wrong formatting and then try to commit again. Unfortunately,
 the `format:write` command cannot be set as a pre-commit hook as it is not known in general, which
 files need to be staged afterwards.
-
-## Acknowledgements
-
-- ionaru
-- wandertaker

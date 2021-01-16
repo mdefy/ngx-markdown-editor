@@ -24,7 +24,7 @@ export const DEFAULT_TOOLBAR: NgxMdeItemName[] = [
   'insertLink',
   'insertImageLink',
   'insertTable',
-  'insertHorizontalLine',
+  'insertHorizontalRule',
   '|',
   'toggleRichTextMode',
   'formatContent',
@@ -237,10 +237,10 @@ export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
       disableOnPreview: true,
     },
     {
-      name: 'insertHorizontalLine',
-      action: () => ngxMde.mde.insertHorizontalLine(),
+      name: 'insertHorizontalRule',
+      action: () => ngxMde.mde.insertHorizontalRule(),
       isActive: () => ngxMde.mde.hasTokenAtCursorPos('hr'),
-      tooltip: 'Insert Horizontal Line',
+      tooltip: 'Insert Horizontal Rule',
       icon: {
         format: 'material',
         iconName: 'horizontal_rule',

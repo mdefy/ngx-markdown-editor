@@ -2839,9 +2839,9 @@ coa@^2.0.2:
     q "^1.1.2"
 
 codemirror@^5.58.3:
-  version "5.58.3"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.58.3.tgz#3f0689854ecfbed5d4479a98b96148b2c3b79796"
-  integrity sha512-KBhB+juiyOOgn0AqtRmWyAT3yoElkuvWTI6hsHa9E6GQrl6bk/fdAYcvuqW1/upO9T9rtEtapWdw4XYcNiVDEA==
+  version "5.59.1"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.59.1.tgz#cd6465555a87f8a2243eb41ffb460c777e15212c"
+  integrity sha512-d0SSW/PCCD4LoSCBPdnP0BzmZB1v3emomCUtVlIWgZHJ06yVeBOvBtOH7vYz707pfAvEeWbO9aP6akh8vl1V3w==
 
 coffeescript@1.12.7:
   version "1.12.7"
@@ -6344,9 +6344,9 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-markdown-editor-core@../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz:
+markdown-editor-core@../markdown-editor-core/build/markdown-editor-core-0.0.4.tgz:
   version "0.0.0"
-  resolved "../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz#cd285f8d718c323aa1267b06d3bb8f45d7394bf0"
+  resolved "../markdown-editor-core/build/markdown-editor-core-0.0.4.tgz#109aec72927c2d9a1d38b9b1c134d824919ce0e3"
   dependencies:
     codemirror "^5.58.3"
     lodash "^4.17.20"

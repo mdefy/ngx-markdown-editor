@@ -15,7 +15,7 @@
     "e2e": "ng e2e",
     "format:check": "prettier -c .",
     "format:write": "prettier -w .",
-    "install-mde": "yarn add ../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz"
+    "install-mde": "yarn add ../markdown-editor-core/build/markdown-editor-core-0.0.4.tgz"
   },
   "private": true,
   "dependencies": {
@@ -29,8 +29,7 @@
     "@angular/platform-browser": "~11.0.5",
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
-    "markdown-editor-core": "../markdown-editor-core/build/markdown-editor-core-0.0.0.tgz",
-    "ngx-markdown": "^10.1.1",
+    "markdown-editor-core": "../markdown-editor-core/build/markdown-editor-core-0.0.4.tgz",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

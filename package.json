@@ -9,7 +9,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "node scripts/prebuild.js && ng build ngx-markdown-editor",
+    "build:prod": "node scripts/prebuild.js && ng build ngx-markdown-editor --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

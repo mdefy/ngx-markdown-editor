@@ -6,12 +6,7 @@ import { fromCmEvent } from './util/from-cm-event';
 
 let DEFAULT_STATUSBAR_ITEMS: NgxMdeStatusbarItemNormalized[];
 
-export const DEFAULT_STATUSBAR: (NgxMdeStatusbarItemName | '|')[] = [
-  'wordCount',
-  'characterCount',
-  '|',
-  'cursorPosition',
-];
+export const DEFAULT_STATUSBAR: NgxMdeStatusbarItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
 
 export function getDefaultStatusbarItem(itemName: string): NgxMdeStatusbarItemNormalized | undefined {
   return getDefaultStatusbarItems().find((i) => i.name === itemName);

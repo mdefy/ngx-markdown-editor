@@ -9,8 +9,9 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
 
 export type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
 
-export type NgxMdeItemName =
-  | MarkdownEditorAction
+export type NgxMdeItemName = MarkdownEditorAction | NgxMdeAdditionalItemName;
+
+type NgxMdeAdditionalItemName =
   | 'undo'
   | 'redo'
   | 'toggleHeadingLevel'
@@ -38,9 +39,9 @@ export interface NgxMdeItemNormalized extends NgxMdeItem {
   disableOnPreview: boolean;
 }
 
-export type NgxMdeStatusbarItemDef = NgxMdeStatusbarItemName | NgxMdeStatusbarItem | '|';
+export type NgxMdeStatusbarItemDef = NgxMdeStatusbarItemName | NgxMdeStatusbarItem;
 
-export type NgxMdeStatusbarItemName = 'wordCount' | 'characterCount' | 'cursorPosition';
+export type NgxMdeStatusbarItemName = 'wordCount' | 'characterCount' | 'cursorPosition' | '|';
 
 export interface NgxMdeStatusbarItem {
   name: string;

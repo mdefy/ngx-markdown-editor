@@ -194,6 +194,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   @HostBinding('class.material') private get material() {
     return this.materialStyle;
   }
+  @HostBinding('class') private get class() {
+    return this.options.editorTheme;
+  }
   @HostBinding('class.appearance-standard') private get appearanceStandard() {
     return this.materialStyle === true || this.materialStyle === 'standard';
   }

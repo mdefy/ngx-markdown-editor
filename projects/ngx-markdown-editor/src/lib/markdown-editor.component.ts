@@ -115,7 +115,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Emits when the editor's content changes.
    */
-  @Output() contentChange = new ObservableEmitter<{ instance: Editor; changeObj: EditorChangeLinkedList }>();
+  @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();
 
   /**
    * Emits when the editor's cursor is moved.

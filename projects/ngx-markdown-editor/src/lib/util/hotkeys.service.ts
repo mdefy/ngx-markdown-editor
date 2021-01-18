@@ -17,10 +17,11 @@ export class Hotkeys {
    * @param element The HTML element to which the keybinding shall be applied to.
    * @param keys The key combination which shall trigger the event.
    */
+  addKeybinding(element: HTMLElement, keys: string): Observable<KeyboardEvent> {
     const event = `keydown.${keys}`;
 
-    return new Observable((observer) => {
-      const handler = (e: Event) => {
+    return new Observable<KeyboardEvent>((observer) => {
+      const handler = (e: KeyboardEvent) => {
         e.preventDefault();
         observer.next(e);
       };

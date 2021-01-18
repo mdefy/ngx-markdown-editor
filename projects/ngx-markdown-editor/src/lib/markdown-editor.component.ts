@@ -483,7 +483,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     const applySetHeadingLevelShortcut = (shortcut: string) => {
       const s = shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
       return this.hotkeys
-        .addShortcut(this.hostElement.nativeElement, s)
+        .addKeybinding(this.hostElement.nativeElement, s)
         .pipe(takeUntil(this.shortcutResetter))
         .subscribe(() => {
           this.blockBlur = true;
@@ -492,10 +492,10 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
         });
     };
 
-    const applyNgxMdeShortcut = (shortcut: string, action: () => void) => {
+    const applyShortcut = (shortcut: string, action: () => void) => {
       const s = shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
       return this.hotkeys
-        .addShortcut(this.hostElement.nativeElement, s)
+        .addKeybinding(this.hostElement.nativeElement, s)
         .pipe(takeUntil(this.shortcutResetter))
         .subscribe(() => {
           action();
@@ -514,7 +514,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       } else if (item.name in DEFAULT_OPTIONS.shortcuts) {
         shortcuts[item.name] = item.shortcut;
       } else if (item.shortcut) {
-        const subscription = applyNgxMdeShortcut(item.shortcut, item.action);
+        const subscription = applyShortcut(item.shortcut, item.action);
         appliedNgxMdeShortcuts[item.name] = subscription;
       }
     }
@@ -530,7 +530,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
           const item = items.find((i) => i.name === actionName);
           if (item) {
             appliedNgxMdeShortcuts[actionName]?.unsubscribe();
-            applyNgxMdeShortcut(shortcut, item.action);
+            applyShortcut(shortcut, item.action);
           }
         }
       }

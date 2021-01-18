@@ -80,9 +80,11 @@
     &.appearance-standard,
     &.appearance-fill,
     &.appearance-legacy {
-      &.focused .cm-s-mde-material {
+      .cm-s-mde-material {
         padding-bottom: 8px;
+      }
 
+      &.focused .cm-s-mde-material {
         > .underline > .ripple {
           background-color: $primary;
           opacity: 1;

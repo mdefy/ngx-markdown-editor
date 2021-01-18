@@ -9,7 +9,7 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
    * Names of CSS themes to style the editor's appearance. The theme classes are applied to both
    * elements `<ngx-markdown-editor>` and `<div class="CodeMirror">`.
    *
-   * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#theming) for more details
+   * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#theming) for more details.
    */
   editorTheme?: string;
 
@@ -17,7 +17,9 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
    * Names of CSS themes to style the markup of the in-editor markdown syntax.
    * The theme classes are applied to <div class="CodeMirror"> only.
    *
-   * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#theming) for more details
+   * Also checkout the predefined theme [`preview-like-markup`](https://github.com/lenardfunk/ngx-markdown-editor#markup-styling).
+   *
+   * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#theming) for more details.
    */
   markupTheme?: string;
 

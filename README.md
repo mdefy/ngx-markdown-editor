@@ -1,6 +1,47 @@
-# NgxMarkdownEditor
+# Ngx Markdown Editor
 
-_Ngx Markdown Editor_ is a [_Angular_](https://angular.io/) library providing a **WYSIWYG** markdown editor, which is especially intended for users unfamiliar with the _Markdown_ syntax. However, it is also well-suited for advanced users as it provides efficient ways to write markdown, e.g. by using shortcuts or utilizing a preview-like markup theme to get immediate visual response of how the result will look like. In addition, this markdown editor provides high **extensibility** and **customizability** as well as broad and simple options for **internationalization**. Last but not least, by containing an (optional) material theme, this component will perfectly fit into your Angular Material application.
+_Ngx Markdown Editor_ is a [_Angular_](https://angular.io/) library providing a **WYSIWYG** markdown editor, which is especially intended for users unfamiliar with the _Markdown_ syntax. However, it is also well-suited for advanced users as it provides efficient ways to write _Markdown_, e.g. by using shortcuts or utilizing a preview-like markup theme to get immediate visual response of how the result will look like.
+
+In addition, this markdown editor provides high **extensibility** and **customizability** as well as broad and simple options for **internationalization**.
+
+Last but not least, by containing an opt-in material theme, this component will perfectly fit into your [_Angular Material_](https://material.angular.io/) application. If you do not use _Angular Material_ you can easily integrate your own theme.
+
+## Table of contents
+
+- [Ngx Markdown Editor](#ngx-markdown-editor)
+  - [Table of contents](#table-of-contents)
+  - [Dependencies](#dependencies)
+  - [Installation](#installation)
+  - [Getting started](#getting-started)
+  - [Module configuration](#module-configuration)
+  - [Component bindings](#component-bindings)
+    - [Inputs](#inputs)
+    - [Outputs](#outputs)
+  - [Toolbar](#toolbar)
+    - [1. Construct a toolbar from existing items](#1-construct-a-toolbar-from-existing-items)
+    - [2. Configure an existing item](#2-configure-an-existing-item)
+    - [3. Create your own item](#3-create-your-own-item)
+    - [Shortcuts](#shortcuts)
+    - [Icons](#icons)
+  - [Statusbar](#statusbar)
+    - [1. Construct a statusbar from existing items](#1-construct-a-statusbar-from-existing-items)
+    - [2. Configure an existing item](#2-configure-an-existing-item-1)
+    - [3. Create your own item](#3-create-your-own-item-1)
+  - [Internationalization](#internationalization)
+  - [Theming](#theming)
+    - [Editor styling](#editor-styling)
+    - [Markup styling](#markup-styling)
+  - [FAQs](#faqs)
+    - [How to set the editor's content programmatically](#how-to-set-the-editors-content-programmatically)
+    - [How to access the _CodeMirror_ editor instance](#how-to-access-the-codemirror-editor-instance)
+    - [How to listen to an _CodeMirror_ event which is not emitted by `MarkdownEditorComponent`](#how-to-listen-to-an-codemirror-event-which-is-not-emitted-by-markdowneditorcomponent)
+  - [How to contribute](#how-to-contribute)
+    - [Writing issues](#writing-issues)
+    - [Making pull requests](#making-pull-requests)
+  - [Project setup](#project-setup)
+    - [Package manager](#package-manager)
+    - [Commit rules](#commit-rules)
+    - [Coding style guidelines](#coding-style-guidelines)
 
 ## Dependencies
 
@@ -28,7 +69,8 @@ yarn add ngx-markdown-editor
 
 Include `MarkdownEditorModule` into your Angular module and include `<ngx-markdown-editor></ngx-markdown-editor>` into your HTML template.
 
-In order to use the material theme of _Ngx Markdown Editor_ in combination with your global material theme, import the theme file into your `styles.scss` and include the material mixin, where you should pass your app's primary color.
+In order to use the material theme of _Ngx Markdown Editor_ in combination with your global material theme (especially _Angular Material_), import the theme file into your `styles.scss` and include the material mixin, where you should pass your app's primary color.
+You can select from different material styles like in _Angular Material's_ [`MatFormField`](https://material.angular.io/components/form-field/overview) using the [`materialStyle`](#inputs) input property.
 
 ```css
 @import '~ngx-markdown-editor/src/lib/material-theme';
@@ -87,6 +129,11 @@ If you like to use the same configuration for other `MarkdownEditorComponent` in
   </thead>
   <tbody>
     <tr>
+      <td><code>data: string</code></td>
+      <td>Data string to set as content of the editor.</td>
+      <td><code>''</code></td>
+    </tr>
+    <tr>
       <td><code>options: NgxMdeOptions</code></td>
       <td>
         Mainly options from <a href="https://github.com/lenardfunk/markdown-editor-core#configuration-options"><i>Markdown Editor
@@ -105,8 +152,13 @@ If you like to use the same configuration for other `MarkdownEditorComponent` in
       <td>See <a href="#statusbar">statusbar section</a>.</td>
     </tr>
     <tr>
+      <td><code>showTooltips: boolean</code></td>
+      <td>Specifies whether tooltips are shown for toolbar items.</td>
+      <td><code>true</code></td>
+    </tr>
+    <tr>
       <td><code>shortcutsInTooltips: boolean</code></td>
-      <td>Specifies whether keyboard shortcuts are displayed in the tooltips of toolbar items.</td>
+      <td>Specifies whether the applied keyboard shortcuts are included in the tooltips of toolbar items.</td>
       <td><code>true</code></td>
     </tr>
     <tr>
@@ -136,7 +188,7 @@ If you like to use the same configuration for other `MarkdownEditorComponent` in
     </tr>
     <tr>
       <td><code>required: boolean</code></td>
-      <td>Specifies whether editor component is a required field. If <code>true</code>, an asterisk (*) is added to the label. (Apart from that, this has no other effect.)</td>
+      <td>Specifies whether the editor component is a required field. If <code>true</code>, an asterisk (*) is added to the label. (Apart from that, this has no other effect.)</td>
       <td><code>false</code></td>
     </tr>
     <tr>
@@ -249,8 +301,6 @@ Then include this object into the toolbar item array (maybe alongside `NgxMdeIte
 public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 ```
 
-> One side note at this point: if you want to change the keyboard shortcuts of a lot of built-in items you may also do this inside the `options: MarkdownEditorOptions` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbarItems`.
-
 ### 3. Create your own item
 
 This is very similar to configuring an existing item. Example:
@@ -283,6 +333,47 @@ const defaultItem: NgxMdeItem = {
 ```
 
 > Note, that although there is the built-in `setHeadingLevel` dropdown item, so far only custom button items can be constructed in the described way (`setHeadingLevel` is implemented as a special case). This should satisfy most cases. If you require other items as well, you are welcome to fork this repo and/or make a pull request.
+
+### Shortcuts
+
+The default keymap is as follows (on Mac "Ctrl" is replaced with "Cmd"):
+
+| Action                    | Shortcut             |
+| ------------------------- | -------------------- |
+| `setHeadingLevel`         | Shift-Ctrl-Alt-H     |
+| `toggleHeadingLevel`      | Alt-H                |
+| `increaseHeadingLevel`    | Alt-H                |
+| `decreaseHeadingLevel`    | Shift-Alt-H          |
+| `toggleBold`              | Ctrl-B               |
+| `toggleItalic`            | Ctrl-I               |
+| `toggleStrikethrough`     | Ctrl-K               |
+| `toggleUnorderedList`     | Ctrl-L               |
+| `toggleOrderedList`       | Shift-Ctrl-L         |
+| `toggleCheckList`         | Shift-Ctrl-Alt-L     |
+| `toggleQuote`             | Ctrl-Q               |
+| `toggleInlineCode`        | Ctrl-7               |
+| `insertCodeBlock`         | Shift-Ctrl-7         |
+| `insertLink`              | Ctrl-M               |
+| `insertImageLink`         | Shift-Ctrl-M         |
+| `insertTable`             | Ctrl-Alt-T           |
+| `insertHorizontalRule`    | Shift-Ctrl--         |
+| `toggleRichTextMode`      | Alt-R                |
+| `formatContent`           | Alt-F                |
+| `downloadAsFile`          | Shift-Ctrl-S         |
+| `importFromFile`          | Ctrl-Alt-I           |
+| `togglePreview`           | Alt-p                |
+| `toggleSideBySidePreview` | Shift-Alt-P          |
+| `undo`                    | Ctrl-Z               |
+| `redo`                    | Ctrl-Y, Shift-Ctrl-Z |
+| `openMarkdownGuide`       | F1                   |
+
+For shortcuts that come built-in with _CodeMirror_, see [_CodeMirror_ documentation](https://codemirror.net/doc/manual.html#commands).
+
+The primary to configure single shortcuts alongside with other item properties is to use the `toolbarItems` configuration as described in the [toolbar](#toolbar) section.
+
+However, if you want to customize keyboard shortcuts of a lot of (built-in) items you may also do this inside the `options: MarkdownEditorOptions` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbarItems`.
+
+When specifying custom shortcuts, mind the correct order of special keys: **Shift-Cmd-Ctrl-Alt** (see [here](https://codemirror.net/doc/manual.html#keymaps)).
 
 ### Icons
 
@@ -386,6 +477,55 @@ public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 ```
 
 ## Internationalization
+
+_Ngx Markdown Editor_ provides **opt-in internationalization** for many objects like tooltips and even icons.
+To realize this, a generic type named `OptionalI18n<T>` was implemented:
+
+```typescript
+type OptionalI18n<T> = T | ({ default: T } & { [lang in LanguageTag]?: T });
+```
+
+This enables you to specify either the same object for all languages (not using internationalization for this specific object)
+or apply an i18n object for only those language you need. If you use the internationalized version, you are required
+to define a `default` value, that is applied for all languages you do not specify explicitly.
+
+To summarize: you can go **exactly** as far with internationalization as you want to with this component.
+
+## Theming
+
+Theming is an important issue when using third party components to integrate them smoothly into your application.
+Therefore, _Ngx Markdown Editor_ provides default themes as well as an easy way to apply your own theme.
+
+You can style every element inside `<ngx-markdown-editor>` with CSS as the component does not use
+view encapsulation (`ViewEncapsulation.None`). You can also predefine different themes and apply them dynamically.
+
+### Editor styling
+
+The default theme is named `default`. Alternatively you can use the predefined `material` theme and choose from different styles as described in the [_Getting started_](#getting-started) section.
+
+To customize the editor's appearance for your needs, use `options.editorThemes`.
+The theme name specified here, will be applied as is to `<ngx-markdown-editor>` as well as be applied with a `cm-s-` prefix to the `<div class="CodeMirror">` element.
+For further details on CodeMirror's theming, visit the dedicated section on [_CodeMirror_](https://codemirror.net/doc/manual.html#styling).
+
+To apply a customized theme with the name "example"
+
+- specify `{ editorThemes: ["example"]}` in the `options` input property,
+- define the CSS selector `ngx-markdown-editor.example` in a CSS file,
+- define the CSS class `.cm-s-example` to style the _CodeMirror_ element, and
+- make sure to load the CSS file with your app.
+
+If you only want to extend the default theme, you can either define new stylings for the classes `ngx-markdown-editor.default` and `.cm-s-default` and make sure that the "default" theme is applied or you can create your own additional theme and specify two themes in the options: `{ editorThemes: ['default', 'additional-theme'] }`.
+
+### Markup styling
+
+Again, the default theme is named `default` here, which applies the default markup styling from the [`gfm`](https://codemirror.net/mode/gfm/index.html) _CodeMirror_ mode.
+
+Additionally there is a predefined theme `preview-like-markup` which imitates the styling of _Ngx Markdown's_ default styling.
+This makes the markup look as similar to the preview as possible.
+
+To customize the markup styling, use `options.markupThemes`.
+The theme specified here is only applied to the _CodeMirror_ element `<div class="CodeMirror"></div>`.
+For detailed instructions how to define your own markup styling, visit the section on [_Markdown Editor Core_](https://github.com/lenardfunk/markdown-editor-core/#how-to-change-the-markup-styling-eg-heading-bold-).
 
 ## FAQs
 

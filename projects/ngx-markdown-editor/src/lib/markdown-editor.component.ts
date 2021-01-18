@@ -411,7 +411,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    */
   private applyToolbarItems() {
     let items: NgxMdeItemDef[];
-    if (this.toolbarItems?.length) {
+    if (this.toolbarItems.length) {
       items = this.toolbarItems;
     } else {
       items = DEFAULT_TOOLBAR;
@@ -575,7 +575,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    */
   private applyStatusbarItems() {
     let items: NgxMdeStatusbarItemDef[];
-    if (this.statusbarItems?.length) {
+    if (this.statusbarItems.length) {
       items = this.statusbarItems;
     } else {
       items = DEFAULT_STATUSBAR;

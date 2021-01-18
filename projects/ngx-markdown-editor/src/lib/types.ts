@@ -1,17 +1,50 @@
 import { MarkdownEditorAction, MarkdownEditorOptions, MarkdownEditorShortcuts } from 'markdown-editor-core';
 import { Observable } from 'rxjs';
 
+/**
+ * Adjusted and extended options from _Markdown Editor Core_.
+ */
 export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl' | 'shortcuts' | 'theme'> {
+  /**
+   * Names of CSS themes to style the editor's appearance. The theme classes are applied to both
+   * elements `<ngx-markdown-editor>` and `<div class="CodeMirror">`.
+   *
+   * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#theming) for more details
+   */
   editorTheme?: string;
+
+  /**
+   * Names of CSS themes to style the markup of the in-editor markdown syntax.
+   * The theme classes are applied to <div class="CodeMirror"> only.
+   *
+   * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#theming) for more details
+   */
   markupTheme?: string;
+
+  /**
+   * The markdown guide url. Can be internationalized.
+   */
   markdownGuideUrl?: OptionalI18n<string>;
+
+  /**
+   * The
+   */
   shortcuts?: Partial<MarkdownEditorShortcuts> & Partial<Record<Exclude<NgxMdeAdditionalItemName, '|'>, string>>;
 }
 
+/**
+ * Toolbar item definition. Can either be a predefined item name or a item object.
+ */
 export type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
 
+/**
+ * Predefined item name string.
+ */
 export type NgxMdeItemName = MarkdownEditorAction | NgxMdeAdditionalItemName;
 
+/**
+ * Name of an action defined in _Ngx Markdown Editor_ (and not available in _Markdown Editor Core_).
+ */
 type NgxMdeAdditionalItemName =
   | 'undo'
   | 'redo'
@@ -20,16 +53,54 @@ type NgxMdeAdditionalItemName =
   | 'toggleSideBySidePreview'
   | '|';
 
+/**
+ * A toolbar item.
+ */
 export interface NgxMdeItem {
+  /**
+   * The item name.
+   */
   name: string;
+
+  /**
+   * The action being triggered by the item.
+   */
   action?: (...args: any[]) => void;
+
+  /**
+   * The keybinding for the item's action (only keyboard keys allowed).
+   *
+   * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#shortcuts) for how to define key combinations.
+   */
   shortcut?: string;
+
+  /**
+   * A function to determine whether this item should be highlighted as active.
+   * This is checked on every content change, item trigger and cursor activity.
+   */
   isActive?: (...args: any[]) => boolean | number;
+
+  /**
+   * The tooltip content. Can be internationalized.
+   */
   tooltip?: OptionalI18n<string>;
+
+  /**
+   * The icon displayed in the toolbar. Can be internationalized.
+   */
   icon?: OptionalI18n<NgxMdeIcon>;
+
+  /**
+   * Specifies whether this item shall be disabled when the full-size preview is active.
+   */
   disableOnPreview?: boolean;
 }
 
+/**
+ * A normalized toolbar item.
+ *
+ * _Not intended to be used outside of this library. Only made public for access inside component._
+ */
 export interface NgxMdeItemNormalized extends NgxMdeItem {
   name: string;
   action: (...args: any[]) => void;
@@ -40,28 +111,62 @@ export interface NgxMdeItemNormalized extends NgxMdeItem {
   disableOnPreview: boolean;
 }
 
+/**
+ * Statusbar item definition. Can either be a predefined item name or a item object.
+ */
 export type NgxMdeStatusbarItemDef = NgxMdeStatusbarItemName | NgxMdeStatusbarItem;
 
+/**
+ * Predefined item name string.
+ */
 export type NgxMdeStatusbarItemName = 'wordCount' | 'characterCount' | 'cursorPosition' | '|';
 
+/**
+ * A statusbar item.
+ */
 export interface NgxMdeStatusbarItem {
+  /**
+   * The item name.
+   */
   name: string;
+
+  /**
+   * The observable containing the string value that is displayed in the statusbar.
+   */
   value: OptionalI18n<Observable<string>>;
 }
 
+/**
+ * A normalized statusbar item.
+ *
+ * _Not intended to be used outside of this library. Only made public for access inside component._
+ */
 export interface NgxMdeStatusbarItemNormalized extends NgxMdeStatusbarItem {
   name: string;
   value: Observable<string>;
 }
 
+/**
+ * Toolbar icon definition.
+ */
 export type NgxMdeIcon =
   | { format: 'material'; iconName: string }
   | { format: 'svgFile'; iconName: string; runtimePath: string }
   | { format: 'svgString'; iconName: string; svgHtmlString: string };
 
+/**
+ * A generic type for optional internationalization. The result is a union type of either
+ * the plain applied type or a i18n object of the applied type. The i18n object type contains
+ * an obligatory `default` property and optional language properties with language tags as
+ * property names.
+ */
 export type OptionalI18n<T> = T | ({ default: T } & { [lang in LanguageTag]?: T });
 
-// As of ISO 639-1, see https://en.wikipedia.org/w/index.php?title=List_of_ISO_639-1_codes&oldid=978447089
+/**
+ * A language tag as of ISO 639-1.
+ *
+ * @see ISO 639-1 on Wikipedia: https://en.wikipedia.org/w/index.php?title=List_of_ISO_639-1_codes&oldid=978447089
+ */
 export type LanguageTag =
   | 'ab'
   | 'aa'

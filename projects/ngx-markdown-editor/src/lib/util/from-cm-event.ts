@@ -86,6 +86,12 @@ export function fromCmEvent<K extends CodeMirror.DOMEvent & keyof DocumentAndEle
   eventName: K
 ): Observable<{ instance: CodeMirror.Editor; event: DocumentAndElementEventHandlersEventMap[K] }>;
 
+/**
+ * Transforms a _CodeMirror_ event to an RxJS observable.
+ *
+ * @param cm the `CodeMirror.Editor` instance of which the event shall be observed
+ * @param eventName the name of a _CodeMirror_ event
+ */
 export function fromCmEvent(cm: CodeMirror.Editor, eventName: string): Observable<{ instance: CodeMirror.Editor }> {
   return new Observable((subscriber) => {
     const handler = (...args: any[]) => subscriber.next(args.length > 1 ? args : args[0]);

@@ -49,33 +49,131 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   encapsulation: ViewEncapsulation.None,
 })
 export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
+  /**
+   * Options to configure _Ngx Markdown Editor_.
+   *
+   * Basically `MarkdownEditorOptions` from _Markdown Editor Core_ are forwarded,
+   * including some adjustments and extensions.
+   */
   @Input() readonly options: NgxMdeOptions = {};
-  @Input() readonly toolbarItems?: NgxMdeItemDef[];
-  @Input() readonly statusbarItems?: NgxMdeStatusbarItemDef[];
-  @Input() readonly shortcutsInTooltips = true;
-  @Input() readonly materialStyle: boolean | 'standard' | 'fill' | 'legacy' = false;
-  @Input() readonly label?: string;
-  @Input() readonly disabled = false;
-  @Input() readonly showToolbar = true;
-  @Input() readonly showStatusbar = true;
-  @Input() readonly required = false;
+
+  /**
+   * Custom set of toolbar items.
+   */
+  @Input() readonly toolbarItems: NgxMdeItemDef[] = [];
+
+  /**
+   * Custom set of statusbar items.
+   */
+  @Input() readonly statusbarItems: NgxMdeStatusbarItemDef[] = [];
+
+  /**
+   * The current language applied to internationalized items.
+   */
   @Input() readonly language: LanguageTag = 'en';
 
-  @Output() contentChange = new ObservableEmitter<{ instance: Editor; changes: EditorChangeLinkedList[] }>();
+  /**
+   * The label text displayed at the top of the component. The label will be hidden, if this is `undefined`.
+   */
+  @Input() readonly label?: string;
+
+  /**
+   * Specifies whether the editor is a required form field. An asterisk will be appended to the label.
+   */
+  @Input() readonly required = false;
+
+  /**
+   * Specifies whether and which Angular Material style is used.
+   */
+  @Input() readonly materialStyle: boolean | 'standard' | 'fill' | 'legacy' = false;
+
+  /**
+   * Specifies whether the editor is disabled.
+   */
+  @Input() readonly disabled = false;
+
+  /**
+   * Specifies whether the toolbar is rendered.
+   */
+  @Input() readonly showToolbar = true;
+
+  /**
+   * Specifies whether the statusbar is rendered.
+   */
+  @Input() readonly showStatusbar = true;
+
+  /**
+   * Specifies whether tooltips are shown for toolbar items.
+   */
+  @Input() readonly showTooltips = true;
+
+  /**
+   * Specifies whether the key combination is included in the tooltip.
+   */
+  @Input() readonly shortcutsInTooltips = true;
+
+  /**
+   * Emits when the editor's content changes.
+   */
+  @Output() contentChange = new ObservableEmitter<{ instance: Editor; changeObj: EditorChangeLinkedList }>();
+
+  /**
+   * Emits when the editor's cursor is moved.
+   */
   @Output() cursorActivity = new ObservableEmitter<{ instance: Editor }>();
+
+  /**
+   * Emits when the editor receives focus.
+   */
   @Output() editorFocus = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
+
+  /**
+   * Emits when the editor loses focus.
+   */
   @Output() editorBlur = new ObservableEmitter<{ instance: Editor; event: FocusEvent }>();
 
+  /**
+   * The `mat-select` element of `setHeadingLevel`.
+   */
   @ViewChild('setHeadingLevel') setHeadingLevelDropdown: MatSelect;
+
+  /**
+   * The `MarkdownEditor` instance of _Markdown Editor Core_.
+   */
   @ViewChild('markdown') markdown: MarkdownComponent;
 
+  /**
+   * The `MarkdownEditor` instance of _Markdown Editor Core_.
+   */
   public mde: MarkdownEditor;
+
+  /**
+   * _Not intended to be used outside the component. Only made public for access inside template._
+   */
   public normalizedItems: NgxMdeItemNormalized[];
+  /**
+   * _Not intended to be used outside the component. Only made public for access inside template._
+   */
   public activeItems: (boolean | number)[];
+  /**
+   * _Not intended to be used outside the component. Only made public for access inside template._
+   */
   public normalizedStatusbarItems: NgxMdeStatusbarItemNormalized[];
+  /**
+   * _Not intended to be used outside the component. Only made public for access inside template._
+   */
   public showPreview = false;
+  /**
+   * _Not intended to be used outside the component. Only made public for access inside template._
+   */
   public showSideBySidePreview = false;
+  /**
+   * _Not intended to be used outside the component. Only made public for access inside template._
+   */
   public blockBlur = false;
+  /**
+   * _Not intended to be used outside the component. Only made public for access inside template._
+   */
   public focused = false;
 
   private shortcutResetter = new Subject();
@@ -198,7 +296,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Triggered when a toolbar button is clicked.
    *
-   * Not intended to be used outside the component. Only made public for access inside template.
+   * _Not intended to be used outside the component. Only made public for access inside template._
    */
   onButtonClick(item: NgxMdeItemNormalized) {
     item.action();
@@ -210,7 +308,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * Resolves the shortcut for the specified item and appends it to the item's tooltip text,
    * if `shortcutsInTooltips` is enabled.
    *
-   * Not intended to be used outside the component. Only made public for access inside template.
+   * _Not intended to be used outside the component. Only made public for access inside template._
    */
   createTooltip(item: NgxMdeItemNormalized): string {
     let shortcut: string | undefined = item.shortcut || this.mde.getShortcuts()[item.name];
@@ -224,7 +322,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Replaces the checkbox dummies rendered inside the preview with actual checkboxes (also see constructor).
    *
-   * Not intended to be used outside the component. Only made public for access inside template.
+   * _Not intended to be used outside the component. Only made public for access inside template._
    */
   replaceCheckboxDummies() {
     this.markdown?.element.nativeElement.querySelectorAll('li').forEach((el) =>

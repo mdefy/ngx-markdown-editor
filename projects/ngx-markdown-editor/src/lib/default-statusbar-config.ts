@@ -6,16 +6,30 @@ import { fromCmEvent } from './util/from-cm-event';
 
 let DEFAULT_STATUSBAR_ITEMS: NgxMdeStatusbarItemNormalized[];
 
+/**
+ * The default statusbar setup.
+ */
 export const DEFAULT_STATUSBAR: NgxMdeStatusbarItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
 
+/**
+ * Returns the default configuration of the item with the specified name.
+ * Returns `undefined`, if no item with the specified name can be found.
+ */
 export function getDefaultStatusbarItem(itemName: string): NgxMdeStatusbarItemNormalized | undefined {
   return getDefaultStatusbarItems().find((i) => i.name === itemName);
 }
 
+/**
+ * Returns the default configurations of all items.
+ */
 export function getDefaultStatusbarItems(): NgxMdeStatusbarItemNormalized[] {
   return DEFAULT_STATUSBAR_ITEMS;
 }
 
+/**
+ * Defines the default statusbar items.
+ * Cannot be done statically as the values depend on the `MarkdownEditor` instance.
+ */
 export function defineDefaultStatusbarItems(mde: MarkdownEditor) {
   const defaultItems: NgxMdeStatusbarItemNormalized[] = [
     {

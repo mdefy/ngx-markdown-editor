@@ -1,4 +1,6 @@
-<div *ngIf="label" id="ngx-markdown-editor-label">{{ label }} {{ required ? '*' : '' }}</div>
+<div *ngIf="label" id="ngx-markdown-editor-label">
+  {{ label }} <span class="required-marker">{{ required ? '*' : '' }}</span>
+</div>
 <div *ngIf="showToolbar" id="ngx-markdown-editor-toolbar">
   <ng-container *ngFor="let item of normalizedItems; index as i" [ngSwitch]="item.name">
     <ng-template [ngSwitchCase]="'|'">
@@ -34,7 +36,7 @@
         (mousedown)="blockBlur = true"
         (mouseup)="blockBlur = false"
         (click)="onButtonClick(item)"
-        [matTooltip]="createTooltip(item)"
+        [matTooltip]="showTooltips ? createTooltip(item) : ''"
         [class.active]="activeItems[i]"
         [disabled]="disabled || (showPreview && item.disableOnPreview)"
       >

@@ -391,6 +391,14 @@ public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 
 ### How to set the editor's content programmatically
 
+You can either set the content using the input property `data` (one-way binding, not like `ngModel`):
+
+```html
+<ngx-markdown-editor [data]="'Content changes whenever this input changes'"></ngx-markdown-editor>
+```
+
+Or you can do it using the `MarkdownEditorComponent` instance:
+
 ```typescript
 @ViewChild(MarkdownEditorComponent) ngxMde: MarkdownEditorComponent;
 ```

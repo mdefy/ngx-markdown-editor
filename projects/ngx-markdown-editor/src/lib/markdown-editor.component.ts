@@ -7,6 +7,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  SimpleChange,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -49,6 +51,11 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   encapsulation: ViewEncapsulation.None,
 })
 export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
+  /**
+   * Data string to set as content of the editor.
+   */
+  @Input() readonly data: string = '';
+
   /**
    * Options to configure _Ngx Markdown Editor_.
    *
@@ -229,7 +236,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
 
     // Necessary to apply `this.mde` instance to default toolbar items
     // as `ngOnChanges()` is executed before `ngOnInit()`.
-    this.ngOnChanges();
+    this.ngOnChanges({ data: new SimpleChange(undefined, this.data, true) });
 
     this.activeItems = Array.from(this.normalizedItems, () => false);
     fromCmEvent(this.mde.cm, 'focus').subscribe(() => {
@@ -246,14 +253,15 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * @inheritdoc
    */
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.mde) {
       this.applyToolbarItems();
       this.applyStatusbarItems();
       this.applyDisabled();
       this.mde.setOptions(this.mapOptions(this.options));
-      console.log(this.options.shortcuts);
-      console.log(this.mapOptions(this.options)?.shortcuts);
+      if (changes.data) {
+        this.mde.setContent(changes.data.currentValue);
+      }
       this.determineActiveButtons();
       this.setCodeMirrorClasses();
       this.applyMaterialStyle();

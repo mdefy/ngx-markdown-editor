@@ -226,7 +226,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * @inheritdoc
    */
   ngOnInit(): void {
-    const wrapper = document.getElementById('ngx-markdown-editor-text-editor') as HTMLElement;
+    const wrapper = this.hostElement.nativeElement.querySelector('.ngx-markdown-editor-text-editor') as HTMLElement;
     this.mde = new MarkdownEditor(wrapper, this.mapOptions(this.options));
 
     this.contentChange.emitObservable(fromCmEvent(this.mde.cm, 'changes'));
@@ -288,7 +288,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.showSideBySidePreview = false;
     if (this.showPreview) {
       // Necessary to wait until Angular change detector has finished
-      setTimeout(() => document.getElementById('ngx-markdown-editor-wrapper')?.focus(), 100);
+      setTimeout(() => this.hostElement.nativeElement.querySelector('.ngx-markdown-editor-wrapper')?.focus(), 100);
     } else {
       // Necessary to wait until Angular change detector has finished
       setTimeout(() => this.mde.focus(), 100);
@@ -667,7 +667,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * an underline element known from Angular Material `mat-input` form fields.
    */
   private applyMaterialStyle() {
-    const codemirror = document.querySelector('ngx-markdown-editor .CodeMirror');
+    const codemirror = this.hostElement.nativeElement.querySelector('.CodeMirror');
     if (codemirror) {
       const underline = codemirror.querySelector('.underline');
       if (this.materialStyle) {
@@ -683,7 +683,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
         underline?.remove();
       }
     }
-    const preview = document.querySelector('ngx-markdown-editor #ngx-markdown-editor-preview');
+    const preview = this.hostElement.nativeElement.querySelector('.ngx-markdown-editor-preview');
     if (preview) {
       const underline = preview.querySelector('.underline');
       if (this.materialStyle) {
@@ -702,7 +702,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * Adds and removes classes to/from the CodeMirror element according to configuration.
    */
   private setCodeMirrorClasses() {
-    const codemirror = document.querySelector('ngx-markdown-editor .CodeMirror');
+    const codemirror = this.hostElement.nativeElement.querySelector('.CodeMirror');
     if (this.options.lineNumbers) {
       codemirror?.classList.add('CodeMirror-lineNumbers');
     } else {

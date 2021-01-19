@@ -1,6 +1,6 @@
 @mixin mde-material($primary) {
   ngx-markdown-editor.material {
-    #ngx-markdown-editor-label {
+    .ngx-markdown-editor-label {
       font-size: 0.75em;
       color: rgba(0, 0, 0, 0.6);
       padding: 6px 12px;
@@ -9,7 +9,7 @@
       }
     }
 
-    #ngx-markdown-editor-toolbar {
+    .ngx-markdown-editor-toolbar {
       border-radius: 0;
       border: none;
       border-top: 1px solid #bbb;
@@ -62,7 +62,7 @@
       }
     }
 
-    #ngx-markdown-editor-preview {
+    .ngx-markdown-editor-preview {
       position: relative;
 
       > .underline {
@@ -81,7 +81,7 @@
     &.appearance-fill,
     &.appearance-legacy {
       .cm-s-mde-material {
-        padding-bottom: 8px;
+        padding-bottom: 20px;
       }
 
       &.focused .cm-s-mde-material {
@@ -110,17 +110,17 @@
     }
 
     &.appearance-fill {
-      #ngx-markdown-editor-label,
-      #ngx-markdown-editor-toolbar,
+      .ngx-markdown-editor-label,
+      .ngx-markdown-editor-toolbar,
       .cm-s-mde-material {
         background-color: #f0f0f0;
       }
 
-      #ngx-markdown-editor-label {
+      .ngx-markdown-editor-label {
         padding: 12px;
       }
 
-      #ngx-markdown-editor-preview {
+      .ngx-markdown-editor-preview {
         background-color: #e5e5e5;
       }
     }
@@ -152,7 +152,7 @@
           }
         }
 
-        #ngx-markdown-editor-preview {
+        .ngx-markdown-editor-preview {
           background-color: transparent;
           > .underline {
             background-color: transparent;
@@ -169,12 +169,12 @@
       }
 
       &.appearance-fill {
-        #ngx-markdown-editor-label {
+        .ngx-markdown-editor-label {
           color: rgba(0, 0, 0, 0.38);
           background-color: #f5f5f5;
         }
 
-        #ngx-markdown-editor-toolbar {
+        .ngx-markdown-editor-toolbar {
           background-color: #f5f5f5;
         }
 
@@ -186,11 +186,11 @@
           }
         }
 
-        #ngx-markdown-editor-statusbar {
+        .ngx-markdown-editor-statusbar {
           color: rgba(0, 0, 0, 0.38);
         }
 
-        #ngx-markdown-editor-preview {
+        .ngx-markdown-editor-preview {
           background-color: #f5f5f5;
 
           > .underline {

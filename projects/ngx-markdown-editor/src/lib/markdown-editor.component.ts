@@ -322,7 +322,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
   createTooltip(item: NgxMdeItemNormalized): string {
-    let shortcut: string | undefined = item.shortcut || this.mde.getShortcuts()[item.name];
+    let shortcut: string | undefined = this.mde.getShortcuts()[item.name] || item.shortcut;
     if (item.name === 'undo') shortcut = 'Ctrl-Z';
     else if (item.name === 'redo') shortcut = 'Shift-Ctrl-Z';
     if (/Mac/.test(navigator.platform)) shortcut = shortcut?.replace(/Ctrl/gi, 'Cmd');
@@ -533,15 +533,19 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     for (const actionName in this.options.shortcuts) {
       if (!(actionName in DEFAULT_OPTIONS.shortcuts) && shortcuts[actionName]) {
         const shortcut = shortcuts[actionName];
-        console.log(shortcut);
         if (actionName === 'setHeadingLevel') {
-          appliedNgxMdeShortcuts[actionName]?.unsubscribe();
-          applySetHeadingLevelShortcut(shortcut);
+          const item = items.find((i) => i.name === actionName);
+          if (item) {
+            appliedNgxMdeShortcuts[actionName]?.unsubscribe();
+            applySetHeadingLevelShortcut(shortcut);
+            item.shortcut = shortcut;
+          }
         } else {
           const item = items.find((i) => i.name === actionName);
           if (item) {
             appliedNgxMdeShortcuts[actionName]?.unsubscribe();
             applyShortcut(shortcut, item.action);
+            item.shortcut = shortcut;
           }
         }
       }

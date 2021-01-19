@@ -240,6 +240,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     // Necessary to apply `this.mde` instance to default toolbar items
     // as `ngOnChanges()` is executed before `ngOnInit()`.
     this.ngOnChanges({ data: new SimpleChange(undefined, this.data, true) });
+    this.mde.cm.clearHistory();
 
     this.activeItems = Array.from(this.normalizedItems, () => false);
     fromCmEvent(this.mde.cm, 'focus').subscribe(() => {
@@ -491,6 +492,10 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * the `<ngx-markdown-editor>` element.
    */
   private applyShortcuts(items: NgxMdeItemNormalized[]) {
+    if (this.options.shortcutsEnabled === 'none') {
+      return;
+    }
+
     const applySetHeadingLevelShortcut = (shortcut: string) => {
       const s = shortcut.replace(/(\w)-/gi, '$1.').replace(/Ctrl/gi, 'Control').replace(/Cmd/gi, 'Meta');
       return this.hotkeys
@@ -515,7 +520,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     this.shortcutResetter.next();
-    const shortcuts = this.options.shortcuts || {};
+    const shortcuts = {};
     const appliedNgxMdeShortcuts: { [name: string]: Subscription | undefined } = {};
 
     for (const item of items) {
@@ -531,8 +536,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     for (const actionName in this.options.shortcuts) {
-      if (!(actionName in DEFAULT_OPTIONS.shortcuts) && shortcuts[actionName]) {
-        const shortcut = shortcuts[actionName];
+      if (this.options.shortcuts[actionName]) {
+        const shortcut = this.options.shortcuts[actionName];
         if (actionName === 'setHeadingLevel') {
           const item = items.find((i) => i.name === actionName);
           if (item) {
@@ -540,12 +545,19 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
             applySetHeadingLevelShortcut(shortcut);
             item.shortcut = shortcut;
           }
+        } else if (actionName in DEFAULT_OPTIONS.shortcuts) {
+          shortcuts[actionName] = shortcut;
         } else {
           const item = items.find((i) => i.name === actionName);
+          const defaultItem = getDefaultItem(actionName);
           if (item) {
             appliedNgxMdeShortcuts[actionName]?.unsubscribe();
             applyShortcut(shortcut, item.action);
             item.shortcut = shortcut;
+          }
+          if (defaultItem) {
+            appliedNgxMdeShortcuts[actionName]?.unsubscribe();
+            applyShortcut(shortcut, defaultItem.action);
           }
         }
       }

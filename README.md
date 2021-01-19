@@ -22,6 +22,7 @@ Last but not least, by containing an opt-in material theme, this component will 
     - [2. Configure an existing item](#2-configure-an-existing-item)
     - [3. Create your own item](#3-create-your-own-item)
     - [Shortcuts](#shortcuts)
+      - [Disabling shortcuts](#disabling-shortcuts)
     - [Icons](#icons)
   - [Statusbar](#statusbar)
     - [1. Construct a statusbar from existing items](#1-construct-a-statusbar-from-existing-items)
@@ -371,9 +372,15 @@ For shortcuts that come built-in with _CodeMirror_, see [_CodeMirror_ documentat
 
 The primary to configure single shortcuts alongside with other item properties is to use the `toolbarItems` configuration as described in the [toolbar](#toolbar) section.
 
-However, if you want to customize keyboard shortcuts of a lot of (built-in) items you may also do this inside the `options: MarkdownEditorOptions` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbarItems`.
+However, if you want to customize keyboard shortcuts of a lot of (built-in) items you may also do this inside the `options: NgxMdeOptions` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbarItems`.
 
 When specifying custom shortcuts, mind the correct order of special keys: **Shift-Cmd-Ctrl-Alt** (see [here](https://codemirror.net/doc/manual.html#keymaps)).
+
+#### Disabling shortcuts
+
+As per default, keyboard shortcuts are always functioning for all built-in toolbar items, even when they are not included into the visible toolbar, in order to enable users to efficiently write _Markdown_.
+However, you can configure this behavior inside the `options: NgxMdeOptions` input property with `options.shortcutsEnabled`.
+You can either disable shortcuts completely (`shortcutsEnabled: 'none'`) or only enable them for items included in the toolbar or specified in `options.shortcuts` (`shortcutsEnabled: 'customOnly'`).
 
 ### Icons
 

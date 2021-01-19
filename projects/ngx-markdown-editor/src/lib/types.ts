@@ -29,7 +29,7 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
   markdownGuideUrl?: OptionalI18n<string>;
 
   /**
-   * The
+   * Custom keyboard shortcuts for editor actions.
    */
   shortcuts?: Partial<MarkdownEditorShortcuts> & Partial<Record<Exclude<NgxMdeAdditionalItemName, '|'>, string>>;
 }
@@ -157,8 +157,8 @@ export type NgxMdeIcon =
   | { format: 'svgString'; iconName: string; svgHtmlString: string };
 
 /**
- * A generic type for optional internationalization. The result is a union type of either
- * the plain applied type or a i18n object of the applied type. The i18n object type contains
+ * A generic type for optional internationalization. The result is a union type of
+ * the plain applied type and an i18n object of the applied type. The i18n object type contains
  * an obligatory `default` property and optional language properties with language tags as
  * property names.
  */

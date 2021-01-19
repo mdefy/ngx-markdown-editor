@@ -165,7 +165,11 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  public normalizedStatusbarItems: StatusbarItemNormalized[];
+  public toolbarItemTooltips: string[] = [];
+  /**
+   * _Not intended to be used outside the component. Only made public for access inside template._
+   */
+  public normalizedStatusbarItems: StatusbarItemNormalized[] = [];
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
@@ -242,7 +246,6 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.ngOnChanges({ data: new SimpleChange(undefined, this.data, true) });
     this.mde.cm.clearHistory();
 
-    this.activeItems = Array.from(this.normalizedItems, () => false);
     fromCmEvent(this.mde.cm, 'focus').subscribe(() => {
       this.focused = true;
     });
@@ -259,13 +262,18 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    */
   ngOnChanges(changes: SimpleChanges) {
     if (this.mde) {
-      this.applyToolbarItems();
-      this.applyStatusbarItems();
+      if (this.showToolbar) {
+        this.applyToolbarItems();
+      }
+      if (this.showStatusbar) {
+        this.applyStatusbarItems();
+      }
       this.applyDisabled();
       this.mde.setOptions(this.mapOptions(this.options));
       if (changes.data) {
         this.mde.setContent(changes.data.currentValue);
       }
+      this.createTooltips();
       this.determineActiveButtons();
       this.setCodeMirrorClasses();
       this.applyMaterialStyle();
@@ -479,6 +487,17 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
         icon: (toolbarItem.icon && getIcon(toolbarItem.icon)) || defaultItem.icon,
         disableOnPreview: toolbarItem.disableOnPreview || defaultItem?.disableOnPreview,
       };
+    }
+  }
+
+  /**
+   * Creates tooltips for all configured toolbar items and stores them in `this.toolbarItemTooltips`.
+   */
+  private createTooltips() {
+    this.toolbarItemTooltips = new Array(this.normalizedToolbarItems.length);
+    for (let i = 0; i < this.normalizedToolbarItems.length; i++) {
+      const item = this.normalizedToolbarItems[i];
+      this.toolbarItemTooltips[i] = this.showTooltips ? this.createTooltip(item) : '';
     }
   }
 

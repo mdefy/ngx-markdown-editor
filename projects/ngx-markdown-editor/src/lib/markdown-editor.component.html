@@ -8,7 +8,7 @@
     </ng-template>
 
     <ng-template [ngSwitchCase]="'setHeadingLevel'">
-      <mat-form-field floatLabel="never" [matTooltip]="createTooltip(item)">
+      <mat-form-field floatLabel="never" [matTooltip]="toolbarItemTooltips[i]">
         <mat-label>
           <mat-icon *ngIf="item.icon.format === 'material'">
             {{ item.icon.iconName }}
@@ -36,6 +36,7 @@
         (mousedown)="blockBlur = true"
         (mouseup)="blockBlur = false"
         (click)="onButtonClick(item)"
+        [matTooltip]="toolbarItemTooltips[i]"
         [class.active]="activeToolbarItems[i]"
         [disabled]="disabled || (showPreview && item.disableOnPreview)"
       >

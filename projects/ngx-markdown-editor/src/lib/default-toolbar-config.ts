@@ -1,8 +1,8 @@
 import { MarkdownEditor } from 'markdown-editor-core';
 import { MarkdownEditorComponent } from './markdown-editor.component';
-import { ItemNormalized, ToolbarItemName } from './types';
+import { ToolbarItemName, ToolbarItemNormalized } from './types';
 
-let DEFAULT_TOOLBAR_ITEMS: ItemNormalized[];
+let DEFAULT_TOOLBAR_ITEMS: ToolbarItemNormalized[];
 
 /**
  * The default toolbar setup.
@@ -48,14 +48,14 @@ export const DEFAULT_TOOLBAR: ToolbarItemName[] = [
  * Returns the default configuration of the item with the specified name.
  * Returns `undefined`, if no item with the specified name can be found.
  */
-export function getDefaultItem(itemName: string): ItemNormalized | undefined {
-  return getDefaultItems().find((i) => i.name === itemName);
+export function getDefaultToolbarItem(itemName: string): ToolbarItemNormalized | undefined {
+  return getDefaultToolbarItems().find((i) => i.name === itemName);
 }
 
 /**
  * Returns the default configurations of all items.
  */
-export function getDefaultItems(): ItemNormalized[] {
+export function getDefaultToolbarItems(): ToolbarItemNormalized[] {
   return DEFAULT_TOOLBAR_ITEMS;
 }
 
@@ -64,7 +64,7 @@ export function getDefaultItems(): ItemNormalized[] {
  * Cannot be done statically as the actions depend on the `MarkdownEditorComponent` instance.
  */
 export function defineDefaultToolbarItems(ngxMde: MarkdownEditorComponent) {
-  const defaultItems: ItemNormalized[] = [
+  const defaultItems: ToolbarItemNormalized[] = [
     {
       name: 'setHeadingLevel',
       action: (level: 0 | 1 | 2 | 3 | 4 | 5 | 6) => ngxMde.mde.setHeadingLevel(level),

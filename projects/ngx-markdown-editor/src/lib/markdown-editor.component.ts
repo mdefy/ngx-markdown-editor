@@ -22,16 +22,16 @@ import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
-import { DEFAULT_TOOLBAR, defineDefaultToolbarItems, getDefaultItem } from './default-toolbar-config';
+import { DEFAULT_TOOLBAR, defineDefaultToolbarItems, getDefaultToolbarItem } from './default-toolbar-config';
 import {
   Icon,
-  ItemNormalized,
   LanguageTag,
   OptionalI18n,
   Options,
   StatusbarItemDef,
   StatusbarItemNormalized,
   ToolbarItemDef,
+  ToolbarItemNormalized,
 } from './types';
 import { fromCmEvent } from './util/from-cm-event';
 import { Hotkeys } from './util/hotkeys.service';
@@ -157,11 +157,11 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  public normalizedItems: ItemNormalized[];
+  public normalizedToolbarItems: ToolbarItemNormalized[] = [];
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  public activeItems: (boolean | number)[];
+  public activeToolbarItems: (boolean | number)[] = [];
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
@@ -310,7 +310,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    *
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  onButtonClick(item: ItemNormalized) {
+  onButtonClick(item: ToolbarItemNormalized) {
     item.action();
     this.mde.focus();
     this.determineActiveButtons();
@@ -322,7 +322,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    *
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  createTooltip(item: ItemNormalized): string {
+  createTooltip(item: ToolbarItemNormalized): string {
     let shortcut: string | undefined = this.mde.getShortcuts()[item.name] || item.shortcut;
     if (item.name === 'undo') shortcut = 'Ctrl-Z';
     else if (item.name === 'redo') shortcut = 'Shift-Ctrl-Z';
@@ -415,7 +415,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       items = DEFAULT_TOOLBAR;
     }
-    this.normalizedItems = [];
+    this.normalizedToolbarItems = [];
     for (const toolbarItem of items) {
       const item = this.getNormalizedItem(toolbarItem);
       if (!item) {
@@ -423,9 +423,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
         continue;
       }
       this.addSvgIcon(item);
-      this.normalizedItems.push(item);
+      this.normalizedToolbarItems.push(item);
     }
-    this.applyShortcuts(this.normalizedItems);
+    this.applyShortcuts(this.normalizedToolbarItems);
   }
 
   /**
@@ -440,7 +440,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * - For custom items specified fully, returns as is.
    * - For unknown items specified by name string, returns `undefined`.
    */
-  private getNormalizedItem(toolbarItem: ToolbarItemDef): ItemNormalized | undefined {
+  private getNormalizedItem(toolbarItem: ToolbarItemDef): ToolbarItemNormalized | undefined {
     const getTooltip = (tooltip: OptionalI18n<string>): string => {
       if (typeof tooltip === 'string') {
         return tooltip;
@@ -458,9 +458,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     if (typeof toolbarItem === 'string') {
-      return getDefaultItem(toolbarItem);
+      return getDefaultToolbarItem(toolbarItem);
     } else {
-      let defaultItem = getDefaultItem(toolbarItem.name);
+      let defaultItem = getDefaultToolbarItem(toolbarItem.name);
       if (!defaultItem) {
         defaultItem = {
           name: '',
@@ -489,7 +489,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * modified. For items that are specific to _Ngx Markdown Editor_ keybindings are applied to
    * the `<ngx-markdown-editor>` element.
    */
-  private applyShortcuts(items: ItemNormalized[]) {
+  private applyShortcuts(items: ToolbarItemNormalized[]) {
     if (this.options.shortcutsEnabled === 'none') {
       return;
     }
@@ -547,7 +547,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
           shortcuts[actionName] = shortcut;
         } else {
           const item = items.find((i) => i.name === actionName);
-          const defaultItem = getDefaultItem(actionName);
+          const defaultItem = getDefaultToolbarItem(actionName);
           if (item) {
             appliedNgxMdeShortcuts[actionName]?.unsubscribe();
             applyShortcut(shortcut, item.action);
@@ -566,7 +566,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Adds the SVG specified inside `item.icon` to the injected `MatIconRegistry` instance.
    */
-  private addSvgIcon(item: ItemNormalized) {
+  private addSvgIcon(item: ToolbarItemNormalized) {
     switch (item.icon.format) {
       case 'svgString':
         this.iconRegistry.addSvgIconLiteral(
@@ -637,13 +637,13 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * Executes the `item.isActive()` function for all toolbar items and saves the state in `activeItems`.
    */
   private determineActiveButtons() {
-    this.activeItems = new Array(this.normalizedItems.length);
-    for (let i = 0; i < this.normalizedItems.length; i++) {
-      const item = this.normalizedItems[i];
+    this.activeToolbarItems = new Array(this.normalizedToolbarItems.length);
+    for (let i = 0; i < this.normalizedToolbarItems.length; i++) {
+      const item = this.normalizedToolbarItems[i];
       if (item.isActive) {
-        this.activeItems[i] = item.isActive();
+        this.activeToolbarItems[i] = item.isActive();
       } else {
-        this.activeItems[i] = false;
+        this.activeToolbarItems[i] = false;
       }
     }
   }

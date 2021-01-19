@@ -103,7 +103,7 @@ export interface ToolbarItem {
  *
  * _Not intended to be used outside of this library. Only made public for access inside component._
  */
-export interface ItemNormalized extends ToolbarItem {
+export interface ToolbarItemNormalized extends ToolbarItem {
   name: string;
   action: (...args: any[]) => void;
   shortcut?: string;

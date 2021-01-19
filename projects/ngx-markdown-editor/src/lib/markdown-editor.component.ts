@@ -521,6 +521,20 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     const shortcuts = {};
     const appliedNgxMdeShortcuts: { [name: string]: Subscription | undefined } = {};
 
+    if (this.options.shortcutsEnabled !== 'customOnly') {
+      const previewItem = getDefaultToolbarItem('togglePreview');
+      if (previewItem?.shortcut) {
+        const subscription = applyShortcut(previewItem.shortcut, previewItem.action);
+        appliedNgxMdeShortcuts[previewItem.name] = subscription;
+      }
+
+      const sideBySidePreviewItem = getDefaultToolbarItem('toggleSideBySidePreview');
+      if (sideBySidePreviewItem?.shortcut) {
+        const subscription = applyShortcut(sideBySidePreviewItem.shortcut, sideBySidePreviewItem.action);
+        appliedNgxMdeShortcuts[sideBySidePreviewItem.name] = subscription;
+      }
+    }
+
     for (const item of items) {
       if (item.name === 'setHeadingLevel' && item.shortcut) {
         const subscription = applySetHeadingLevelShortcut(item.shortcut);
@@ -528,6 +542,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       } else if (item.name in DEFAULT_OPTIONS.shortcuts) {
         shortcuts[item.name] = item.shortcut;
       } else if (item.shortcut) {
+        appliedNgxMdeShortcuts[item.name]?.unsubscribe();
         const subscription = applyShortcut(item.shortcut, item.action);
         appliedNgxMdeShortcuts[item.name] = subscription;
       }

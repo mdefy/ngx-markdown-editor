@@ -67,12 +67,12 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Custom set of toolbar items.
    */
-  @Input() readonly toolbarItems: NgxMdeItemDef[] = [];
+  @Input() readonly toolbar: NgxMdeItemDef[] = [];
 
   /**
    * Custom set of statusbar items.
    */
-  @Input() readonly statusbarItems: NgxMdeStatusbarItemDef[] = [];
+  @Input() readonly statusbar: NgxMdeStatusbarItemDef[] = [];
 
   /**
    * The current language applied to internationalized items.
@@ -410,8 +410,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    */
   private applyToolbarItems() {
     let items: NgxMdeItemDef[];
-    if (this.toolbarItems.length) {
-      items = this.toolbarItems;
+    if (this.toolbar.length) {
+      items = this.toolbar;
     } else {
       items = DEFAULT_TOOLBAR;
     }
@@ -589,8 +589,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    */
   private applyStatusbarItems() {
     let items: NgxMdeStatusbarItemDef[];
-    if (this.statusbarItems.length) {
-      items = this.statusbarItems;
+    if (this.statusbar.length) {
+      items = this.statusbar;
     } else {
       items = DEFAULT_STATUSBAR;
     }

@@ -143,7 +143,7 @@ If you like to use the same configuration for other `MarkdownEditorComponent` in
       <td><code>{}</code></td>
     </tr>
     <tr>
-      <td><code>toolbarItems: NgxMdeItemDef[]</code></td>
+      <td><code>toolbar: NgxMdeItemDef[]</code></td>
       <td>Toolbar configuration. Can contain names of predefined items or objects of custom items.</td>
       <td>See <a href="#toolbar">toolbar section</a>.</td>
     </tr>
@@ -240,9 +240,9 @@ The toolbar is highly configurable and comes with many built-in items. You can s
 - reconfigure existing items,
 - and even define whole new items (currently only buttons supported).
 
-If you do not specify anything at all for the `toolbarItems` input property, the default toolbar setup is applied.
+If you do not specify anything at all for the `toolbar` input property, the default toolbar setup is applied.
 
-The `toolbarItems` input property in an array of type
+The `toolbar` input property in an array of type
 
 ```typescript
 type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
@@ -264,10 +264,10 @@ interface NgxMdeItem {
 
 > For details about the `OptionalI18n<T>` type, see [Internationalization](#internationalization) section.
 
-In the following, we always apply a JavaScript variable to the `toolbarItems` input property:
+In the following, we always apply a JavaScript variable to the `toolbar` input property:
 
 ```html
-<ngx-markdown-editor [toolbarItems]="toolbarItems"></ngx-markdown-editor>
+<ngx-markdown-editor [toolbar]="toolbar"></ngx-markdown-editor>
 ```
 
 ### 1. Construct a toolbar from existing items
@@ -276,7 +276,7 @@ To build a toolbar from existing items, simply create an array of type `NgxMdeIt
 Additionally, there is a separator element, which you can insert at any position with `'|'`.
 
 ```typescript
-public toolbarItems: NgxMdeItemName[] = ['toggleBold', 'toggleItalic', '|', 'insertLink', '|', 'openMarkdownGuide'];
+public toolbar: NgxMdeItemName[] = ['toggleBold', 'toggleItalic', '|', 'insertLink', '|', 'openMarkdownGuide'];
 ```
 
 The naming convention for items is to use the name of the function that is triggered by the item.
@@ -299,7 +299,7 @@ const newToggleBoldItem: NgxMdeItem = {
 Then include this object into the toolbar item array (maybe alongside `NgxMdeItemName`s):
 
 ```typescript
-public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
+public toolbar: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 ```
 
 ### 3. Create your own item
@@ -370,9 +370,9 @@ The default keymap is as follows (on Mac "Ctrl" is replaced with "Cmd"):
 
 For shortcuts that come built-in with _CodeMirror_, see [_CodeMirror_ documentation](https://codemirror.net/doc/manual.html#commands).
 
-The primary to configure single shortcuts alongside with other item properties is to use the `toolbarItems` configuration as described in the [toolbar](#toolbar) section.
+The primary to configure single shortcuts alongside with other item properties is to use the `toolbar` configuration as described in the [toolbar](#toolbar) section.
 
-However, if you want to customize keyboard shortcuts of a lot of (built-in) items you may also do this inside the `options: NgxMdeOptions` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbarItems`.
+However, if you want to customize keyboard shortcuts of a lot of (built-in) items you may also do this inside the `options: NgxMdeOptions` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbar`.
 
 When specifying custom shortcuts, mind the correct order of special keys: **Shift-Cmd-Ctrl-Alt** (see [here](https://codemirror.net/doc/manual.html#keymaps)).
 
@@ -426,7 +426,7 @@ Depending on the format of your icon you might need to adjust the icon via CSS, 
 
 Configuring the statusbar is very similar to configuring the toolbar, only simpler as there are only two properties for an item.
 
-The `statusbarItems` input property is an array of type
+The `statusbar` input property is an array of type
 
 ```typescript
 type NgxMdeStatusbarItemDef = NgxMdeStatusbarItemName | NgxMdeStatusbarItem;
@@ -445,10 +445,10 @@ The `value` of an item is a observable (or an internationalized version of it), 
 
 > For details about the `OptionalI18n<T>` type, see [Internationalization](#internationalization) section.
 
-In the following, we always apply a JavaScript variable to the `toolbarItems` input property:
+In the following, we always apply a JavaScript variable to the `toolbar` input property:
 
 ```html
-<ngx-markdown-editor [toolbarItems]="toolbarItems"></ngx-markdown-editor>
+<ngx-markdown-editor [toolbar]="toolbar"></ngx-markdown-editor>
 ```
 
 ### 1. Construct a statusbar from existing items
@@ -457,7 +457,7 @@ To build a statusbar from existing items, simply create an array of type `NgxMde
 Additionally, there is a separator element, which you can insert at any position with `'|'`.
 
 ```typescript
-public statusbarItems: NgxMdeItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
+public statusbar: NgxMdeItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
 ```
 
 The naming convention for items is to use the name of the subject / value that is displayed.
@@ -480,7 +480,7 @@ const myItem: NgxMdeItem = {
 Then include this object into the statusbar item array (maybe alongside `NgxMdeStatusbarItemName`s):
 
 ```typescript
-public toolbarItems: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
+public toolbar: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 ```
 
 ## Internationalization
@@ -516,7 +516,7 @@ For further details on CodeMirror's theming, visit the dedicated section on [_Co
 
 To apply a customized theme with the name "example"
 
-- specify `{ editorThemes: ["example"]}` in the `options` input property,
+- specify `{ editorThemes: ['example']}` in the `options` input property,
 - define the CSS selector `ngx-markdown-editor.example` in a CSS file,
 - define the CSS class `.cm-s-example` to style the _CodeMirror_ element, and
 - make sure to load the CSS file with your app.

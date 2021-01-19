@@ -9,13 +9,13 @@ export * from './lib/markdown-editor.module';
 export {
   LanguageTag,
   NgxMdeIcon,
-  NgxMdeItem,
-  NgxMdeItemDef,
-  NgxMdeItemName,
   NgxMdeOptions,
   NgxMdeStatusbarItem,
   NgxMdeStatusbarItemDef,
   NgxMdeStatusbarItemName,
+  NgxMdeToolbarItem,
+  NgxMdeToolbarItemDef,
+  NgxMdeToolbarItemName,
   OptionalI18n,
 } from './lib/types';
 export * from './lib/util/from-cm-event';

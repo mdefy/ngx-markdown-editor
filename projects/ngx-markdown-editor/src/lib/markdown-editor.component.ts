@@ -26,11 +26,11 @@ import { DEFAULT_TOOLBAR, defineDefaultToolbarItems, getDefaultItem } from './de
 import {
   LanguageTag,
   NgxMdeIcon,
-  NgxMdeItemDef,
   NgxMdeItemNormalized,
   NgxMdeOptions,
   NgxMdeStatusbarItemDef,
   NgxMdeStatusbarItemNormalized,
+  NgxMdeToolbarItemDef,
   OptionalI18n,
 } from './types';
 import { fromCmEvent } from './util/from-cm-event';
@@ -67,7 +67,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Custom set of toolbar items.
    */
-  @Input() readonly toolbar: NgxMdeItemDef[] = [];
+  @Input() readonly toolbar: NgxMdeToolbarItemDef[] = [];
 
   /**
    * Custom set of statusbar items.
@@ -409,7 +409,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * Applies the custom toolbar or the default toolbar as fallback.
    */
   private applyToolbarItems() {
-    let items: NgxMdeItemDef[];
+    let items: NgxMdeToolbarItemDef[];
     if (this.toolbar.length) {
       items = this.toolbar;
     } else {
@@ -440,7 +440,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * - For custom items specified fully, returns as is.
    * - For unknown items specified by name string, returns `undefined`.
    */
-  private getNormalizedItem(toolbarItem: NgxMdeItemDef): NgxMdeItemNormalized | undefined {
+  private getNormalizedItem(toolbarItem: NgxMdeToolbarItemDef): NgxMdeItemNormalized | undefined {
     const getTooltip = (tooltip: OptionalI18n<string>): string => {
       if (typeof tooltip === 'string') {
         return tooltip;

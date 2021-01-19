@@ -31,23 +31,23 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
   /**
    * Custom keyboard shortcuts for editor actions.
    */
-  shortcuts?: Partial<MarkdownEditorShortcuts> & Partial<Record<Exclude<NgxMdeAdditionalItemName, '|'>, string>>;
+  shortcuts?: Partial<MarkdownEditorShortcuts> & Partial<Record<Exclude<NgxMdeAdditionalToolbarItemName, '|'>, string>>;
 }
 
 /**
  * Toolbar item definition. Can either be a predefined item name or a item object.
  */
-export type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
+export type NgxMdeToolbarItemDef = NgxMdeToolbarItemName | NgxMdeToolbarItem;
 
 /**
  * Predefined item name string.
  */
-export type NgxMdeItemName = MarkdownEditorAction | NgxMdeAdditionalItemName;
+export type NgxMdeToolbarItemName = MarkdownEditorAction | NgxMdeAdditionalToolbarItemName;
 
 /**
  * Name of an action defined in _Ngx Markdown Editor_ (and not available in _Markdown Editor Core_).
  */
-type NgxMdeAdditionalItemName =
+type NgxMdeAdditionalToolbarItemName =
   | 'undo'
   | 'redo'
   | 'toggleHeadingLevel'
@@ -58,7 +58,7 @@ type NgxMdeAdditionalItemName =
 /**
  * A toolbar item.
  */
-export interface NgxMdeItem {
+export interface NgxMdeToolbarItem {
   /**
    * The item name.
    */
@@ -103,7 +103,7 @@ export interface NgxMdeItem {
  *
  * _Not intended to be used outside of this library. Only made public for access inside component._
  */
-export interface NgxMdeItemNormalized extends NgxMdeItem {
+export interface NgxMdeItemNormalized extends NgxMdeToolbarItem {
   name: string;
   action: (...args: any[]) => void;
   shortcut?: string;

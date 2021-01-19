@@ -135,7 +135,7 @@ If you like to use the same configuration for other `MarkdownEditorComponent` in
       <td><code>''</code></td>
     </tr>
     <tr>
-      <td><code>options: NgxMdeOptions</code></td>
+      <td><code>options: Options</code></td>
       <td>
         Mainly options from <a href="https://github.com/lenardfunk/markdown-editor-core#configuration-options"><i>Markdown Editor
         Core</i></a>, including some adjustments. To update options at runtime, merge the old options object with the new options before applying the changes: <code>this.options = { ...this.options, optionToUpdate: updateValue }</code>.
@@ -143,12 +143,12 @@ If you like to use the same configuration for other `MarkdownEditorComponent` in
       <td><code>{}</code></td>
     </tr>
     <tr>
-      <td><code>toolbar: NgxMdeItemDef[]</code></td>
+      <td><code>toolbar: ToolbarItemDef[]</code></td>
       <td>Toolbar configuration. Can contain names of predefined items or objects of custom items.</td>
       <td>See <a href="#toolbar">toolbar section</a>.</td>
     </tr>
     <tr>
-      <td><code>statusItems: NgxMdeStatusbarItemDef[]</code></td>
+      <td><code>statusItems: StatusbarItemDef[]</code></td>
       <td>Statusbar configuration. Can contain names of predefined items or objects of custom items.</td>
       <td>See <a href="#statusbar">statusbar section</a>.</td>
     </tr>
@@ -245,19 +245,19 @@ If you do not specify anything at all for the `toolbar` input property, the defa
 The `toolbar` input property in an array of type
 
 ```typescript
-type NgxMdeItemDef = NgxMdeItemName | NgxMdeItem;
+type ToolbarItemDef = ToolbarItemName | ToolbarItem;
 ```
 
-`NgxMdeItemName` is a union type of all built-in item names. The interface `NgxMdeItem` represents a full toolbar item.
+`ToolbarItemName` is a union type of all built-in item names. The interface `ToolbarItem` represents a full toolbar item.
 
 ```typescript
-interface NgxMdeItem {
+interface ToolbarItem {
   name: string;
   action?: (...args: any[]) => void;
   shortcut?: string;
   isActive?: (...args: any[]) => boolean | number;
   tooltip?: OptionalI18n<string>;
-  icon?: OptionalI18n<NgxMdeIcon>;
+  icon?: OptionalI18n<Icon>;
   disableOnPreview?: boolean;
 }
 ```
@@ -272,34 +272,34 @@ In the following, we always apply a JavaScript variable to the `toolbar` input p
 
 ### 1. Construct a toolbar from existing items
 
-To build a toolbar from existing items, simply create an array of type `NgxMdeItemName[]` (or `NgxMdeItemDef[]`) and specify the items by name.
+To build a toolbar from existing items, simply create an array of type `ToolbarItemName[]` (or `ToolbarItemDef[]`) and specify the items by name.
 Additionally, there is a separator element, which you can insert at any position with `'|'`.
 
 ```typescript
-public toolbar: NgxMdeItemName[] = ['toggleBold', 'toggleItalic', '|', 'insertLink', '|', 'openMarkdownGuide'];
+public toolbar: ToolbarItemName[] = ['toggleBold', 'toggleItalic', '|', 'insertLink', '|', 'openMarkdownGuide'];
 ```
 
 The naming convention for items is to use the name of the function that is triggered by the item.
 
 ### 2. Configure an existing item
 
-You can adjust built-in items for you needs by defining an item with a name included in `NgxMdeItemName`. You do not have to specify
+You can adjust built-in items for you needs by defining an item with a name included in `ToolbarItemName`. You do not have to specify
 all item properties, but can simply adjust only a subset of them, the rest will keep their default values.
 
 For example, if you want to give the `toggleBold` item a new shortcut (default: `Ctrl-B`) as well as change the tooltip, then proceed as following:
 
 ```typescript
-const newToggleBoldItem: NgxMdeItem = {
+const newToggleBoldItem: ToolbarItem = {
   name: 'toggleBold',
   shortcut: 'Alt-B',
   tooltip: 'Bold you shall be',
 };
 ```
 
-Then include this object into the toolbar item array (maybe alongside `NgxMdeItemName`s):
+Then include this object into the toolbar item array (may be alongside `ToolbarItemName`s):
 
 ```typescript
-public toolbar: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
+public toolbar: ToolbarItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 ```
 
 ### 3. Create your own item
@@ -307,7 +307,7 @@ public toolbar: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 This is very similar to configuring an existing item. Example:
 
 ```typescript
-const myItem: NgxMdeItem = {
+const myItem: ToolbarItem = {
   name: 'myCustomAction',
   action: () => myCustomAction()
   shortcut: 'Alt-B',
@@ -322,7 +322,7 @@ const myItem: NgxMdeItem = {
 Again you only have to include the properties you want to explicitly specify (except the obligatory `name` property), all other item properties will be "as empty as possible" per default:
 
 ```typescript
-const defaultItem: NgxMdeItem = {
+const defaultItem: ToolbarItem = {
   name: '',
   action: () => {},
   shortcut: undefined,
@@ -372,14 +372,14 @@ For shortcuts that come built-in with _CodeMirror_, see [_CodeMirror_ documentat
 
 The primary to configure single shortcuts alongside with other item properties is to use the `toolbar` configuration as described in the [toolbar](#toolbar) section.
 
-However, if you want to customize keyboard shortcuts of a lot of (built-in) items you may also do this inside the `options: NgxMdeOptions` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbar`.
+However, if you want to customize keyboard shortcuts of a lot of (built-in) items you may also do this inside the `options: Options` input property with `options.shortcuts = {...}`. This is a decent alternative as you can specify many keybindings in a single object. **Attention**: Shortcuts defined in `options.shortcuts` will override shortcuts specified in `toolbar`.
 
 When specifying custom shortcuts, mind the correct order of special keys: **Shift-Cmd-Ctrl-Alt** (see [here](https://codemirror.net/doc/manual.html#keymaps)).
 
 #### Disabling shortcuts
 
 As per default, keyboard shortcuts are always functioning for all built-in toolbar items, even when they are not included into the visible toolbar, in order to enable users to efficiently write _Markdown_.
-However, you can configure this behavior inside the `options: NgxMdeOptions` input property with `options.shortcutsEnabled`.
+However, you can configure this behavior inside the `options: Options` input property with `options.shortcutsEnabled`.
 You can either disable shortcuts completely (`shortcutsEnabled: 'none'`) or only enable them for items included in the toolbar or specified in `options.shortcuts` (`shortcutsEnabled: 'customOnly'`).
 
 ### Icons
@@ -387,7 +387,7 @@ You can either disable shortcuts completely (`shortcutsEnabled: 'none'`) or only
 Icons can be specified in multiple ways. The easiest is to use an icon included in the [_Material icon_](https://material.io/resources/icons/) font.
 
 ```typescript
-const item: NgxMdeIcon = {
+const item: Icon = {
   format: 'material',
   iconName: 'thumb_up',
 };
@@ -396,7 +396,7 @@ const item: NgxMdeIcon = {
 But you can also use your own SVG icons by either specifying the icon's file path (location at runtime) or by including an SVG string into your TypeScript file:
 
 ```typescript
-const item: NgxMdeIcon = {
+const item: Icon = {
   format: 'svgFile',
   iconName: 'my_icon',
   runTimePath: './path/to/icon.svg',
@@ -406,7 +406,7 @@ const item: NgxMdeIcon = {
 or
 
 ```typescript
-const item: NgxMdeIcon = {
+const item: Icon = {
   format: 'svgFile',
   iconName: 'my_icon',
   svgHtmlString: '<svg viewBox="0 0 20 20"> <circle r="10" /> </svg>',
@@ -429,13 +429,13 @@ Configuring the statusbar is very similar to configuring the toolbar, only simpl
 The `statusbar` input property is an array of type
 
 ```typescript
-type NgxMdeStatusbarItemDef = NgxMdeStatusbarItemName | NgxMdeStatusbarItem;
+type StatusbarItemDef = StatusbarItemName | StatusbarItem;
 ```
 
-`NgxMdeStatusbarItemName` is a union type of all built-in item names. The interface `NgxMdeStatusbarItem` represents a full statusbar item.
+`StatusbarItemName` is a union type of all built-in item names. The interface `StatusbarItem` represents a full statusbar item.
 
 ```typescript
-interface NgxMdeStatusbarItem {
+interface StatusbarItem {
   name: string;
   value: OptionalI18n<Observable<string>>;
 }
@@ -453,34 +453,34 @@ In the following, we always apply a JavaScript variable to the `toolbar` input p
 
 ### 1. Construct a statusbar from existing items
 
-To build a statusbar from existing items, simply create an array of type `NgxMdeStatusbarItemName[]` (or `NgxMdeStatusbarItemDef[]`) and specify the items by name.
+To build a statusbar from existing items, simply create an array of type `StatusbarItemName[]` (or `StatusbarItemDef[]`) and specify the items by name.
 Additionally, there is a separator element, which you can insert at any position with `'|'`.
 
 ```typescript
-public statusbar: NgxMdeItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
+public statusbar: ToolbarItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
 ```
 
 The naming convention for items is to use the name of the subject / value that is displayed.
 
 ### 2. Configure an existing item
 
-You can adjust built-in items for you needs by defining an item with a name included in `NgxMdeItemName`. However, this might only make sense if you want to keep an existing item name and implement internationalization for it, as this is almost the same as creating a new item. For this reason, we omit an example here and refer to the section below.
+You can adjust built-in items for you needs by defining an item with a name included in `ToolbarItemName`. However, this might only make sense if you want to keep an existing item name and implement internationalization for it, as this is almost the same as creating a new item. For this reason, we omit an example here and refer to the section below.
 
 ### 3. Create your own item
 
-To create a custom statusbar item, simply define a new object of type `NgxMdeStatusbarItem`:
+To create a custom statusbar item, simply define a new object of type `StatusbarItem`:
 
 ```typescript
-const myItem: NgxMdeItem = {
+const myItem: ToolbarItem = {
   name: 'myValue',
   value: of('static string'),
 };
 ```
 
-Then include this object into the statusbar item array (maybe alongside `NgxMdeStatusbarItemName`s):
+Then include this object into the statusbar item array (maybe alongside `StatusbarItemName`s):
 
 ```typescript
-public toolbar: NgxMdeItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
+public toolbar: ToolbarItemDef[] = [newToggleBoldItem, 'toggleItalic', ...];
 ```
 
 ## Internationalization

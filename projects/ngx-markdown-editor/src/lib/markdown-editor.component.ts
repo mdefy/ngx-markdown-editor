@@ -552,8 +552,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
             appliedNgxMdeShortcuts[actionName]?.unsubscribe();
             applyShortcut(shortcut, item.action);
             item.shortcut = shortcut;
-          }
-          if (defaultItem) {
+          } else if (defaultItem) {
             appliedNgxMdeShortcuts[actionName]?.unsubscribe();
             applyShortcut(shortcut, defaultItem.action);
           }

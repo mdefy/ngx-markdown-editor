@@ -11,7 +11,7 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
    *
    * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#theming) for more details.
    */
-  editorTheme?: string;
+  editorThemes?: string[];
 
   /**
    * Names of CSS themes to style the markup of the in-editor markdown syntax.
@@ -21,7 +21,7 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
    *
    * @see Our [README section](https://github.com/lenardfunk/ngx-markdown-editor#theming) for more details.
    */
-  markupTheme?: string;
+  markupThemes?: string[];
 
   /**
    * The markdown guide url. Can be internationalized.

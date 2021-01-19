@@ -189,13 +189,13 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     return this.disabled;
   }
   @HostBinding('class.default') private get default() {
-    return !this.options.editorTheme && !this.materialStyle;
+    return !this.options.editorThemes && !this.materialStyle;
   }
   @HostBinding('class.material') private get material() {
     return this.materialStyle;
   }
   @HostBinding('class') private get class() {
-    return this.options.editorTheme;
+    return this.options.editorThemes;
   }
   @HostBinding('class.appearance-standard') private get appearanceStandard() {
     return this.materialStyle === true || this.materialStyle === 'standard';
@@ -377,16 +377,14 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       }
     };
 
-    const markupTheme = options.markupTheme || '';
-    let editorTheme = options.editorTheme;
+    const markupTheme = options.markupThemes || [];
+    let editorThemes = options.editorThemes || [];
     if (this.materialStyle) {
-      editorTheme = editorTheme ? editorTheme.concat(' mde-material') : 'mde-material';
+      editorThemes = editorThemes ? editorThemes.concat('mde-material') : ['mde-material'];
     } else {
-      if (editorTheme) {
-        const themes = editorTheme.split(' ');
-        const index = themes.findIndex((t) => t === 'mde-material');
-        if (index > -1) themes.splice(index, 1);
-        editorTheme = themes.join(' ');
+      if (editorThemes) {
+        const index = editorThemes.findIndex((t) => t === 'mde-material');
+        if (index > -1) editorThemes.splice(index, 1);
       }
     }
 
@@ -402,7 +400,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       ...options,
       shortcuts,
       disabled: this.disabled,
-      theme: editorTheme + ' ' + markupTheme,
+      themes: editorThemes.concat(markupTheme),
       markdownGuideUrl: getMarkdownGuideUrl(options.markdownGuideUrl),
     };
   }

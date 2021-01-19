@@ -7,15 +7,15 @@ export { DEFAULT_TOOLBAR, getDefaultItem, getDefaultItems } from './lib/default-
 export * from './lib/markdown-editor.component';
 export * from './lib/markdown-editor.module';
 export {
+  Icon,
   LanguageTag,
-  NgxMdeIcon,
-  NgxMdeOptions,
-  NgxMdeStatusbarItem,
-  NgxMdeStatusbarItemDef,
-  NgxMdeStatusbarItemName,
-  NgxMdeToolbarItem,
-  NgxMdeToolbarItemDef,
-  NgxMdeToolbarItemName,
   OptionalI18n,
+  Options,
+  StatusbarItem,
+  StatusbarItemDef,
+  StatusbarItemName,
+  ToolbarItem,
+  ToolbarItemDef,
+  ToolbarItemName,
 } from './lib/types';
 export * from './lib/util/from-cm-event';

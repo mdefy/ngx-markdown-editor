@@ -1,28 +1,28 @@
 import { MarkdownEditor } from 'markdown-editor-core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { NgxMdeStatusbarItemName, NgxMdeStatusbarItemNormalized } from './types';
+import { StatusbarItemName, StatusbarItemNormalized } from './types';
 import { fromCmEvent } from './util/from-cm-event';
 
-let DEFAULT_STATUSBAR_ITEMS: NgxMdeStatusbarItemNormalized[];
+let DEFAULT_STATUSBAR_ITEMS: StatusbarItemNormalized[];
 
 /**
  * The default statusbar setup.
  */
-export const DEFAULT_STATUSBAR: NgxMdeStatusbarItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
+export const DEFAULT_STATUSBAR: StatusbarItemName[] = ['wordCount', 'characterCount', '|', 'cursorPosition'];
 
 /**
  * Returns the default configuration of the item with the specified name.
  * Returns `undefined`, if no item with the specified name can be found.
  */
-export function getDefaultStatusbarItem(itemName: string): NgxMdeStatusbarItemNormalized | undefined {
+export function getDefaultStatusbarItem(itemName: string): StatusbarItemNormalized | undefined {
   return getDefaultStatusbarItems().find((i) => i.name === itemName);
 }
 
 /**
  * Returns the default configurations of all items.
  */
-export function getDefaultStatusbarItems(): NgxMdeStatusbarItemNormalized[] {
+export function getDefaultStatusbarItems(): StatusbarItemNormalized[] {
   return DEFAULT_STATUSBAR_ITEMS;
 }
 
@@ -31,7 +31,7 @@ export function getDefaultStatusbarItems(): NgxMdeStatusbarItemNormalized[] {
  * Cannot be done statically as the values depend on the `MarkdownEditor` instance.
  */
 export function defineDefaultStatusbarItems(mde: MarkdownEditor) {
-  const defaultItems: NgxMdeStatusbarItemNormalized[] = [
+  const defaultItems: StatusbarItemNormalized[] = [
     {
       name: 'wordCount',
       value: fromCmEvent(mde.cm, 'changes').pipe(

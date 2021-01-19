@@ -24,14 +24,14 @@ import { takeUntil } from 'rxjs/operators';
 import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
 import { DEFAULT_TOOLBAR, defineDefaultToolbarItems, getDefaultItem } from './default-toolbar-config';
 import {
+  Icon,
+  ItemNormalized,
   LanguageTag,
-  NgxMdeIcon,
-  NgxMdeItemNormalized,
-  NgxMdeOptions,
-  NgxMdeStatusbarItemDef,
-  NgxMdeStatusbarItemNormalized,
-  NgxMdeToolbarItemDef,
   OptionalI18n,
+  Options,
+  StatusbarItemDef,
+  StatusbarItemNormalized,
+  ToolbarItemDef,
 } from './types';
 import { fromCmEvent } from './util/from-cm-event';
 import { Hotkeys } from './util/hotkeys.service';
@@ -62,17 +62,17 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * Basically `MarkdownEditorOptions` from _Markdown Editor Core_ are forwarded,
    * including some adjustments and extensions.
    */
-  @Input() readonly options: NgxMdeOptions = {};
+  @Input() readonly options: Options = {};
 
   /**
    * Custom set of toolbar items.
    */
-  @Input() readonly toolbar: NgxMdeToolbarItemDef[] = [];
+  @Input() readonly toolbar: ToolbarItemDef[] = [];
 
   /**
    * Custom set of statusbar items.
    */
-  @Input() readonly statusbar: NgxMdeStatusbarItemDef[] = [];
+  @Input() readonly statusbar: StatusbarItemDef[] = [];
 
   /**
    * The current language applied to internationalized items.
@@ -157,7 +157,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  public normalizedItems: NgxMdeItemNormalized[];
+  public normalizedItems: ItemNormalized[];
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
@@ -165,7 +165,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  public normalizedStatusbarItems: NgxMdeStatusbarItemNormalized[];
+  public normalizedStatusbarItems: StatusbarItemNormalized[];
   /**
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
@@ -310,7 +310,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    *
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  onButtonClick(item: NgxMdeItemNormalized) {
+  onButtonClick(item: ItemNormalized) {
     item.action();
     this.mde.focus();
     this.determineActiveButtons();
@@ -322,7 +322,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    *
    * _Not intended to be used outside the component. Only made public for access inside template._
    */
-  createTooltip(item: NgxMdeItemNormalized): string {
+  createTooltip(item: ItemNormalized): string {
     let shortcut: string | undefined = this.mde.getShortcuts()[item.name] || item.shortcut;
     if (item.name === 'undo') shortcut = 'Ctrl-Z';
     else if (item.name === 'redo') shortcut = 'Shift-Ctrl-Z';
@@ -362,7 +362,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Maps `NgxMdeOptions` to `MarkdownEditorOptions`.
    */
-  private mapOptions(options: NgxMdeOptions | undefined): MarkdownEditorOptions | undefined {
+  private mapOptions(options: Options | undefined): MarkdownEditorOptions | undefined {
     if (!options) {
       return undefined;
     }
@@ -388,7 +388,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
 
-    const shortcuts: NgxMdeOptions['shortcuts'] = {};
+    const shortcuts: Options['shortcuts'] = {};
 
     for (const actionName in DEFAULT_OPTIONS.shortcuts) {
       if (options.shortcuts) {
@@ -409,7 +409,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * Applies the custom toolbar or the default toolbar as fallback.
    */
   private applyToolbarItems() {
-    let items: NgxMdeToolbarItemDef[];
+    let items: ToolbarItemDef[];
     if (this.toolbar.length) {
       items = this.toolbar;
     } else {
@@ -440,7 +440,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * - For custom items specified fully, returns as is.
    * - For unknown items specified by name string, returns `undefined`.
    */
-  private getNormalizedItem(toolbarItem: NgxMdeToolbarItemDef): NgxMdeItemNormalized | undefined {
+  private getNormalizedItem(toolbarItem: ToolbarItemDef): ItemNormalized | undefined {
     const getTooltip = (tooltip: OptionalI18n<string>): string => {
       if (typeof tooltip === 'string') {
         return tooltip;
@@ -449,7 +449,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
       }
     };
 
-    const getIcon = (icon: OptionalI18n<NgxMdeIcon>): NgxMdeIcon => {
+    const getIcon = (icon: OptionalI18n<Icon>): Icon => {
       if ('format' in icon) {
         return icon;
       } else {
@@ -489,7 +489,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * modified. For items that are specific to _Ngx Markdown Editor_ keybindings are applied to
    * the `<ngx-markdown-editor>` element.
    */
-  private applyShortcuts(items: NgxMdeItemNormalized[]) {
+  private applyShortcuts(items: ItemNormalized[]) {
     if (this.options.shortcutsEnabled === 'none') {
       return;
     }
@@ -567,7 +567,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Adds the SVG specified inside `item.icon` to the injected `MatIconRegistry` instance.
    */
-  private addSvgIcon(item: NgxMdeItemNormalized) {
+  private addSvgIcon(item: ItemNormalized) {
     switch (item.icon.format) {
       case 'svgString':
         this.iconRegistry.addSvgIconLiteral(
@@ -588,7 +588,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * Applies the custom statusbar or the default statusbar as fallback.
    */
   private applyStatusbarItems() {
-    let items: NgxMdeStatusbarItemDef[];
+    let items: StatusbarItemDef[];
     if (this.statusbar.length) {
       items = this.statusbar;
     } else {
@@ -615,7 +615,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
    * - For custom items, returns as is.
    * - For unknown items specified by name string, returns `undefined`.
    */
-  private getNormalizedStatusbarItem(statusbarItem: NgxMdeStatusbarItemDef): NgxMdeStatusbarItemNormalized | undefined {
+  private getNormalizedStatusbarItem(statusbarItem: StatusbarItemDef): StatusbarItemNormalized | undefined {
     const getValue = (value: OptionalI18n<Observable<string>>): Observable<string> => {
       if (value instanceof Observable) {
         return value;

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 /**
  * Adjusted and extended options from _Markdown Editor Core_.
  */
-export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuideUrl' | 'shortcuts' | 'theme'> {
+export interface Options extends Omit<MarkdownEditorOptions, 'markdownGuideUrl' | 'shortcuts' | 'theme'> {
   /**
    * Names of CSS themes to style the editor's appearance. The theme classes are applied to both
    * elements `<ngx-markdown-editor>` and `<div class="CodeMirror">`.
@@ -31,23 +31,23 @@ export interface NgxMdeOptions extends Omit<MarkdownEditorOptions, 'markdownGuid
   /**
    * Custom keyboard shortcuts for editor actions.
    */
-  shortcuts?: Partial<MarkdownEditorShortcuts> & Partial<Record<Exclude<NgxMdeAdditionalToolbarItemName, '|'>, string>>;
+  shortcuts?: Partial<MarkdownEditorShortcuts> & Partial<Record<Exclude<AdditionalToolbarItemName, '|'>, string>>;
 }
 
 /**
  * Toolbar item definition. Can either be a predefined item name or a item object.
  */
-export type NgxMdeToolbarItemDef = NgxMdeToolbarItemName | NgxMdeToolbarItem;
+export type ToolbarItemDef = ToolbarItemName | ToolbarItem;
 
 /**
  * Predefined item name string.
  */
-export type NgxMdeToolbarItemName = MarkdownEditorAction | NgxMdeAdditionalToolbarItemName;
+export type ToolbarItemName = MarkdownEditorAction | AdditionalToolbarItemName;
 
 /**
  * Name of an action defined in _Ngx Markdown Editor_ (and not available in _Markdown Editor Core_).
  */
-type NgxMdeAdditionalToolbarItemName =
+type AdditionalToolbarItemName =
   | 'undo'
   | 'redo'
   | 'toggleHeadingLevel'
@@ -58,7 +58,7 @@ type NgxMdeAdditionalToolbarItemName =
 /**
  * A toolbar item.
  */
-export interface NgxMdeToolbarItem {
+export interface ToolbarItem {
   /**
    * The item name.
    */
@@ -90,7 +90,7 @@ export interface NgxMdeToolbarItem {
   /**
    * The icon displayed in the toolbar. Can be internationalized.
    */
-  icon?: OptionalI18n<NgxMdeIcon>;
+  icon?: OptionalI18n<Icon>;
 
   /**
    * Specifies whether this item shall be disabled when the full-size preview is active.
@@ -103,30 +103,30 @@ export interface NgxMdeToolbarItem {
  *
  * _Not intended to be used outside of this library. Only made public for access inside component._
  */
-export interface NgxMdeItemNormalized extends NgxMdeToolbarItem {
+export interface ItemNormalized extends ToolbarItem {
   name: string;
   action: (...args: any[]) => void;
   shortcut?: string;
   isActive?: (...args: any[]) => boolean | number;
   tooltip: string;
-  icon: NgxMdeIcon;
+  icon: Icon;
   disableOnPreview: boolean;
 }
 
 /**
  * Statusbar item definition. Can either be a predefined item name or a item object.
  */
-export type NgxMdeStatusbarItemDef = NgxMdeStatusbarItemName | NgxMdeStatusbarItem;
+export type StatusbarItemDef = StatusbarItemName | StatusbarItem;
 
 /**
  * Predefined item name string.
  */
-export type NgxMdeStatusbarItemName = 'wordCount' | 'characterCount' | 'cursorPosition' | '|';
+export type StatusbarItemName = 'wordCount' | 'characterCount' | 'cursorPosition' | '|';
 
 /**
  * A statusbar item.
  */
-export interface NgxMdeStatusbarItem {
+export interface StatusbarItem {
   /**
    * The item name.
    */
@@ -143,7 +143,7 @@ export interface NgxMdeStatusbarItem {
  *
  * _Not intended to be used outside of this library. Only made public for access inside component._
  */
-export interface NgxMdeStatusbarItemNormalized extends NgxMdeStatusbarItem {
+export interface StatusbarItemNormalized extends StatusbarItem {
   name: string;
   value: Observable<string>;
 }
@@ -151,7 +151,7 @@ export interface NgxMdeStatusbarItemNormalized extends NgxMdeStatusbarItem {
 /**
  * Toolbar icon definition.
  */
-export type NgxMdeIcon =
+export type Icon =
   | { format: 'material'; iconName: string }
   | { format: 'svgFile'; iconName: string; runtimePath: string }
   | { format: 'svgString'; iconName: string; svgHtmlString: string };

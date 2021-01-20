@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  Host,
   HostBinding,
   Input,
   OnChanges,
@@ -21,8 +22,8 @@ import { DEFAULT_OPTIONS, MarkdownEditor, MarkdownEditorOptions } from 'markdown
 import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DEFAULT_STATUSBAR, defineDefaultStatusbarItems, getDefaultStatusbarItem } from './default-statusbar-config';
-import { DEFAULT_TOOLBAR, defineDefaultToolbarItems, getDefaultToolbarItem } from './default-toolbar-config';
+import { StatusbarService } from './services/statusbar.service';
+import { ToolbarService } from './services/toolbar.service';
 import {
   Icon,
   LanguageTag,
@@ -47,7 +48,11 @@ const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   selector: 'ngx-markdown-editor',
   templateUrl: './markdown-editor.component.html',
   styleUrls: ['./markdown-editor.component.scss'],
-  providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults }],
+  providers: [
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: markdownEditorTooltipDefaults },
+    ToolbarService,
+    StatusbarService,
+  ],
   encapsulation: ViewEncapsulation.None,
 })
 export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
@@ -219,7 +224,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     private readonly domSanitizer: DomSanitizer,
     private readonly hotkeys: Hotkeys,
     private readonly hostElement: ElementRef,
-    private readonly markdownService: MarkdownService
+    private readonly markdownService: MarkdownService,
+    @Host() private readonly toolbarService: ToolbarService,
+    @Host() private readonly statusbarService: StatusbarService
   ) {
     // Render checkbox dummies which can be replaced by an `<input type="checkbox"> later,
     // because the checkboxes rendered by marked.js inside ngx-markdown are removed by Angular sanitizer.
@@ -238,8 +245,8 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.editorFocus.emitObservable(fromCmEvent(this.mde.cm, 'focus'));
     this.editorBlur.emitObservable(fromCmEvent(this.mde.cm, 'blur'));
 
-    defineDefaultToolbarItems(this);
-    defineDefaultStatusbarItems(this.mde);
+    this.toolbarService.defineDefaultItems(this);
+    this.statusbarService.defineDefaultItems(this.mde);
 
     // Necessary to apply `this.mde` instance to default toolbar items
     // as `ngOnChanges()` is executed before `ngOnInit()`.
@@ -421,7 +428,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     if (this.toolbar.length) {
       items = this.toolbar;
     } else {
-      items = DEFAULT_TOOLBAR;
+      items = this.toolbarService.DEFAULT_TOOLBAR;
     }
     this.normalizedToolbarItems = [];
     for (const toolbarItem of items) {
@@ -466,9 +473,9 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     if (typeof toolbarItem === 'string') {
-      return getDefaultToolbarItem(toolbarItem);
+      return this.toolbarService.getDefaultItem(toolbarItem);
     } else {
-      let defaultItem = getDefaultToolbarItem(toolbarItem.name);
+      let defaultItem = this.toolbarService.getDefaultItem(toolbarItem.name);
       if (!defaultItem) {
         defaultItem = {
           name: '',
@@ -541,13 +548,13 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     const appliedNgxMdeShortcuts: { [name: string]: Subscription | undefined } = {};
 
     if (this.options.shortcutsEnabled !== 'customOnly') {
-      const previewItem = getDefaultToolbarItem('togglePreview');
+      const previewItem = this.toolbarService.getDefaultItem('togglePreview');
       if (previewItem?.shortcut) {
         const subscription = applyShortcut(previewItem.shortcut, previewItem.action);
         appliedNgxMdeShortcuts[previewItem.name] = subscription;
       }
 
-      const sideBySidePreviewItem = getDefaultToolbarItem('toggleSideBySidePreview');
+      const sideBySidePreviewItem = this.toolbarService.getDefaultItem('toggleSideBySidePreview');
       if (sideBySidePreviewItem?.shortcut) {
         const subscription = applyShortcut(sideBySidePreviewItem.shortcut, sideBySidePreviewItem.action);
         appliedNgxMdeShortcuts[sideBySidePreviewItem.name] = subscription;
@@ -581,7 +588,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
           shortcuts[actionName] = shortcut;
         } else {
           const item = items.find((i) => i.name === actionName);
-          const defaultItem = getDefaultToolbarItem(actionName);
+          const defaultItem = this.toolbarService.getDefaultItem(actionName);
           if (item) {
             appliedNgxMdeShortcuts[actionName]?.unsubscribe();
             applyShortcut(shortcut, item.action);
@@ -625,7 +632,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     if (this.statusbar.length) {
       items = this.statusbar;
     } else {
-      items = DEFAULT_STATUSBAR;
+      items = this.statusbarService.DEFAULT_STATUSBAR;
     }
     this.normalizedStatusbarItems = [];
     for (const toolbarItem of items) {
@@ -658,7 +665,7 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     if (typeof statusbarItem === 'string') {
-      return getDefaultStatusbarItem(statusbarItem);
+      return this.statusbarService.getDefaultItem(statusbarItem);
     } else {
       return {
         name: statusbarItem.name,

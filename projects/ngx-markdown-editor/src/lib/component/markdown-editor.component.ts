@@ -22,21 +22,16 @@ import { DEFAULT_OPTIONS, MarkdownEditor, MarkdownEditorOptions } from 'markdown
 import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { StatusbarService } from './services/statusbar.service';
-import { ToolbarService } from './services/toolbar.service';
-import {
-  Icon,
-  LanguageTag,
-  OptionalI18n,
-  Options,
-  StatusbarItemDef,
-  StatusbarItemNormalized,
-  ToolbarItemDef,
-  ToolbarItemNormalized,
-} from './types';
-import { fromCmEvent } from './util/from-cm-event';
-import { Hotkeys } from './util/hotkeys.service';
-import { ObservableEmitter } from './util/observable-emitter';
+import { Keybindings } from '../services/keybindings.service';
+import { StatusbarService } from '../services/statusbar.service';
+import { ToolbarService } from '../services/toolbar.service';
+import { LanguageTag } from '../types/language-tag';
+import { ObservableEmitter } from '../types/observable-emitter';
+import { OptionalI18n } from '../types/optional-i18n';
+import { Options } from '../types/options';
+import { StatusbarItemDef, StatusbarItemNormalized } from '../types/statusbar';
+import { Icon, ToolbarItemDef, ToolbarItemNormalized } from '../types/toolbar';
+import { fromCmEvent } from '../util/from-cm-event';
 
 const markdownEditorTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 1000,
@@ -194,35 +189,35 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
 
   private shortcutResetter = new Subject();
 
-  @HostBinding('class.disabled') private get disabledStyle() {
+  @HostBinding('class.disabled') get disabledStyle() {
     return this.disabled;
   }
-  @HostBinding('class.default') private get default() {
+  @HostBinding('class.default') get default() {
     return !this.options.editorThemes && !this.materialStyle;
   }
-  @HostBinding('class.material') private get material() {
+  @HostBinding('class.material') get material() {
     return this.materialStyle;
   }
-  @HostBinding('class') private get class() {
+  @HostBinding('class') get class() {
     return this.options.editorThemes;
   }
-  @HostBinding('class.appearance-standard') private get appearanceStandard() {
+  @HostBinding('class.appearance-standard') get appearanceStandard() {
     return this.materialStyle === true || this.materialStyle === 'standard';
   }
-  @HostBinding('class.appearance-fill') private get appearanceFill() {
+  @HostBinding('class.appearance-fill') get appearanceFill() {
     return this.materialStyle === 'fill';
   }
-  @HostBinding('class.appearance-legacy') private get appearanceLegacy() {
+  @HostBinding('class.appearance-legacy') get appearanceLegacy() {
     return this.materialStyle === 'legacy';
   }
-  @HostBinding('class.focused') private get focusedStyle() {
+  @HostBinding('class.focused') get focusedStyle() {
     return this.focused;
   }
 
   constructor(
     private readonly iconRegistry: MatIconRegistry,
     private readonly domSanitizer: DomSanitizer,
-    private readonly hotkeys: Hotkeys,
+    private readonly hotkeys: Keybindings,
     private readonly hostElement: ElementRef,
     private readonly markdownService: MarkdownService,
     @Host() private readonly toolbarService: ToolbarService,

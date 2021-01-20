@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MarkdownEditor } from 'markdown-editor-core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { StatusbarItemName, StatusbarItemNormalized } from '../types';
+import { StatusbarItemName, StatusbarItemNormalized } from '../types/statusbar';
 import { fromCmEvent } from '../util/from-cm-event';
 
 @Injectable()

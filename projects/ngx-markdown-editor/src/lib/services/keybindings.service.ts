@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
  * An injectable hotkeys service to add keybindings.
  */
 @Injectable({ providedIn: 'root' })
-export class Hotkeys {
+export class Keybindings {
   constructor(private eventManager: EventManager) {}
 
   /**

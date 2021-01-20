@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MarkdownEditor } from 'markdown-editor-core';
-import { MarkdownEditorComponent } from '../markdown-editor.component';
-import { ToolbarItemName, ToolbarItemNormalized } from '../types';
+import { MarkdownEditorComponent } from '../component/markdown-editor.component';
+import { ToolbarItemName, ToolbarItemNormalized } from '../types/toolbar';
 
 @Injectable()
 export class ToolbarService {

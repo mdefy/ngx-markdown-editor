@@ -1,11 +1,14 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "assets": ["themes/*.theme.scss"],
   "dest": "../../dist/ngx-markdown-editor",
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
-      "ngx-markdown": "ngx-markdown"
-    }
+      "ngx-markdown": "ngxMarkdown",
+      "markdown-editor-core": "markdownEditorCore"
+    },
+    "styleIncludePaths": ["../../node_modules/codemirror/lib/codemirror.css"]
   },
   "whitelistedNonPeerDependencies": ["markdown-editor-core"]
 }

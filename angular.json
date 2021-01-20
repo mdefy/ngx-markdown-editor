@@ -59,6 +59,9 @@
             "aot": true,
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
             "styles": ["projects/demo/src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["node_modules/codemirror/lib/codemirror.css"]
+            },
             "scripts": [],
             "allowedCommonJsDependencies": ["codemirror"]
           },

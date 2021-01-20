@@ -1,4 +1,4 @@
-@import '~codemirror/lib/codemirror.css';
+@use 'codemirror';
 
 ngx-markdown-editor {
   flex-direction: column;

@@ -70,18 +70,24 @@ yarn add ngx-markdown-editor
 
 Include `MarkdownEditorModule` into your Angular module and include `<ngx-markdown-editor></ngx-markdown-editor>` into your HTML template.
 
+Make sure to load _Material Font_, e.g. the header of your `index.html` file:
+
+```html
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+```
+
 In order to use the material theme of _Ngx Markdown Editor_ in combination with your global material theme (especially _Angular Material_), import the theme file into your `styles.scss` and include the material mixin, where you should pass your app's primary color.
 You can select from different material styles like in _Angular Material's_ [`MatFormField`](https://material.angular.io/components/form-field/overview) using the [`materialStyle`](#inputs) input property.
 
-```css
-@import '~ngx-markdown-editor/src/lib/material-theme';
+```scss
+@import '~ngx-markdown-editor/themes/material.theme';
 
 @include mde-material(mat-color($your-primary-color));
 ```
 
 In order to set specific dimension for _Ngx Markdown Editor_, simply apply any of the dimensional CSS properties to the component. Example:
 
-```css
+```scss
 ngx-markdown-editor {
   min-height: 100px;
   max-height: 500px;
@@ -90,7 +96,7 @@ ngx-markdown-editor {
 
 ## Module configuration
 
-In general, all configuration of the editor can be done dynamically through [input bindings](#inputs). However, as _Ngx Markdown Editor_ utilizes the [_Ngx Markdown_](https://github.com/jfcere/ngx-markdown) library for the preview feature and as the latter can be configured statically via Module import, `MarkdownEditorModule` also implements Angular's `forRoot()` and `forChild()` paradigma to make _Ngx Markdown_'s configuration options available. For this, import `MarkdownEditorModule` as follows:
+In general, all configuration of the editor can be done dynamically through [input bindings](#inputs). However, as _Ngx Markdown Editor_ utilizes the [_Ngx Markdown_](https://github.com/jfcere/ngx-markdown) library for its preview feature and as the latter can be configured statically via NgModule import, `MarkdownEditorModule` also implements Angular's `forRoot()` and `forChild()` paradigma to make _Ngx Markdown_'s configuration options available. For this, import `MarkdownEditorModule` as follows:
 
 ```typescript
 @NgModule({
@@ -115,6 +121,8 @@ If you like to use the same configuration for other `MarkdownEditorComponent` in
   imports: [ NgxMarkdownEditorModule.forChild() ]
 })
 ```
+
+> Due to the fact that the `MarkdownService` _Ngx Markdown_ is a singleton object, we cannot provide different preview configurations within one application so far. The most possible is to inject `MarkdownService` an make adjustments at run-time (see [_ngx-markdown#177_](https://github.com/jfcere/ngx-markdown/issues/177)). Apart from that, however, there are no dependencies between different _Ngx Markdown Editor_ instances.
 
 ## Component bindings
 
@@ -415,7 +423,7 @@ const item: Icon = {
 
 Depending on the format of your icon you might need to adjust the icon via CSS, e.g. similar to
 
-```css
+```scss
 .mat-button .mat-icon[data-mat-icon-name='my_icon'] {
   height: 16px;
   ...;
@@ -590,6 +598,9 @@ comments, please let me know and I will do my best do incorporate them! The even
 contributions as time is often rare around here... :)
 
 ### Writing issues
+
+Before you open an issue, please have one closer look if this is really an issue of _Ngx Markdown Editor_
+or if it rather belongs to [_Markdown Editor Core_](https://github.com/lenardfunk/markdown-editor-core).
 
 When writing issues, please give a clear description of the current state and what you are unhappy
 about. Then, if possible, propose your solution or at least leave a short statement of your thoughts

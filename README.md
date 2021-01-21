@@ -46,7 +46,7 @@ Last but not least, by containing an opt-in material theme, this component will 
 
 ## Dependencies
 
-This library depends on [_Markdown Editor Core_](https://github.com/lenardfunk/markdown-editor-core) and [_Ngx Markdown_](https://github.com/jfcere/ngx-markdown).
+This library depends on [_Markdown Editor Core_](https://github.com/mdefy/markdown-editor-core) and [_Ngx Markdown_](https://github.com/jfcere/ngx-markdown).
 
 _Markdown Editor Core_ is a JS library based on [CodeMirror](https://codemirror.net/) and was developed together with _Ngx Markdown Editor_. It provides the text editor and an extensive API for markdown-related actions and everything required to interact conveniently with the editor.
 
@@ -145,7 +145,7 @@ If you like to use the same configuration for other `MarkdownEditorComponent` in
     <tr>
       <td><code>options: Options</code></td>
       <td>
-        Mainly options from <a href="https://github.com/lenardfunk/markdown-editor-core#configuration-options"><i>Markdown Editor
+        Mainly options from <a href="https://github.com/mdefy/markdown-editor-core#configuration-options"><i>Markdown Editor
         Core</i></a>, including some adjustments. To update options at runtime, merge the old options object with the new options before applying the changes: <code>this.options = { ...this.options, optionToUpdate: updateValue }</code>.
       </td>
       <td><code>{}</code></td>
@@ -540,7 +540,7 @@ This makes the markup look as similar to the preview as possible.
 
 To customize the markup styling, use `options.markupThemes`.
 The theme specified here is only applied to the _CodeMirror_ element `<div class="CodeMirror"></div>`.
-For detailed instructions how to define your own markup styling, visit the section on [_Markdown Editor Core_](https://github.com/lenardfunk/markdown-editor-core/#how-to-change-the-markup-styling-eg-heading-bold-).
+For detailed instructions how to define your own markup styling, visit the section on [_Markdown Editor Core_](https://github.com/mdefy/markdown-editor-core/#how-to-change-the-markup-styling-eg-heading-bold-).
 
 ## FAQs
 
@@ -600,7 +600,7 @@ contributions as time is often rare around here... :)
 ### Writing issues
 
 Before you open an issue, please have one closer look if this is really an issue of _Ngx Markdown Editor_
-or if it rather belongs to [_Markdown Editor Core_](https://github.com/lenardfunk/markdown-editor-core).
+or if it rather belongs to [_Markdown Editor Core_](https://github.com/mdefy/markdown-editor-core).
 
 When writing issues, please give a clear description of the current state and what you are unhappy
 about. Then, if possible, propose your solution or at least leave a short statement of your thoughts

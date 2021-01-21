@@ -1332,6 +1332,15 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.7.0"
 
+"@mdefy/markdown-editor-core@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@mdefy/markdown-editor-core/-/markdown-editor-core-1.0.0.tgz#40c1d5a049ef9559376c577625cc045b43a2fa4a"
+  integrity sha512-B46XuMHe6yxB8WTvODk2PoQtKIapcZnKbcvDfhs+PiCuBU0MTHDBRnjBxIAOt+2kq9BuZP3AXQrIznLtQNLJ5A==
+  dependencies:
+    codemirror "^5.59.1"
+    lodash-es "^4.17.20"
+    prettier "^2.2.1"
+
 "@ngtools/webpack@11.0.7":
   version "11.0.7"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-11.0.7.tgz#3ec8cd967fdf1dfc79e6b1469369148bc3a93bd1"
@@ -3097,10 +3106,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@^5.58.3:
-  version "5.59.1"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.59.1.tgz#cd6465555a87f8a2243eb41ffb460c777e15212c"
-  integrity sha512-d0SSW/PCCD4LoSCBPdnP0BzmZB1v3emomCUtVlIWgZHJ06yVeBOvBtOH7vYz707pfAvEeWbO9aP6akh8vl1V3w==
+codemirror@^5.59.1:
+  version "5.59.2"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.59.2.tgz#ee674d3a4a8d241af38d52afc482625ba7393922"
+  integrity sha512-/D5PcsKyzthtSy2NNKCyJi3b+htRkoKv3idswR/tR6UAvMNKA7SrmyZy6fOONJxSRs1JlUWEDAbxqfdArbK8iA==
 
 coffeescript@1.12.7:
   version "1.12.7"
@@ -7034,14 +7043,6 @@ map-visit@^1.0.0:
   integrity sha1-7Nyo8TFE5mDxtb1B8S80edmN+48=
   dependencies:
     object-visit "^1.0.0"
-
-markdown-editor-core@../markdown-editor-core/build/markdown-editor-core-0.0.7.tgz:
-  version "0.0.0"
-  resolved "../markdown-editor-core/build/markdown-editor-core-0.0.7.tgz#98353700da2277643ac7e3ae5e4dee457c472b0b"
-  dependencies:
-    codemirror "^5.58.3"
-    lodash-es "^4.17.20"
-    prettier "^2.2.1"
 
 marked@^1.2.0:
   version "1.2.7"

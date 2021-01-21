@@ -1,11 +1,32 @@
 {
   "name": "ngx-markdown-editor",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "An Angular Markdown Editor in WYSIWYG style with extensive functionality, high customizability and an integrated material theme.",
+  "author": {
+    "name": "mdefy",
+    "url": "https://github.com/mdefy"
+  },
   "license": "MIT",
+  "keywords": [
+    "markdown",
+    "editor",
+    "javascript",
+    "typescript",
+    "angular",
+    "codemirror",
+    "ngx-markdown",
+    "wysiwyg",
+    "material"
+  ],
+  "bugs": {
+    "url": "https://github.com/mdefy/ngx-markdown-editor/issues"
+  },
+  "homepage": "https://github.com/mdefy/ngx-markdown-editor",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lenardfunk/ngx-markdown-editor"
+    "url": "https://github.com/mdefy/ngx-markdown-editor.git"
   },
+  "main": "demo/demo.html",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -17,8 +38,7 @@
     "format:check": "prettier -c .",
     "format:write": "prettier -w .",
     "deps:check": "ncu",
-    "commit": "cz",
-    "install-mde": "yarn add ../markdown-editor-core/build/markdown-editor-core-0.0.7.tgz"
+    "commit": "cz"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +52,7 @@
     "@angular/platform-browser": "~11.0.9",
     "@angular/platform-browser-dynamic": "~11.0.9",
     "@angular/router": "~11.0.9",
-    "markdown-editor-core": "../markdown-editor-core/build/markdown-editor-core-0.0.7.tgz",
+    "@mdefy/markdown-editor-core": "^1.0.0",
     "ngx-markdown": "^11.0.1",
     "rxjs": "~6.6.3",
     "tslib": "^2.1.0",

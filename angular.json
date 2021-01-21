@@ -60,7 +60,7 @@
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
             "styles": ["projects/demo/src/styles.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["node_modules/codemirror/lib/codemirror.css"]
+              "includePaths": ["node_modules/codemirror/lib/"]
             },
             "scripts": [],
             "allowedCommonJsDependencies": ["codemirror"]

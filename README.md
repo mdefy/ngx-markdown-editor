@@ -80,7 +80,7 @@ In order to use the material theme of _Ngx Markdown Editor_ in combination with 
 You can select from different material styles like in _Angular Material's_ [`MatFormField`](https://material.angular.io/components/form-field/overview) using the [`materialStyle`](#inputs) input property.
 
 ```scss
-@import '~ngx-markdown-editor/themes/material.theme';
+@import '~ngx-markdown-editor/themes/material';
 
 @include mde-material(mat-color($your-primary-color));
 ```
@@ -614,10 +614,11 @@ Recipe for making a pull request:
 2. Install [_Yarn_](https://yarnpkg.com/), if you do not have it yet. For example via `npm i yarn -g`.
 3. Open a command line, move to the project directory and run `yarn` to install all dependencies.
 4. Make your code changes. (Please mind the [style guidelines](#coding-style-guidelines).)
-5. Use `yarn run start` to test your changes in the demo app.
-6. Check the docs whether they need to be changed.
-7. Push the changes to your fork.
-8. Make a pull request to the _master_ branch of this repo. Please provide a meaningful title for
+5. Run `ng build ngx-markdown-editor --watch` to build the library in watch mode.
+6. Run `ng serve` to test your changes in the demo app.
+7. Check the docs whether they need to be changed.
+8. Push the changes to your fork.
+9. Make a pull request to the _master_ branch of this repo. Please provide a meaningful title for
    the PR and give a concise description.
 
 ## Project setup

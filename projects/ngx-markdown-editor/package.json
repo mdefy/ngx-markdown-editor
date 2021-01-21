@@ -1,5 +1,5 @@
 {
-  "name": "ngx-markdown-editor",
+  "name": "@mdefy/ngx-markdown-editor",
   "version": "1.0.0",
   "description": "An Angular Markdown Editor in WYSIWYG style with extensive functionality, high customizability and an integrated material theme.",
   "author": {

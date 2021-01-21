@@ -1,4 +1,4 @@
-import { MarkdownEditorOptions, MarkdownEditorShortcuts } from 'markdown-editor-core';
+import { MarkdownEditorOptions, MarkdownEditorShortcuts } from '@mdefy/markdown-editor-core';
 import { OptionalI18n } from './optional-i18n';
 import { AdditionalToolbarItemName } from './toolbar';
 

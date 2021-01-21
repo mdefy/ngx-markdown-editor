@@ -1,4 +1,4 @@
-import { MarkdownEditorAction } from 'markdown-editor-core';
+import { MarkdownEditorAction } from '@mdefy/markdown-editor-core';
 import { OptionalI18n } from './optional-i18n';
 
 /**

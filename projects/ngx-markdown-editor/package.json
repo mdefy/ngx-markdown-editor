@@ -10,7 +10,7 @@
     "rxjs": "^6.6.3"
   },
   "dependencies": {
-    "markdown-editor-core": "file:../../../markdown-editor-core/build/markdown-editor-core-0.0.4.tgz",
+    "@mdefy/markdown-editor-core": "^1.0.0",
     "tslib": "^2.1.0"
   }
 }

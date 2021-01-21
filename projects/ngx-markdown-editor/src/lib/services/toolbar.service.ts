@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MarkdownEditor } from 'markdown-editor-core';
+import { MarkdownEditor } from '@mdefy/markdown-editor-core';
 import { MarkdownEditorComponent } from '../component/markdown-editor.component';
 import { ToolbarItemName, ToolbarItemNormalized } from '../types/toolbar';
 

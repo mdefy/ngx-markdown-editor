@@ -5,7 +5,7 @@ import { AdditionalToolbarItemName } from './toolbar';
 /**
  * Adjusted and extended options from _Markdown Editor Core_.
  */
-export interface Options extends Omit<MarkdownEditorOptions, 'markdownGuideUrl' | 'shortcuts' | 'theme'> {
+export interface Options extends Omit<MarkdownEditorOptions, 'markdownGuideUrl' | 'shortcuts' | 'themes'> {
   /**
    * Names of CSS themes to style the editor's appearance. The theme classes are applied to both
    * elements `<ngx-markdown-editor>` and `<div class="CodeMirror">`.

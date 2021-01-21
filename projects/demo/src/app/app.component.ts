@@ -48,16 +48,8 @@ export class AppComponent {
 
   public disabled = false;
 
-  public showToolbar = false;
-  public showStatusbar = false;
-
-  constructor() {
-    console.log('Construct: Test');
-  }
-
-  ngOnInit() {
-    console.log('Init: Test');
-  }
+  public showToolbar = true;
+  public showStatusbar = true;
 
   test() {
     this.ngxMde.mde.setContent('Initial _Markdown_ content...');

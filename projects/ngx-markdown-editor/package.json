@@ -1,6 +1,6 @@
 {
   "name": "@mdefy/ngx-markdown-editor",
-  "version": "1.0.0",
+  "version": "11.1.0",
   "description": "An Angular Markdown Editor in WYSIWYG style with extensive functionality, high customizability and an integrated material theme.",
   "author": {
     "name": "mdefy",
@@ -27,10 +27,10 @@
     "url": "https://github.com/mdefy/ngx-markdown-editor.git"
   },
   "peerDependencies": {
-    "@angular/common": "^11.0.9",
-    "@angular/core": "^11.0.9",
-    "@angular/cdk": "^11.0.4",
-    "@angular/material": "^11.0.4",
+    "@angular/common": "^11.1.0",
+    "@angular/core": "^11.1.0",
+    "@angular/cdk": "^11.1.0",
+    "@angular/material": "^11.1.0",
     "ngx-markdown": "^11.0.1",
     "rxjs": "^6.6.3"
   },

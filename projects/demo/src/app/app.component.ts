@@ -1,7 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { MarkedOptions } from 'ngx-markdown';
-import { NgxMdeItemDef, NgxMdeOptions, NgxMdeStatusbarItemDef } from 'projects/ngx-markdown-editor/src/lib/types';
-import { MarkdownEditorComponent } from 'projects/ngx-markdown-editor/src/public-api';
+import {
+  MarkdownEditorComponent,
+  Options,
+  StatusbarItemDef,
+  ToolbarItemDef,
+} from 'projects/ngx-markdown-editor/src/public-api';
 import { fromEvent, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -13,19 +16,18 @@ import { map } from 'rxjs/operators';
 export class AppComponent {
   @ViewChild(MarkdownEditorComponent) ngxMde: MarkdownEditorComponent;
 
-  public toolbarButtons: NgxMdeItemDef[] = [
+  public toolbarButtons: ToolbarItemDef[] = [
     {
       name: 'toggleBold',
-      icon: {
-        format: 'material',
-        iconName: 'star',
-      },
-      shortcut: 'Alt-K',
+      shortcut: 'Alt-M',
+      icon: { format: 'material', iconName: 'star' },
     },
-    'openMarkdownGuide',
   ];
 
-  public statusbarItems: NgxMdeStatusbarItemDef[] = [
+  public data = '**Initial content**';
+  public content = '';
+
+  public statusbarItems: StatusbarItemDef[] = [
     'characterCount',
     '|',
     {
@@ -36,25 +38,32 @@ export class AppComponent {
       },
     },
     '|',
-    'cursorPosition',
   ];
 
-  public options: Partial<NgxMdeOptions> = {
-    autofocus: true,
-    lineNumbers: false,
-    placeholder: ' Hey :)',
-  };
-
-  public markedOptions: MarkedOptions = {
-    gfm: true,
+  public options: Partial<Options> = {
+    markupThemes: ['preview-like-markup'],
   };
 
   public materialStyle = 'legacy';
 
   public disabled = false;
 
+  public showToolbar = false;
+  public showStatusbar = false;
+
+  constructor() {
+    console.log('Construct: Test');
+  }
+
+  ngOnInit() {
+    console.log('Init: Test');
+  }
+
   test() {
-    // this.materialStyle = 'legacy';
-    this.options = { lineNumbers: false };
+    this.ngxMde.mde.setContent('Initial _Markdown_ content...');
+  }
+
+  onContentChange(event: any) {
+    this.content = event.instance.getValue();
   }
 }

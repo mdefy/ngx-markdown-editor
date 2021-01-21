@@ -1,12 +1,18 @@
-dajskdlföjasf<br /><br />
 <ngx-markdown-editor
   [language]="'en'"
-  [toolbarItems]=""
+  [toolbar]="toolbarButtons"
   [options]="options"
-  [statusItems]=""
+  [statusbar]="statusbarItems"
   [materialStyle]="materialStyle"
   [label]="'Label for Editor'"
   [disabled]="disabled"
   [required]="false"
+  [data]="data"
+  [showToolbar]="showToolbar"
+  [showStatusbar]="showStatusbar"
+  (contentChange)="onContentChange($event)"
 ></ngx-markdown-editor>
-<button (click)="test()">Test</button>
+
+<br /><br />
+
+{{ content }}

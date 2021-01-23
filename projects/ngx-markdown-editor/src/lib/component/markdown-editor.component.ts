@@ -312,7 +312,10 @@ export class MarkdownEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.showSideBySidePreview = !this.showSideBySidePreview;
     this.showPreview = false;
     // Timeout necessary until Angular change detector has finished
-    setTimeout(() => this.mde.focus(), 100);
+    setTimeout(() => {
+      this.mde.focus();
+      this.mde.cm.refresh();
+    }, 100);
   }
 
   /**

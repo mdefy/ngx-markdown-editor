@@ -6,6 +6,8 @@ In addition, this markdown editor provides high **extensibility** and **customiz
 
 Last but not least, by containing an opt-in material theme, this component will perfectly fit into your [_Angular Material_](https://material.angular.io/) application. If you do not use _Angular Material_ you can easily integrate your own theme.
 
+**Demo** available @ https://mdefy.github.io/ngx-markdown-editor/
+
 ## Table of contents
 
 - [Ngx Markdown Editor](#ngx-markdown-editor)

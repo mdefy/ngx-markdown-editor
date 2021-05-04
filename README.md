@@ -59,13 +59,13 @@ _Ngx Markdown_ is used to provide a preview feature, that renders the _Markdown_
 Run
 
 ```
-npm i ngx-markdown-editor
+npm i @mdefy/ngx-markdown-editor
 ```
 
 or
 
 ```
-yarn add ngx-markdown-editor
+yarn add @mdefy/ngx-markdown-editor
 ```
 
 ## Getting started
